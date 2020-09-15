@@ -1,6 +1,6 @@
-%include "tniasm.inc"
-%include "z80r800.inc"
-%include "z80().inc"
+;%include "tniasm.inc"
+;%include "z80r800.inc"
+;%include "z80().inc"
 
 PrintDigit:     equ     0B6D9h
 MainLoop:       equ     0b258h
@@ -14,7 +14,7 @@ Rg0Sav:         equ     0f3dfh
 Rg1Sav:         equ     0f3e0h
 Rg4Sav:         equ     0f3dfh+4
 Rg9Sav:         equ     0ffe8h
-LdAddress:      equ     8000h-7
+LdAddress:      equ     08000h-7
 Rg8sav:         equ     0FFE7h
 PutColorF:      equ     0B4a6h
 PatternMapPtr:  equ     84d3h
@@ -36,7 +36,7 @@ RowKeyb:        equ     847Fh
 ;;; a todas las paginas (pociones, jamon y todo eso
 ;;; La funcion que hace el cambio de patrones es LdirPat
 
-        %outfile   "gaunt.bin",0
+        fname   "gaunt.bin"
         forg    0
         db      0feh
         dw      8000h
@@ -523,7 +523,7 @@ EnableSCR:
         sub     a
         rr      c
         jr      nc,SB693_p        ;[0B693h]
-        ld      a,cbh           ;'p'
+        ld      a,0cbh           ;'p'
 
 SB693_p:
         jp      SB693
@@ -834,7 +834,7 @@ VecIntP:
         ld      (RefreshScrD),a
 .oui:
         call    ControlSound    ;Quitar el salvar registros
-        ld      a,bh
+        ld      a,0bh
         call    set_cfondo
         pop     bc
         pop     hl
@@ -946,7 +946,7 @@ ENASLT_0:
         or      d
 ;;;                             ; a -> configuration to put page 3 in slot
 ;;;                             ;parameter
-        out     (a8h),a         ; Put page 3 in same slot that 0 will be
+        out     (0a8h),a         ; Put page 3 in same slot that 0 will be
         ld      a,(0ffffh)
         cpl
         ld      c,a             ; c original value of -1 of slot para
@@ -966,7 +966,7 @@ ENASLT_0:
         ld      a,e
         and     03h
         or      h
-        out     (a8h),a
+        out     (0a8h),a
         ret
 
 
@@ -1376,11 +1376,11 @@ MakeColorWall:
         ld      a,c             ;
         jr      z,.281          ;
 
-WallSM_NL_H
+;WallSM_NL_H
         or      0eh
         jr      .282
 
-WallSM_NH_L
+;WallSM_NH_L
 .281:   or      0fh
 .282:   ld      c,a
 
@@ -1392,11 +1392,11 @@ WallSM_NH_L
         ld      a,c
         jr      z,.284
 
-WallSM_NH_H
+;WallSM_NH_H
         or      0f0h
         jr      .285
 
-WallSM_NL_L
+;WallSM_NL_L
 .284:   or      0e0h
 .285:   ld      c,a
 .283:   ld      a,c

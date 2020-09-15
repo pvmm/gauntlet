@@ -1,16 +1,16 @@
-%include "tniasm.inc"
-%include "z80r800.inc"
-%include "z80().inc"
-%include "msx.inc"
+;%include "tniasm.inc"
+;%include "z80r800.inc"
+;%include "z80().inc"
+include "msx.inc"
 
 
 
-        %outfile   "gauntlet.rom"
+;        %outfile   "gauntlet.rom"
+fname "gauntlet.rom"
+org 4000h
 
-
-
-orgcode 4000h
-orgrdata 0E000h
+orgcode: equ 4000h
+orgrdata: equ  0E000h
 
 
 
@@ -26,11 +26,11 @@ p5load: equ     6000h
 
 
 
-%include "page1.asm"            ; 1b20 bytes used
-%include "page234.asm"          ; gtitle.tcf and select.tcf -> 17478
-%include "page567.asm"          ; gaunt.2 and gaunt.3 ->
-%include "page8.asm"            ; free page
-%include "page9plus.asm"        ; Levels
+include "page1.asm"            ; 1b20 bytes used
+include "page234.asm"          ; gtitle.tcf and select.tcf -> 17478
+include "page567.asm"          ; gaunt.2 and gaunt.3 ->
+include "page8.asm"            ; free page
+include "page9plus.asm"        ; Levels
 
 
 

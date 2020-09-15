@@ -17,9 +17,9 @@ DisPause:
         ret     nz
 
 
-        ld      a,[FCB1h]       ; disable pause key
+        ld      a,[0FCB1h]       ; disable pause key
         res     1,a
-        out     [A7h],a
+        out     [0A7h],a
         ret
 
 
@@ -45,7 +45,7 @@ _InstallInt:
         ldir
 
         pop     hl
-        ld      a,c3h
+        ld      a,0c3h
         ld      (H.KEYI),a
         ld      (H.KEYI+1),hl
         ret
@@ -113,7 +113,7 @@ LoadMazeR:
         ex      de,hl
         ld      de,0d000h
         ld      bc,3832
-        call    8KLdir
+        call    EKLdir
 .l:     ret
 
 
@@ -124,7 +124,7 @@ LoadMazeR:
 .MazeFiles:
         db      "MAZE00"
         db      maze00>>13 + 5
-        dw      maze00&01fffh | 6000h
+        dw      maze00 & 01fffh | 6000h
 
         db      "MAZE01"
         db      maze01>>13 + 5
@@ -262,7 +262,7 @@ LoadMazeR:
 
 
 
- 8KLdir:
+EKLdir:
 	ld	(6800h),a
 	
  .loop:

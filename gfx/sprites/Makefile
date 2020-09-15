@@ -12,7 +12,7 @@ sprites:
 	cp elf/*.spr .
 	$(MAKE) -C wizard
 	cp wizard/*.spr .
-	$(MAKE) -C  -C hand
+	$(MAKE) -C hand
 	cp hand/*.spr .
 	cp hand/*.cc2 .
 

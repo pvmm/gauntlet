@@ -1,13 +1,12 @@
-%include "tniasm.inc"
-%include "z80r800.inc"
-%include "z80().inc"
+;;%include "tniasm.inc"
+;;%include "z80r800.inc"
+;;%include "z80().inc"
 
 
 LdAddress:      equ     87d0h-7
 
-
-
-        %outfile   "gaunt.bin",0
+        fname "gaunt.bin"
+	org 0
 
         forg    9800h-LdAddress
         incbin  "set1.col"
