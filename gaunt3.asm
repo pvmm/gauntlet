@@ -1,6 +1,6 @@
-%include "tniasm.inc"
-%include "z80r800.inc"
-%include "z80().inc"
+; %include "tniasm.inc"
+; %include "z80r800.inc"
+; %include "z80().inc"
 
 PrintDigit:     equ     0B6D9h
 MainLoop:       equ     0b258h
@@ -36,7 +36,8 @@ RowKeyb:        equ     847Fh
 ;;; a todas las paginas (pociones, jamon y todo eso
 ;;; La funcion que hace el cambio de patrones es LdirPat
 
-        %outfile   "gaunt.bin",0
+        ;%outfile   "gaunt.bin",0
+        fname      "gaunt.bin",0
         forg    0
         db      0feh
         dw      8000h
@@ -176,12 +177,12 @@ LEE_JOY_2:
 
 LEE_JOY2R:
 	bit     0,a
-	jr	nz,.1
+	jr	nz,.n1
 	set     1,b
-.1:	bit     1,a
-	jr	nz,.2
+.n1:	bit     1,a
+	jr	nz,.n2
 	set     1,b
-.2:	bit	3,a
+.n2:	bit	3,a
 	jr	nz,LEE_JOY2L
 	set	3,b	;B = 0000 R00U
 
@@ -244,19 +245,19 @@ MazeNumber:	equ 9602h
 SelectMaze:
         cp      80h
         ld      hl,3030h
-	jr	z,.4
+	jr	z,.n4
 
 	call 	randscr
-.2:	cp	10
-	jr	c,.3
+.n2:	cp	10
+	jr	c,.n3
 	inc	l
 	sub	10
-	jr	.2
+	jr	.n2
 
-.3:	add	a,h
+.n3:	add	a,h
 	ld 	h,a
 
-.4:	ld	(MazeNumber),hl
+.n4:	ld	(MazeNumber),hl
 	ret
 
 
@@ -284,7 +285,7 @@ RamSlotPage1J:  equ     401Ah
         forg    095cdh-LdAddress
         org     095cdh
         call    RamSlotPage1J           ; Put again ram pages
-        ld      a,(Rampage0)
+        ld      a,(rampage0)
         call    ENASLT_0
         ret
 
@@ -383,19 +384,19 @@ InitPatScr:
         ld      (.pointer),hl
         ld      b,3
         xor     a
-.0:     push    bc
+.n0:    push    bc
         push    af
 
         ld      de,0
         call    SetPtr_VRAM           ;[0B444h]
 
         ld      b,3
-.1:     push    bc
+.n1:    push    bc
         ld      hl,(.pointer)       ;Copio a VRAM 800 bytes de patrones :       2800
         ld      bc,98h                  ;del banco 1
         call    WritePortRW_8           ;[0B585h]
         pop     bc
-        djnz    .1
+        djnz    .n1
 
         ld      hl,(.pointer)
         ld      a,8
@@ -409,7 +410,7 @@ InitPatScr:
         ei
         ld      a,b
         pop     bc
-        djnz    .0
+        djnz    .n0
 
 
         xor     a
@@ -445,12 +446,12 @@ SB63C:
 
 SB693:
         or      a
-        jr      nz,.1
+        jr      nz,.n1
         ld      a,0bbh
-.1:     ld      b,8
-.571:   out     (98h),a         ;VRAM access
+.n1:    ld      b,8
+.n571:  out     (98h),a         ;VRAM access
         inc     e
-        djnz    .571            ;[0B695h]
+        djnz    .n571            ;[0B695h]
         ret
 
         forg    97c9h-LdAddress
@@ -483,47 +484,47 @@ EnableSCR:
 
         forg 0b63ch-LdAddress
         org 0b63ch
-        jp      SB63c
+        jp      SB63C
         ld      a,ixl
         and     20h             ;' '
         ld      de,3400h
-        jr      nz,.565         ;[0B64Dh]
+        jr      nz,.n565        ;[0B64Dh]
         ld      de,3488h
-.565:   call    WritePTR_VRAMI           ;[0B43Fh]
+.n565:  call    WritePtr_VRAMI           ;[0B43Fh]
         ld      c,(ix+14h)
         sub     a
         rr      c
-        jr      nc,.566         ;[0B65Ah]
+        jr      nc,.n566        ;[0B65Ah]
         ld      a,07Bh          ;''
-.566:   call    SB693           ;[0B693h]
+.n566:  call    SB693           ;[0B693h]
         sub     a
         rr      c
-        jr      nc,.567         ;[0B664h]
+        jr      nc,.n567        ;[0B664h]
         ld      a,05Bh          ;''
-.567:   call    SB693           ;[0B693h]
+.n567:  call    SB693           ;[0B693h]
         sub     a
         rr      c
-        jr      nc,.568         ;[0B66Eh]
+        jr      nc,.n568        ;[0B66Eh]
         ld      a,4bh           ;' '
-.568:   call    SB693           ;[0B693h]
+.n568:  call    SB693           ;[0B693h]
         ld      a,e
         add     a,48h           ;'H'
         ld      e,a
-        call    WritePTR_VRAMI           ;[0B43Fh]
+        call    WritePtr_VRAMI           ;[0B43Fh]
         sub     a
         rr      c
-        jr      nc,.569         ;[0B67Fh]
+        jr      nc,.n569        ;[0B67Fh]
         ld      a,2Bh           ;'
-.569:   call    SB693           ;[0B693h]
+.n569:  call    SB693           ;[0B693h]
         sub     a
         rr      c
-        jr      nc,.570         ;[0B689h]
+        jr      nc,.n570        ;[0B689h]
         ld      a,03Bh          ;''
-.570:   call    SB693           ;[0B693h]
+.n570:  call    SB693           ;[0B693h]
         sub     a
         rr      c
         jr      nc,SB693_p        ;[0B693h]
-        ld      a,cbh           ;'p'
+        ld      a,0cbh           ;'p'
 
 SB693_p:
         jp      SB693
@@ -539,7 +540,7 @@ SB693_p:
 
         forg 0b63ch-LdAddress
         org 0b63ch
-        jp      SB63c
+        jp      SB63C
 
         forg 8545h-LdAddress
         org 8545h
@@ -602,7 +603,7 @@ InitAttSp:
         ld      sp,0D323h
         ld      de,0
 ;
-.548:   push    de
+.n548:  push    de
         push    de
         push    de
         push    de
@@ -614,7 +615,7 @@ InitAttSp:
         push    de
         push    de
         push    de
-        djnz    .548
+        djnz    .n548
         ld      sp,(8489h)
 
         nop
@@ -655,10 +656,10 @@ RefreshScr:
         inc     (iy+12h)
         ld      a,0bh
         bit     3,(iy-1)
-        jr      z,.313          ;[0A08Fh]   ¨Hay relampago?
+        jr      z,.n313         ;[0A08Fh]   ¨Hay relampago?
         ld      a,0Fh           ;           ¨Pues pon el blanco como
                                 ;            color de fondo?
-.313:   call    PutColorF       ;[0B4A6h]
+.n313:  call    PutColorF       ;[0B4A6h]
         sub     a
         ld      (RefreshON),a   ;[84D5h]
         call    ControlSound            ;[0B468h]
@@ -668,10 +669,10 @@ RefreshScr:
         ld      a,1
         ld      (RefreshON),a       ;[84D5h]
         ei
-.315:   halt
+.n315:  halt
         ld      a,(RefreshScrD)
         or      a
-        jr      nz,.315
+        jr      nz,.n315
         ret
 
 
@@ -695,7 +696,7 @@ RefreshSpr:
 
         nop
         nop
-.318:   outi
+.n318:  outi
         outi
         outi
         outi
@@ -711,7 +712,7 @@ RefreshSpr:
         outi
         outi
         outi
-        jp      nz,.318         ;[0A147h]
+        jp      nz,.n318         ;[0A147h]
 
 
         ld      a,(0F3E0h)
@@ -834,7 +835,7 @@ VecIntP:
         ld      (RefreshScrD),a
 .oui:
         call    ControlSound    ;Quitar el salvar registros
-        ld      a,bh
+        ld      a,0bh
         call    set_cfondo
         pop     bc
         pop     hl
@@ -921,9 +922,9 @@ PutColorTextPerP2:
         ld      a,ixl           ;Mira con que personaje se ha llamado
         and     20h             ;en funcion de la parte baja de la direccion
         ld      de,3400h        ;por lo que si se crea un nuevo fuente
-        jr      nz,.572         ;[0B6AAh] hay que modificar esto
+        jr      nz,.n572        ;[0B6AAh] hay que modificar esto
         ld      de,3488h
-.572:   call    PutColorLetter           ;[0B6B0h]
+.n572:  call    PutColorLetter           ;[0B6B0h]
         call    PutColorLetter           ;[0B6B0h]
         jp    	PutColorLetter
 
@@ -946,7 +947,7 @@ ENASLT_0:
         or      d
 ;;;                             ; a -> configuration to put page 3 in slot
 ;;;                             ;parameter
-        out     (a8h),a         ; Put page 3 in same slot that 0 will be
+        out     (0a8h),a         ; Put page 3 in same slot that 0 will be
         ld      a,(0ffffh)
         cpl
         ld      c,a             ; c original value of -1 of slot para
@@ -966,7 +967,7 @@ ENASLT_0:
         ld      a,e
         and     03h
         or      h
-        out     (a8h),a
+        out     (0a8h),a
         ret
 
 
@@ -981,13 +982,13 @@ ENASLT_0:
 PrintDataPer:
         ld      c,0
         bit     1,(iy+12h)              ;Y QUE CONO ES ESTO????
-        jr      z,.593          ;[0B80Dh]
+        jr      z,.n593         ;[0B80Dh]
 
         ld      a,l
         add     a,20h           ;' '
         ld      l,a
 
-.593:   ld      a,(hl)          ;El bucle esta en dos partes
+.n593:  ld      a,(hl)          ;El bucle esta en dos partes
         rrca
         rrca
         rrca
@@ -995,13 +996,13 @@ PrintDataPer:
         call    PrintDigitMarquee
         ld      a,b
         dec     a
-        jr      nz,.594         ;[0B81Bh]
+        jr      nz,.n594        ;[0B81Bh]
         set     0,c
 
-.594:   ld      a,(hl)          ;para desmpaquetar el numero BCD
+.n594:  ld      a,(hl)          ;para desmpaquetar el numero BCD
         call    PrintDigitMarquee
         inc     hl
-        djnz    .593            ;[0B80Dh]
+        djnz    .n593           ;[0B80Dh]
 
         ret
 
@@ -1031,17 +1032,17 @@ ChangePatPer:
         ld      a,(ContItera)       ;[84D9h]
         inc     a
         cp      TIME_CHANGE_ENEMY
-        jr      nz,.9           ;[85ABh]
+        jr      nz,.n9           ;[85ABh]
 
         ld      a,(PaginaV)     ;[84DAh]
         add     a,8
         cp      18h
-        jr      nz,.1
+        jr      nz,.n1
         xor     a
-.1:     ld      (PaginaV),a       ;[84DAh] otro sitio
+.n1:    ld      (PaginaV),a       ;[84DAh] otro sitio
 
         xor     a
-.9:     ld      (ContItera),a   ;[84D9h] En esta primera llamada creo que
+.n9:    ld      (ContItera),a   ;[84D9h] En esta primera llamada creo que
         ret
 
 PaginaV:        db 0
@@ -1147,7 +1148,7 @@ InitPJ:
         push    de              ;Esta puede ser la funcion de inicializacion
         exx                     ;de un personaje
         bit     7,(ix+14h)      ;Estaba vivo antes?
-        jr      z,.562          ;[0B618h]
+        jr      z,.n562         ;[0B618h]
 
         pop     af              ;Porque sino no vuelvo a hacer esto
         call    DefSymbols      ;[0B895h]
@@ -1157,7 +1158,7 @@ InitPJ:
         ld      c,8bh
         jp      PutColorLetter  ;[0B6B0h]
 
-.562:
+.n562:
 
 
         forg 0b79fh-LdAddress
@@ -1176,19 +1177,19 @@ ChangeWalls:
         rra
         and     7
         cp      3
-        jr      c,.278          ;[9DF2h]
+        jr      c,.n278         ;[9DF2h]
         sub     3
 
-.278:   ld      de,0
+.n278:  ld      de,0
         or      a
-        jr      z,.279          ;[9DFFh]
+        jr      z,.n279         ;[9DFFh]
 
         ld      e,60h           ;'`'
         dec     a
-        jr      z,.279          ;[9DFFh]
+        jr      z,.n279         ;[9DFFh]
 
         ld      e,0C0h          ;'À'
-.279:   ld      hl,0EE0h
+.n279:  ld      hl,0EE0h
         add     hl,de
         push    de
 
@@ -1224,7 +1225,7 @@ ChangeWalls:
         ld      a,128+16
         out     (99h),a
         ld      b,4
-.1:     ld      c,9Ah
+.n1:    ld      c,9Ah
         otir
         ei
         jp      ChangeWallColor
@@ -1266,14 +1267,14 @@ RELMEM: equ 0f41fh
         out     (99h),a
 
         ld      de,1c00h
-        call    WritePTR_VRAMI           ;[0B43Fh]
+        call    WritePtr_VRAMI           ;[0B43Fh]
         ld      a,9
         ld      e,2
-.2:     ld      bc,098h
-.1:     out     (c),a
-        djnz    .1
+.n2:    ld      bc,098h
+.n1:    out     (c),a
+        djnz    .n1
         dec     e
-        jr      nz,.2
+        jr      nz,.n2
 
         call    PutSlotRam
         xor     a
@@ -1323,10 +1324,10 @@ sc4:
         ld    a,(0fffch)
         or    a
         ld    a,(Rg9Sav)
-	jr    z,.50Hz
+	jr    z,.n50Hz
 	or    2
 	jr    .putHz
-.50Hz:
+.n50Hz:
         and   0feh
 
 .putHz:
@@ -1369,37 +1370,37 @@ MakeColorWall:
         ld      c,0             ; Default colors are black
         ld      a,(hl)          ; Load the colour wall byte
         and     0Fh             ; and get the lower nibble
-        jr      z,.280          ; if colour is 0, then load 1st color (0)
+        jr      z,WallSM_NH_L.n280 ; if colour is 0, then load 1st color (0)
 
 
         cp      7               ; If color is 4 then load the 2nd color (15)
         ld      a,c             ;
-        jr      z,.281          ;
+        jr      z,WallSM_NH_L.n281 ;
 
-WallSM_NL_H
+WallSM_NL_H:
         or      0eh
-        jr      .282
+        jr      WallSM_NH_L.n282
 
-WallSM_NH_L
-.281:   or      0fh
-.282:   ld      c,a
+WallSM_NH_L:
+.n281:  or      0fh
+.n282:  ld      c,a
 
 
-.280:   ld      a,(hl)
+.n280:  ld      a,(hl)
         and     0F0h
-        jr      z,.283
+        jr      z,WallSM_NL_L.n283
         cp      70h
         ld      a,c
-        jr      z,.284
+        jr      z,WallSM_NL_L.n284
 
-WallSM_NH_H
+WallSM_NH_H:
         or      0f0h
-        jr      .285
+        jr      WallSM_NL_L.n285
 
-WallSM_NL_L
-.284:   or      0e0h
-.285:   ld      c,a
-.283:   ld      a,c
+WallSM_NL_L:
+.n284:  or      0e0h
+.n285:  ld      c,a
+.n283:  ld      a,c
         ld      (de),a
         inc     hl
         inc     de
@@ -1433,23 +1434,23 @@ InitScrP:                       ; Reubicada entera, hay espacio en la posicion
 
 
         ld      de,1800h
-        call    WritePTR_VRAMI           ;[0B43Fh]
+        call    WritePtr_VRAMI           ;[0B43Fh]
 
         sub     a
-.557:   out     (98h),a
+.n557:  out     (98h),a
         inc     a
-        jr      nz,.557         ;[0B59Ah]
+        jr      nz,.n557        ;[0B59Ah]
 
-.558:   out     (98h),a
+.n558:  out     (98h),a
         inc     a
-        jr      nz,.558         ;[0B59Fh]
+        jr      nz,.n558        ;[0B59Fh]
 
 
-.559:   ld      e,a
+.n559:  ld      e,a
         out     (98h),a
         ld      a,e
         inc     a
-        jr      nz,.559         ;[0B5A4h]
+        jr      nz,.n559        ;[0B5A4h]
 
         ld      de,0
         ld      b,e
@@ -1463,7 +1464,7 @@ InitScrP:                       ; Reubicada entera, hay espacio en la posicion
         call    HideSprites           ;[94C4h]
 
         ld      de,1e00h
-        call    WritePTR_VRAMI  ;[0B43Fh]
+        call    WritePtr_VRAMI  ;[0B43Fh]
 
         ld      a,1
         out     (099h),a
@@ -1472,8 +1473,8 @@ InitScrP:                       ; Reubicada entera, hay espacio en la posicion
 
         ld      hl,SpriteAttrib ;Escribo las caracteristica de 20 sprites
         ld      b,80h
-.560:   outi
-        jp      nz,.560         ;[0B5CBh]
+.n560:  outi
+        jp      nz,.n560        ;[0B5CBh]
         call    RestorePage
 
         ld      a,(0F3E0h)      ;Esto no es correcto!!!!!
@@ -1487,12 +1488,12 @@ InitScrP:                       ; Reubicada entera, hay espacio en la posicion
 
 randscr:
 	ld	a,r
-.1:	cp	30
-	jr	c,.2
+.n1:	cp	30
+	jr	c,.n2
 	sub	30
-	jr	.1
+	jr	.n1
 
-.2:	or 	a
+.n2:	or 	a
 	ret	nz
 	inc	a
 	ret
@@ -1528,8 +1529,8 @@ ReadPTR_VRAM:   equ 0B454h
 
 
 
-DATAPERS1:      equ 8420h
-DATAPERS2:      equ 8440h
+DataPers1:      equ 8420h
+DataPers2:      equ 8440h
 warspr:         equ 6000h
 valspr:         equ 6300h
 wizspr:         equ 6600h
@@ -1573,7 +1574,7 @@ RestoreSpriteColor:
         ld      (.ptr),de
         ld      de,Spritecolorcache
 
-.2:     push    de
+.n2:    push    de
         inc     hl
         inc     hl
         inc     hl
@@ -1582,7 +1583,7 @@ RestoreSpriteColor:
         ld      a,(hl)
         ex      de,hl
         cp      (hl)
-        jr      z,.3
+        jr      z,.n3
 
         ld      (hl),a
         push    af
@@ -1609,7 +1610,7 @@ RestoreSpriteColor:
         ld      b,c
 
 
-.3:     ld      hl,(.ptr)
+.n3:    ld      hl,(.ptr)
         ld      de,16
         add     hl,de
         ld      (.ptr),hl
@@ -1617,7 +1618,7 @@ RestoreSpriteColor:
         pop     de
         inc     de
         inc     hl
-        djnz    .2
+        djnz    .n2
         ret
 
 .ptr:   dw      0
@@ -1647,7 +1648,7 @@ Put2Sprites:
         ld      bc,0498h
         otir                    ; Move character 1 to position 20
 
-        ld      de,DATAPERS1    ; Character data
+        ld      de,DataPers1    ; Character data
         ld      bc,3800h+32*6   ; Cogo el patron 6
         call    SndSprPat       ; Put Pattern of 2nd spr
 
@@ -1655,29 +1656,29 @@ Put2Sprites:
         ld      de,1e00h+21*4   ; spriteatt => y el sprite 20 (2º personaje)
         ld      a,6*4           ; Number of pattern and color
         call    SndSprAtt
-        jr      .2p
+        jr      .n2p
 
 .no1p:
         ld      de,1e00h+20*4   ; Esto hay que hacerlo si no se pone
         call    SetPtrVram      ; player 2
         ld      bc,0298h
         ld      a,230
-.11:    out     (c),a
-        djnz    .11
+.n11:   out     (c),a
+        djnz    .n11
 
         ld      de,1e00h+21*4   ; Esto hay que hacerlo si no se pone
         call    SetPtrVram      ; player 2
         ld      bc,0298h
         ld      a,230
-.12:    out     (c),a
-        djnz    .12
+.n12:   out     (c),a
+        djnz    .n12
 
-.2p:
+.n2p:
         ld      a,(844bh)
         bit     7,a
         jr      nz,.no2p
 
-        ld      de,DATAPERS2    ; Character data
+        ld      de,DataPers2    ; Character data
         ld      bc,3800h+32*5   ; Cogo el patron 5
         call    SndSprPat       ; Put Pattern of 2nd spr
 
@@ -1692,15 +1693,15 @@ Put2Sprites:
         call    SetPtrVram      ; player 2
         ld      bc,0298h
         ld      a,230
-.21:    out     (c),a
-        djnz    .21
+.n21:   out     (c),a
+        djnz    .n21
 
         ld      de,1e00h+18*4   ; Esto hay que hacerlo si no se pone
         call    SetPtrVram      ; player 2
         ld      bc,0298h
         ld      a,230
-.22:    out     (c),a
-        djnz    .22
+.n22:   out    (c),a
+        djnz    .n22
 
 
 .end:   call    PutSlotRam
@@ -1746,19 +1747,19 @@ SndSprPat:
 
         ld      d,0
         bit     6,(ix+0Eh)
-        jr      z,.15           ;[8630h]
+        jr      z,.n15          ;[8630h]
 
         inc     d
         bit     7,(ix+0Eh)
-        jr      z,.15           ;[8630h]
+        jr      z,.n15          ;[8630h]
         inc     d
 
-.15:    ld      a,(ix+0Dh)
+.n15:   ld      a,(ix+0Dh)
         bit     0,(ix+0Eh)
-        jr      z,.16           ;[863Bh]
+        jr      z,.n16          ;[863Bh]
         ld      a,4
 
-.16:    rrca
+.n16:   rrca
         rrca
         rrca
         and     0E0h

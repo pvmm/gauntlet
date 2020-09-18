@@ -17,9 +17,9 @@ DisPause:
         ret     nz
 
 
-        ld      a,[FCB1h]       ; disable pause key
+        ld      a,[0FCB1h]       ; disable pause key
         res     1,a
-        out     [A7h],a
+        out     [0A7h],a
         ret
 
 
@@ -45,7 +45,7 @@ _InstallInt:
         ldir
 
         pop     hl
-        ld      a,c3h
+        ld      a,0c3h
         ld      (H.KEYI),a
         ld      (H.KEYI+1),hl
         ret
@@ -113,7 +113,7 @@ LoadMazeR:
         ex      de,hl
         ld      de,0d000h
         ld      bc,3832
-        call    8KLdir
+        call    _8KLdir
 .l:     ret
 
 
@@ -124,127 +124,128 @@ LoadMazeR:
 .MazeFiles:
         db      "MAZE00"
         db      maze00>>13 + 5
-        dw      maze00&01fffh | 6000h
+        ;dw      maze00&01fffh | 6000h
+        dw      maze00 and 01fffh or 6000h
 
         db      "MAZE01"
         db      maze01>>13 + 5
-        dw      maze01&01fffh | 6000h
+        dw      maze01 and 01fffh or 6000h
 
         db      "MAZE02"
         db      maze02>>13 + 5
-        dw      maze02&01fffh | 6000h
+        dw      maze02 and 01fffh or 6000h
 
         db      "MAZE03"
         db      maze03>>13 + 5
-        dw      maze03&01fffh | 6000h
+        dw      maze03 and 01fffh or 6000h
 
         db      "MAZE04"
         db      maze04>>13 + 5
-        dw      maze04&01fffh | 6000h
+        dw      maze04 and 01fffh or 6000h
 
         db      "MAZE05"
         db      maze05>>13 + 5
-        dw      maze05&01fffh | 6000h
+        dw      maze05 and 01fffh or 6000h
 
         db      "MAZE06"
         db      maze06>>13 + 5
-        dw      maze06&01fffh | 6000h
+        dw      maze06 and 01fffh or 6000h
 
         db      "MAZE07"
         db      maze07>>13 + 5
-        dw      maze07&01fffh | 6000h
+        dw      maze07 and 01fffh or 6000h
 
         db      "MAZE08"
         db      maze08>>13 + 5
-        dw      maze08&01fffh | 6000h
+        dw      maze08 and 01fffh or 6000h
 
         db      "MAZE09"
         db      maze09>>13 + 5
-        dw      maze09&01fffh | 6000h
+        dw      maze09 and 01fffh or 6000h
 
         db      "MAZE10"
         db      maze10>>13 + 5
-        dw      maze10&01fffh | 6000h
+        dw      maze10 and 01fffh or 6000h
 
         db      "MAZE11"
         db      maze11>>13 + 5
-        dw      maze11&01fffh | 6000h
+        dw      maze11 and 01fffh or 6000h
 
         db      "MAZE12"
         db      maze12>>13 + 5
-        dw      maze12&01fffh | 6000h
+        dw      maze12 and 01fffh or 6000h
 
         db      "MAZE13"
         db      maze13>>13 + 5
-        dw      maze13&01fffh | 6000h
+        dw      maze13 and 01fffh or 6000h
 
         db      "MAZE14"
         db      maze14>>13 + 5
-        dw      maze14&01fffh | 6000h
+        dw      maze14 and 01fffh or 6000h
 
         db      "MAZE15"
         db      maze15>>13 + 5
-        dw      maze15&01fffh | 6000h
+        dw      maze15 and 01fffh or 6000h
 
         db      "MAZE16"
         db      maze16>>13 + 5
-        dw      maze16&01fffh | 6000h
+        dw      maze16 and 01fffh or 6000h
 
         db      "MAZE17"
         db      maze17>>13 + 5
-        dw      maze17&01fffh | 6000h
+        dw      maze17 and 01fffh or 6000h
 
         db      "MAZE18"
         db      maze18>>13 + 5
-        dw      maze18&01fffh | 6000h
+        dw      maze18 and 01fffh or 6000h
 
         db      "MAZE19"
         db      maze19>>13 + 5
-        dw      maze19&01fffh | 6000h
+        dw      maze19 and 01fffh or 6000h
 
         db      "MAZE20"
         db      maze20>>13 + 5
-        dw      maze20&01fffh | 6000h
+        dw      maze20 and 01fffh or 6000h
 
         db      "MAZE21"
         db      maze21>>13 + 5
-        dw      maze21&01fffh | 6000h
+        dw      maze21 and 01fffh or 6000h
 
         db      "MAZE22"
         db      maze22>>13 + 5
-        dw      maze22&01fffh | 6000h
+        dw      maze22 and 01fffh or 6000h
 
         db      "MAZE23"
         db      maze23>>13 + 5
-        dw      maze23&01fffh | 6000h
+        dw      maze23 and 01fffh or 6000h
 
         db      "MAZE24"
         db      maze24>>13 + 5
-        dw      maze24&01fffh | 6000h
+        dw      maze24 and 01fffh or 6000h
 
         db      "MAZE25"
         db      maze25>>13 + 5
-        dw      maze25&01fffh | 6000h
+        dw      maze25 and 01fffh or 6000h
 
         db      "MAZE26"
         db      maze26>>13 + 5
-        dw      maze26&01fffh | 6000h
+        dw      maze26 and 01fffh or 6000h
 
         db      "MAZE27"
         db      maze27>>13 + 5
-        dw      maze27&01fffh | 6000h
+        dw      maze27 and 01fffh or 6000h
 
         db      "MAZE28"
         db      maze28>>13 + 5
-        dw      maze28&01fffh | 6000h
+        dw      maze28 and 01fffh or 6000h
 	
         db      "MAZE29"
         db      maze29>>13 + 5
-        dw      maze29&01fffh | 6000h
+        dw      maze29 and 01fffh or 6000h
 
         db      "MAZE30"
         db      maze30>>13 + 5
-        dw      maze30&01fffh | 6000h
+        dw      maze30 and 01fffh or 6000h
 
 
 
@@ -262,10 +263,10 @@ LoadMazeR:
 
 
 
- 8KLdir:
+_8KLdir:
 	ld	(6800h),a
 	
- .loop:
+.loop:
 	bit	7,h
 	jr	z,.copy
 	ld	h,60h
@@ -636,7 +637,7 @@ sigslotend:
 ; *** VARS ***
 
 
-section rdata
+; section rdata
 
 ramcheck0:              rb              1
 ramcheck1:              rb              1
@@ -647,7 +648,7 @@ slotram:                rb              1
 thisslt:                rb              1
 
 
-section code
+; section code
 
 
 
@@ -683,7 +684,7 @@ LoadFirstBload:
         call    CHGMOD
         call    VIS_OFF
         call    RomSlotPage2
-        ld      hl,gaunt.2
+        ld      hl,gaunt.n2
         xor     a
         ld      de,4000h
 i:      call    UnTCFV
@@ -698,7 +699,7 @@ i:      call    UnTCFV
 
 LoadSecondBload:
 	call 	PutSafeInt
-        ld      hl,gaunt.3
+        ld      hl,gaunt.n3
         xor     a
         ld      de,4000h
         call    UnTCFV
@@ -849,7 +850,7 @@ rampage2:       equ 0f37ch
 rampage3:       equ 0f37bh
 
 
-section rdata
+; section rdata
 oldISR:         rb      5
 FMfound:	rb	1
 BASEPORT:

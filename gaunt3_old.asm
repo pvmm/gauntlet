@@ -233,10 +233,10 @@ BloadBasic         equ      6ec6h
 ;||      Program entry point      ||
 ;::===============================::
 _MAIN:  ld      b,80h
-.0:     push    bc
+.n0:     push    bc
         call    h.TIMI          ;[0FD9Fh]
         pop     bc
-        djnz    .0              ;[83D2h]
+        djnz    .n0              ;[83D2h]
 
         di
         in      a,(0A8h)        ;PSLOT register
@@ -260,14 +260,14 @@ _MAIN:  ld      b,80h
         xor     a
         ld      (InitgameFlag),a
         ld      (0E000h),sp
-        jp      .1              ;[8400h]
+        jp      .n1              ;[8400h]
 
 ;::===============================::
 ;||   No execution path to here   ||
 ;::===============================::
         nop
         nop
-.1:     jp      Init              ;[0B8E1h]
+.n1:     jp      Init              ;[0B8E1h]
 PantActual:  db      1               ;Al principio del bucle se pone a 0
 
 ;::===============================::
@@ -372,7 +372,7 @@ T84AF:  db      0,0,0
 B84B2:  db      0
 B84B3:  db      10h
 W84B4:  dw      0
-.4      equ     $-1
+.n4      equ     $-1
 TimeTreasure:  nop
         nop
 B84B8:  nop
@@ -481,11 +481,11 @@ GameLoop:
 
         ld      a,(B84A1)       ;[84A1h]
         or      a
-        jr      z,.6            ;[8545h]
+        jr      z,.n6            ;[8545h]
         dec     a
         ld      (B84A1),a       ;[84A1h]
 
-.6:     call    ChangePatPer    ;[8555h]
+.n6:     call    ChangePatPer    ;[8555h]
         call    RefreshScr      ;[0A083h]   ;Actualizo la pantalla
         call    InteracUser     ;[864Bh]
         bit     7,(iy-2)
@@ -512,14 +512,14 @@ ChangePatPer:
         ld      b,30h
         and     3
         dec     a
-        jr      z,.8                     ;[8575h]
+        jr      z,.n8                     ;[8575h]
 
         ld      b,38h
         sub     2
-        jr      z,.8                     ;[8575h]
+        jr      z,.n8                     ;[8575h]
         ld      b,28h
 
-.8:     ld      a,b
+.n8:     ld      a,b
         ld      (WriteGenPatPer+2),a                ;[85BDh]
 
         ld      de,0C8h
@@ -540,7 +540,7 @@ RefreshGenPatPer:
         ld      a,(ContItera)       ;[84D9h]
         inc     a
         cp      6
-        jr      nz,.9           ;[85ABh]
+        jr      nz,.n9           ;[85ABh]
 
         ld      a,(B84DA)       ;[84DAh]
         add     a,8             ;si han pasado mas de 6 iteraciones cambiamos
@@ -556,7 +556,7 @@ RefreshGenPatPer:
         ld      (WriteGenPatPer+2),a       ;[85BDh]
         sub     a
 
-.9:     ld      (ContItera),a   ;[84D9h] En esta primera llamada creo que
+.n9:     ld      (ContItera),a   ;[84D9h] En esta primera llamada creo que
         ld      b,20h           ;que se modifica el tesoro
         ld      de,2E0h
         jr      z,WriteGenPatPer     ;[85BBh]
@@ -5485,7 +5485,7 @@ RefreshScr:
         outi
         jp      nz,.321         ;[0A21Bh]
         inc     de
-inc     de
+  inc     de
         ex      af,af'
         dec     a
         jp      nz,.322         ;[0A21Ah]
@@ -10607,8 +10607,8 @@ SC3C0:  ld      (5023h),hl
         nop
 ;
 .671:   db      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'`ab'
-        db      'cdefghijklmnopqrstuvwxyz{|}~',7Fh,'`abcdefghijklmno'
-        db      'pqrstuvwxyz{|}~',7Fh,'`abcdefghijklmnopqrstuvwxyz{|'
+        db      'cdefghijklmnopqrstuvwxyz{ : }~',7Fh,'`abcdefghijklmno'
+        db      'pqrstuvwxyz{ : }~',7Fh,'`abcdefghijklmnopqrstuvwxyz{ : '
         db      '}~',7Fh,80h,81h,82h,83h,84h,85h,86h,87h,88h,89h,8Ah
         db      8Bh,8Ch,8Dh,8Eh,8Fh,90h,91h,92h,93h,94h,95h,96h,97h,98h
         db      99h,9Ah,9Bh,9Ch,9Dh,9Eh,9Fh,80h,81h,82h,83h,84h,85h,86h

@@ -13,13 +13,13 @@ org     p3load
 
 
 
-gaunt.2: equ $
+gaunt.n2: equ $
         incbin  "gaunt2.tcf",8
 
-gaunt.3: equ $
+gaunt.n3: equ $
         incbin  "gaunt3.tcf",8
 
-gaunt.4: equ $
+gaunt.n4: equ $
 
 
 section         code

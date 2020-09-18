@@ -1,4 +1,4 @@
-TCPACK = tcpack
+TCPACK = wine ../tools/tcpack.exe
 
 
 all:	select.tcf gtitle.tcf spr

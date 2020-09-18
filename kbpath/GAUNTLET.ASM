@@ -26,10 +26,10 @@ h.TIMI	equ	0FD9Fh
 ;||      Program entry point      ||
 ;::===============================::
 _MAIN:	ld	b,80h		;'€'
-.0:	push	bc
+.n0:	push	bc
 	call	h.TIMI		;[0FD9Fh]
 	pop	bc
-	djnz	.0		;[83D2h]
+	djnz	.n0		;[83D2h]
 	di
 	in	a,(0A8h)	;PSLOT register
 	ld	b,a
@@ -52,13 +52,13 @@ _MAIN:	ld	b,80h		;'€'
 	xor	a
 	ld	(0DFFFh),a
 	ld	(0E000h),sp
-	jp	.1		;[8400h]
+	jp	.n1		;[8400h]
 ;::===============================::
 ;||   No execution path to here   ||
 ;::===============================::
 	nop
 	nop
-.1:	jp	.2		;[0B8E1h]
+.n1:	jp	.n2		;[0B8E1h]
 ;
 B8403:	db	1
 ;::===============================::
@@ -161,7 +161,7 @@ T84AF:	db	0,0,0
 B84B2:	db	0
 B84B3:	db	10h
 W84B4:	dw	0
-.4	equ	$-1
+.n4	equ	$-1
 B84B6:	nop
 	nop
 B84B8:	nop
@@ -264,10 +264,10 @@ S8504:	call	S98E3		;[98E3h]
 	call	SA32E		;[0A32Eh]
 	ld	a,(B84A1)	;[84A1h]
 	or	a
-	jr	z,.6		;[8545h]
+	jr	z,.n6		;[8545h]
 	dec	a
 	ld	(B84A1),a	;[84A1h]
-.6:	call	S8555		;[8555h]
+.n6:	call	S8555		;[8555h]
 	call	SA083		;[0A083h]
 	call	S864B		;[864Bh]
 	bit	7,(iy-2)
@@ -286,12 +286,12 @@ S8555:	call	S85ED		;[85EDh]
 	ld	b,30h		;'0'
 	and	3
 	dec	a
-	jr	z,.8		;[8575h]
+	jr	z,.n8		;[8575h]
 	ld	b,38h		;'8'
 	sub	2
-	jr	z,.8		;[8575h]
+	jr	z,.n8		;[8575h]
 	ld	b,28h		;'('
-.8:	ld	a,b
+.n8:	ld	a,b
 	ld	(B85BD),a	;[85BDh]
 	ld	de,0C8h
 	ld	b,20h		;' '
@@ -305,7 +305,7 @@ S8555:	call	S85ED		;[85EDh]
 S8589:	ld	a,(B84D9)	;[84D9h]
 	inc	a
 	cp	6
-	jr	nz,.9		;[85ABh]
+	jr	nz,.n9		;[85ABh]
 	ld	a,(B84DA)	;[84DAh]
 	add	a,8
 	and	18h
@@ -318,7 +318,7 @@ S8589:	ld	a,(B84D9)	;[84D9h]
 .10:	add	a,28h		;'('
 	ld	(B85BD),a	;[85BDh]
 	sub	a
-.9:	ld	(B84D9),a	;[84D9h]
+.n9:	ld	(B84D9),a	;[84D9h]
 	ld	b,20h		;' '
 	ld	de,2E0h
 	jr	z,S85BB		;[85BBh]
@@ -7633,7 +7633,7 @@ SB8C4:	ld	hl,444Fh
 	ld	hl,4469h
 	ld	c,20h
 	ret
-.2:	ld	a,(0DFFFh)
+.n2:	ld	a,(0DFFFh)
 	or	a
 	jr	z,.601		;[0B90Fh]
 	ld	de,0F3C7h

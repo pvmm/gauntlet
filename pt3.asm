@@ -296,7 +296,8 @@ PD_LP2:		LD A,(BC)
 		JR C,PD_ESAM
 		ADD A,A
 		LD E,A
-		LD HL,((SPCCOMS+0DF20h) % 65536)	; Adapted from original Speccy version (saves 6 bytes)
+.HL_VALUE:	equ (SPCCOMS+0DF20h) MOD 65536
+		LD HL,.HL_VALUE 		; Adapted from original Speccy version (saves 6 bytes)
 		ADD HL,DE
 		LD E,(HL)
 		INC HL

@@ -2,27 +2,27 @@ SRC=gauntlet.asm gaunt1.asm page1.asm page234.asm page567.asm AAMSX.COL AAMSX.PA
 TCF=select.tcf gtitle.tcf gaunt2.tcf gaunt3.tcf AAMSX.COL AAMSX.PAT
 BIN=tnilogo.rle
 SPR=elf1.spr elf2.spr war1.spr war2.spr val1.spr val2.spr wiz1.spr wiz2.spr hand.spr
-TCPACK=wine tools/tcpack
-#ASM=tniasm.sh
-ASM=sjasmplus sjasm_preamble.inc --dirbol
+TCPACK = tcpack
+
+
 
 test:	gauntlet.rom
 	openmsx gauntlet.rom -romtype ascii8 -machine turbor -ext debugdevice
 
 
 gauntlet.rom:	$(SRC) $(TCF) $(BIN) maze.bin
-	$(ASM) gauntlet.asm
+	tniasm gauntlet.asm
 
 gaunt3.tcf: gaunt3.asm gauntlet.3 deps
 	rm -f gaunt3.tmp
 	cp gauntlet.3 gaunt.bin
-	$(ASM) gaunt3.asm
+	tniasm gaunt3.asm
 	dd if=gaunt.bin of=gaunt3.tmp bs=1 skip=7
 	$(TCPACK) gaunt3.tmp gaunt3.tcf
 
 gaunt2.tcf: gaunt2.asm gaunt.2 deps
 	cp gaunt.2 gaunt.bin
-	$(ASM) gaunt2.asm
+	tniasm gaunt2.asm
 	dd if=gaunt.bin of=gaunt2.tmp bs=1 skip=7
 	$(TCPACK) gaunt2.tmp gaunt2.tcf
 

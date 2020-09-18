@@ -1,11 +1,11 @@
 
 
-p1size  equ     p1end-p1load
-p1padd  equ     pagsize-p1size
-p1sizeT equ     p1endf-p1load
+p1size:  equ     p1end-p1load
+p1padd:  equ     pagsize-p1size
+p1sizeT: equ     p1endf-p1load
 
 
-section code
+; section code
         org     p1load
 
         db      'AB'
@@ -72,15 +72,15 @@ Init:
 
         db    "Made by TNI 2012"
 
-%include "sys.asm"
-%include "gaunt1.asm"
-%include "aamsx.asm"
+include "sys.asm"
+include "gaunt1.asm"
+include "aamsx.asm"
 
 musicpt3:
 	incbin "gauntlet.pt3"
 
 
-section         code
+; section         code
 
 p1end:  ds      p1padd,0
 p1endf:         equ $

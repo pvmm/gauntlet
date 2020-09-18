@@ -19,8 +19,8 @@ gtitle: equ $
 music:
 	incbin "gauntlet.mcm"
 	
-%include        "mcdrv.asm"
-%include	"pt3.asm"	
+include        "mcdrv.asm"
+include        "pt3.asm"	
 
 section         code
 isrsound:

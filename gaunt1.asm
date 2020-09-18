@@ -4,18 +4,19 @@
 
 
 
-LINEINT equ     140
-TIMEFADE equ    3
+LINEINT: equ     140
+TIMEFADE: equ    3
 
 
 
-%macro RGB %n,%n,%n
-%def16 #2*256+#1*16+#3
-%endmacro
+; %macro RGB %n,%n,%n
+; %def16 #2*256+#1*16+#3
+; %endmacro
+#define RGB(r,g,b)      dw (g)*256+(r)*16+(b)
 
 
 
-section code
+; section code
 
 ShowIntro:
 	xor	a
@@ -248,7 +249,7 @@ hideCart:
         ld      d,80+44
         ld      b,46/2
 
-.1:     ei
+.n1:    ei
         halt
 
         ld      a,e
@@ -271,7 +272,7 @@ hideCart:
         ld      hl,copylineI
         CALL    COPYVRAM
         exx
-        djnz .1
+        djnz .n1
 
         ei
         halt
@@ -295,7 +296,7 @@ showCart:
         ld      l,80+44/2+1
         ld      b,44/2
 
-.1:     ei
+.n1:    ei
         halt
 
 
@@ -323,7 +324,7 @@ showCart:
         ld      hl,copyline
         CALL    COPYVRAM
         exx
-        djnz .1
+        djnz .n1
         ret
 
 
@@ -690,17 +691,17 @@ Interrupt:
         ld      (aux),a
         inc     a
         cp      138
-        jr      nz,.2
+        jr      nz,.n2
         xor     a
 
 
-.2:     ld      c,a
+.n2:    ld      c,a
         ld      a,(counter)
         inc     a
         ld      (counter),a
         cp      1
         ld      a,c
-        jp      nz,.1
+        jp      nz,.n1
 
         xor     a
         ld      (counter),a
@@ -708,7 +709,7 @@ Interrupt:
         ld      (pointer),a
         ld      (aux),a
 
-.1:
+.n1:
         add     a,a
         ld      e,a
         ld      d,0
@@ -725,10 +726,10 @@ Interrupt:
         ld      a,(aux)
         inc     a
         cp      138
-        jp      nz,.3
+        jp      nz,.n3
         xor     a
 
-.3:     ld      (aux),a
+.n3:    ld      (aux),a
         ex      de,hl
         ld      l,a
         ld      h,0
@@ -774,161 +775,161 @@ endint:
 
 
 PalletteSFX2:
-        RGB     0,1,0           ; 1
-        RGB     0,2,0
-        RGB     0,3,0
-        RGB     0,4,0
-        RGB     0,5,0
-        RGB     0,5,0
-        RGB     0,6,0
-        RGB     0,6,0
-        RGB     0,6,0
-        RGB     0,7,0
-        RGB     0,7,0
-        RGB     0,7,0
-        RGB     0,7,0
-        RGB     0,6,0
-        RGB     0,6,0
-        RGB     0,6,0
-        RGB     0,5,0
-        RGB     0,5,0
-        RGB     0,4,0
-        RGB     0,3,0
-        RGB     0,2,0
-        RGB     0,1,0
-        RGB     0,0,0
+        RGB(0,1,0)           ; 1
+        RGB(0,2,0)
+        RGB(0,3,0)
+        RGB(0,4,0)
+        RGB(0,5,0)
+        RGB(0,5,0)
+        RGB(0,6,0)
+        RGB(0,6,0)
+        RGB(0,6,0)
+        RGB(0,7,0)
+        RGB(0,7,0)
+        RGB(0,7,0)
+        RGB(0,7,0)
+        RGB(0,6,0)
+        RGB(0,6,0)
+        RGB(0,6,0)
+        RGB(0,5,0)
+        RGB(0,5,0)
+        RGB(0,4,0)
+        RGB(0,3,0)
+        RGB(0,2,0)
+        RGB(0,1,0)
+        RGB(0,0,0)
 
 
-        RGB     1,1,0           ; 2
-        RGB     2,2,0
-        RGB     3,3,0
-        RGB     4,4,0
-        RGB     5,5,0
-        RGB     5,5,0
-        RGB     6,6,0
-        RGB     6,6,0
-        RGB     6,6,0
-        RGB     7,7,0
-        RGB     7,7,0
-        RGB     7,7,0
-        RGB     7,7,0
-        RGB     6,6,0
-        RGB     6,6,0
-        RGB     6,6,0
-        RGB     5,5,0
-        RGB     5,5,0
-        RGB     4,4,0
-        RGB     3,3,0
-        RGB     2,2,0
-        RGB     1,1,0
-        RGB     0,0,0
+        RGB(1,1,0)           ; 2
+        RGB(2,2,0)
+        RGB(3,3,0)
+        RGB(4,4,0)
+        RGB(5,5,0)
+        RGB(5,5,0)
+        RGB(6,6,0)
+        RGB(6,6,0)
+        RGB(6,6,0)
+        RGB(7,7,0)
+        RGB(7,7,0)
+        RGB(7,7,0)
+        RGB(7,7,0)
+        RGB(6,6,0)
+        RGB(6,6,0)
+        RGB(6,6,0)
+        RGB(5,5,0)
+        RGB(5,5,0)
+        RGB(4,4,0)
+        RGB(3,3,0)
+        RGB(2,2,0)
+        RGB(1,1,0)
+        RGB(0,0,0)
 
-        RGB     1,0,0           ; 3
-        RGB     2,0,0
-        RGB     3,0,0
-        RGB     4,0,0
-        RGB     5,0,0
-        RGB     5,0,0
-        RGB     6,0,0
-        RGB     6,0,0
-        RGB     6,0,0
-        RGB     7,0,0
-        RGB     7,0,0
-        RGB     7,0,0
-        RGB     7,0,0
-        RGB     6,0,0
-        RGB     6,0,0
-        RGB     6,0,0
-        RGB     5,0,0
-        RGB     5,0,0
-        RGB     4,0,0
-        RGB     3,0,0
-        RGB     2,0,0
-        RGB     1,0,0
-        RGB     0,0,0
+        RGB(1,0,0)           ; 3
+        RGB(2,0,0)
+        RGB(3,0,0)
+        RGB(4,0,0)
+        RGB(5,0,0)
+        RGB(5,0,0)
+        RGB(6,0,0)
+        RGB(6,0,0)
+        RGB(6,0,0)
+        RGB(7,0,0)
+        RGB(7,0,0)
+        RGB(7,0,0)
+        RGB(7,0,0)
+        RGB(6,0,0)
+        RGB(6,0,0)
+        RGB(6,0,0)
+        RGB(5,0,0)
+        RGB(5,0,0)
+        RGB(4,0,0)
+        RGB(3,0,0)
+        RGB(2,0,0)
+        RGB(1,0,0)
+        RGB(0,0,0)
 
-        RGB     1,0,1           ; 4
-        RGB     2,0,2
-        RGB     3,0,3
-        RGB     4,0,4
-        RGB     5,0,5
-        RGB     5,0,5
-        RGB     6,0,6
-        RGB     6,0,6
-        RGB     6,0,6
-        RGB     7,0,7
-        RGB     7,0,7
-        RGB     7,0,7
-        RGB     7,0,7
-        RGB     6,0,6
-        RGB     6,0,6
-        RGB     6,0,6
-        RGB     5,0,5
-        RGB     5,0,5
-        RGB     4,0,4
-        RGB     3,0,3
-        RGB     2,0,2
-        RGB     1,0,1
-        RGB     0,0,0
+        RGB(1,0,1)           ; 4
+        RGB(2,0,2)
+        RGB(3,0,3)
+        RGB(4,0,4)
+        RGB(5,0,5)
+        RGB(5,0,5)
+        RGB(6,0,6)
+        RGB(6,0,6)
+        RGB(6,0,6)
+        RGB(7,0,7)
+        RGB(7,0,7)
+        RGB(7,0,7)
+        RGB(7,0,7)
+        RGB(6,0,6)
+        RGB(6,0,6)
+        RGB(6,0,6)
+        RGB(5,0,5)
+        RGB(5,0,5)
+        RGB(4,0,4)
+        RGB(3,0,3)
+        RGB(2,0,2)
+        RGB(1,0,1)
+        RGB(0,0,0)
 
-        RGB     0,0,1           ; 5
-        RGB     0,0,2
-        RGB     0,0,3
-        RGB     0,0,4
-        RGB     0,0,5
-        RGB     0,0,5
-        RGB     0,0,6
-        RGB     0,0,6
-        RGB     0,0,6
-        RGB     0,0,7
-        RGB     0,0,7
-        RGB     0,0,7
-        RGB     0,0,7
-        RGB     0,0,6
-        RGB     0,0,6
-        RGB     0,0,6
-        RGB     0,0,5
-        RGB     0,0,5
-        RGB     0,0,4
-        RGB     0,0,3
-        RGB     0,0,2
-        RGB     0,0,1
-        RGB     0,0,0
+        RGB(0,0,1)           ; 5
+        RGB(0,0,2)
+        RGB(0,0,3)
+        RGB(0,0,4)
+        RGB(0,0,5)
+        RGB(0,0,5)
+        RGB(0,0,6)
+        RGB(0,0,6)
+        RGB(0,0,6)
+        RGB(0,0,7)
+        RGB(0,0,7)
+        RGB(0,0,7)
+        RGB(0,0,7)
+        RGB(0,0,6)
+        RGB(0,0,6)
+        RGB(0,0,6)
+        RGB(0,0,5)
+        RGB(0,0,5)
+        RGB(0,0,4)
+        RGB(0,0,3)
+        RGB(0,0,2)
+        RGB(0,0,1)
+        RGB(0,0,0)
 
-        RGB     0,1,1           ; 6
-        RGB     0,2,2
-        RGB     0,3,3
-        RGB     0,4,4
-        RGB     0,5,5
-        RGB     0,5,5
-        RGB     0,6,6
-        RGB     0,6,6
-        RGB     0,6,6
-        RGB     0,7,7
-        RGB     0,7,7
-        RGB     0,7,7
-        RGB     0,7,7
-        RGB     0,6,6
-        RGB     0,6,6
-        RGB     0,6,6
-        RGB     0,5,5
-        RGB     0,5,5
-        RGB     0,4,4
-        RGB     0,3,3
-        RGB     0,2,2
-        RGB     0,1,1
-        RGB     0,0,0
+        RGB(0,1,1)           ; 6
+        RGB(0,2,2)
+        RGB(0,3,3)
+        RGB(0,4,4)
+        RGB(0,5,5)
+        RGB(0,5,5)
+        RGB(0,6,6)
+        RGB(0,6,6)
+        RGB(0,6,6)
+        RGB(0,7,7)
+        RGB(0,7,7)
+        RGB(0,7,7)
+        RGB(0,7,7)
+        RGB(0,6,6)
+        RGB(0,6,6)
+        RGB(0,6,6)
+        RGB(0,5,5)
+        RGB(0,5,5)
+        RGB(0,4,4)
+        RGB(0,3,3)
+        RGB(0,2,2)
+        RGB(0,1,1)
+        RGB(0,0,0)
 
 
 
 oldvector1:
               ld	a,(TIME)
               or	a
-              jp	z,.2
+              jp	z,.n2
               dec	a
               ld	(TIME),a
 
-.2:
+.n2:
               push  	hl
 	      push  	de
               push  	bc
@@ -1826,7 +1827,7 @@ end:            equ     $
 
 
 
-section rdata
+; section rdata
 
 
 databss:        equ     $
