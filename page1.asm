@@ -4,23 +4,22 @@ p1size:  equ     p1end-p1load
 p1padd:  equ     pagsize-p1size
 p1sizeT: equ     p1endf-p1load
 
-
-; section code
+; cartridge start
+        section code
         org     p1load
-
-        db      'AB'
+        db      "AB"
         dw      Init
         dw      0,0,0,0,0,0,0,0
 
 
-LoadMazeRJ:
-        jp      LoadMazeR
-RamSlotPage0J:
-        jp      RamSlotPage0
-RamSlotPage1J:
-        jp      RamSlotPage1
-RamSlotPage2J:
-        jp      RamSlotPage2
+loadmazerj:
+        jp      loadmazer
+ramslotpage0j:
+        jp      ramslotpage0
+ramslotpage1j:
+        jp      ramslotpage1
+ramslotpage2j:
+        jp      ramslotpage2
 
 
 Rg9Sav_:       equ   0ffe8h
@@ -28,56 +27,54 @@ Rg9Sav_:       equ   0ffe8h
 Init:
         ld      sp,0f660h
 
-        call    SaveSlotC
+        call    saveslotc
         call    searchramnormal
-	call 	InitBasePorts
-        call    SetIntroPages
-        ld    	a,7
-	call 	SNSMAT
-	and     040h
+        call    initbaseports
+        call    setintropages
+        ld      a,7
+        call    snsmat
+        and     040h
         ld      a,(Rg9Sav_)
-        jr      nz,.60Hz
+        jr      nz,Init._60Hz
 
-	and     0fdh
-	ld      (Rg9Sav_),a
-	out     (99h),a
-	ld      a,128+9
-	out     (99h),a
+        and     0fdh
+        ld      (Rg9Sav_),a
+        out     (99h),a
+        ld      a,128+9
+        out     (99h),a
         xor     a
-	ld      (0FFFCh),a
-	jr      .intro
+        ld      (0FFFCh),a
+        jr      Init.intro
 
-.60Hz:
+Init._60Hz:
         or      2
-	ld      (Rg9Sav_),a
-	out     (99h),a
-	ld      a,128+9
-	out     (99h),a
-	ld      (0FFFCh),a
-	jr      .intro
+        ld      (Rg9Sav_),a
+        out     (99h),a
+        ld      a,128+9
+        out     (99h),a
+        ld      (0FFFCh),a
+        jr      Init.intro
 
-
-
-.intro:
+Init.intro:
         call    StartLogo
         call    ShowIntro
-	or      a
-	jr      z,.intro
+        or      a
+        jr      z,Init.intro
 
-        call    SetBloadPages
-        call    LoadFirstBload
-        call    SetBloadPages
-        call    LoadSecondBload
+        call    setbloadpages
+        call    loadfirstbload
+        call    setbloadpages
+        call    loadsecondbload
         ret
 
         db    "Made by TNI 2012"
 
-include "sys.asm"
-include "gaunt1.asm"
-include "aamsx.asm"
+        include once "sys.asm"
+        include once "gaunt1.asm"
+        include once "aamsx.asm"
 
 musicpt3:
-	incbin "gauntlet.pt3"
+        incbin "gauntlet.pt3"
 
 
 ; section         code
@@ -85,6 +82,8 @@ musicpt3:
 p1end:  ds      p1padd,0
 p1endf:         equ $
 
-%if p1size > pagsize
-   %warn "Page 0 boundary broken"
-%endif
+        ends
+
+        if p1size > pagsize
+            warning "Page 0 boundary broken"
+        endif

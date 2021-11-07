@@ -5,7 +5,7 @@ ROUT_A0:	; --- FIXES BITS 6 AND 7 OF MIXER ---
 		set	7,(hl)
 		res	6,(hl)
 
-		LD BC,(BASEPORT.PSG)
+		LD BC,(baseport.psg)
 		LD HL,AYREGS
 .LOUT:		OUT (C),A
 		INC C
@@ -296,7 +296,7 @@ PD_LP2:		LD A,(BC)
 		JR C,PD_ESAM
 		ADD A,A
 		LD E,A
-.HL_VALUE:	equ (SPCCOMS+0DF20h) MOD 65536
+.HL_VALUE:	equ (SPCCOMS+0DF20h) % 65536
 		LD HL,.HL_VALUE 		; Adapted from original Speccy version (saves 6 bytes)
 		ADD HL,DE
 		LD E,(HL)
@@ -797,7 +797,7 @@ NT_:	;Note table 2 [if you use another in Vortex Tracker II copy it and paste
 	dw 0001Ah,00019h,00017h,00016h,00015h,00014h,00012h,00011h,00010h,0000Fh,0000Eh,0000Dh
 
 
-section rdata
+	section rdata
 		; --- PT3 WORKAREA [self-modifying code patched] ---
 
 PT3_SETUP:		rb	1	;set bit0 to 1, if you want to play without looping
@@ -840,4 +840,5 @@ AYREGS:
 VT_:			rb	14
 EnvBase:		rb	2
 VAR0END:		rb	240
-section code
+
+	ends

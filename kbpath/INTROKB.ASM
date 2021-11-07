@@ -2,17 +2,17 @@
 
 LEE_JOY equ     88DEh
 
-JOYPORT1:       equ     9439h
-JOYPORT2:       equ     943Ah
+joyport1:       equ     9439h
+joyport2:       equ     943Ah
 
 ST_AMPL:
 
-        ld      e,8Fh           ;'è'
+        ld      e,8Fh           ;'ÔøΩ'
         call    LEE_JOY           ;[88DEh]
-        ld      (JOYPORT1),a       ;[9439h]
-	ld	e,0CFh		;'œ'
+        ld      (joyport1),a       ;[9439h]
+	ld	e,0CFh		;'ÔøΩ'
         call    LEE_JOY           ;[88DEh]
-        ld      (JOYPORT2),a       ;[943AH]
+        ld      (joyport2),a       ;[943AH]
 
         push    bc
         push    af
@@ -48,13 +48,13 @@ LEE_JOY_2:
 
         ld      b,a
 
-        ld      hl,JOYPORT1
+        ld      hl,joyport1
         or      (hl)
         ld      (hl),a
 
         ld      a,b
 
-        ld      hl,JOYPORT2
+        ld      hl,joyport2
         or      (hl)
         ld      (hl),a
 

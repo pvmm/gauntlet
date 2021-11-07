@@ -8,19 +8,19 @@
 ;;; Modify:     A,HL
 ;;; *********************************************
 
-DisPause:
+dispause:
 
-        ld      a,(EXPTBL)
-        ld      hl,002Dh        ;
-        call    RDSLT
-        cp      3
-        ret     nz
+    ld a, (exptbl)
+    ld hl, 0x002d  ;
+    call rdslt
+    cp 3
+    ret nz
 
 
-        ld      a,[0FCB1h]       ; disable pause key
-        res     1,a
-        out     [0A7h],a
-        ret
+    ld a, (0xfcb1)  ; disable pause key
+    res 1, a
+    out (0x00a7), a
+    ret
 
 
 
@@ -30,25 +30,25 @@ DisPause:
 ;;; Name:       InstallInt
 ;;; Function:   Install a new ISR
 ;;; Entry:
-;;;     hl -> Pointer to the new ISR
+;;;     hl -> pointer to the new ISR
 ;;; Modify:     hl,de,bc
 
 
 
 
-_InstallInt:
-        di
-        push    hl
-        ld      hl,H.KEYI
-        ld      de,oldISR
-        ld      bc,5
-        ldir
+_installint:
+    di
+    push hl
+    ld hl, h.keyi
+    ld de, oldisr
+    ld bc, 5
+    ldir
 
-        pop     hl
-        ld      a,0c3h
-        ld      (H.KEYI),a
-        ld      (H.KEYI+1),hl
-        ret
+    pop hl
+    ld a, 0x00c3
+    ld (h.keyi), a
+    ld (h.keyi + 1), hl
+    ret
 
 
 
@@ -62,190 +62,190 @@ _InstallInt:
 
 
 
-_DeinstallInt:
-        di
-        ld      hl,oldISR
-        ld      de,H.KEYI
-        ld      bc,5
-        ldir
-        ret
+_deinstallint:
+    di
+    ld hl, oldisr
+    ld de, h.keyi
+    ld bc, 5
+    ldir
+    ret
 
 
 
-LoadMazeR:
-        ld      de,.MazeFiles-1
+loadmazer:
+    ld de, loadmazer.mazefiles - 1
 
 
-.loop:
-        push    hl
-        push    de
-        ld      b,6
+loadmazer.loop:
+    push hl
+    push de
+    ld b, 6
 
-.strcmp:
-        inc     hl
-        inc     de
-        ld      a,(de)
-        cp      (hl)
-        jr      nz,.next
-        djnz    .strcmp
-        jr      .found
+loadmazer.strcmp:
+    inc hl
+    inc de
+    ld a, (de)
+    cp (hl)
+    jr nz, loadmazer.next
+    djnz loadmazer.strcmp
+    jr loadmazer.found
 
-.next:  pop     hl
-        ld      de,9
-        add     hl,de
-        ex      de,hl
-        pop     hl
-        jr      .loop
-
-
-.found: pop     de
-        pop     hl
-        ld      hl,7
-        add     hl,de
-
-        ld      a,(hl)
-
-        inc     hl
-        ld      e,(hl)
-        inc     hl
-        ld      d,(hl)
-
-        ex      de,hl
-        ld      de,0d000h
-        ld      bc,3832
-        call    _8KLdir
-.l:     ret
+loadmazer.next:    pop hl
+    ld de, 9
+    add hl, de
+    ex de, hl
+    pop hl
+    jr loadmazer.loop
 
 
+loadmazer.found:    pop de
+    pop hl
+    ld hl, 7
+    add hl, de
 
+    ld a, (hl)
+
+    inc hl
+    ld e, (hl)
+    inc hl
+    ld d, (hl)
+
+    ex de, hl
+    ld de, 0xd000
+    ld bc, 3832
+    call _8kldir
+loadmazer.l:    ret
 
 
 
-.MazeFiles:
-        db      "MAZE00"
-        db      maze00>>13 + 5
-        ;dw      maze00&01fffh | 6000h
-        dw      maze00 and 01fffh or 6000h
 
-        db      "MAZE01"
-        db      maze01>>13 + 5
-        dw      maze01 and 01fffh or 6000h
 
-        db      "MAZE02"
-        db      maze02>>13 + 5
-        dw      maze02 and 01fffh or 6000h
 
-        db      "MAZE03"
-        db      maze03>>13 + 5
-        dw      maze03 and 01fffh or 6000h
+loadmazer.mazefiles:
+    db "MAZE00"
+    db maze00 >> 13 + 5
+;dw      maze00&01fffh | 6000h
+    dw maze00 & 0x1fff | 0x6000
 
-        db      "MAZE04"
-        db      maze04>>13 + 5
-        dw      maze04 and 01fffh or 6000h
+    db "MAZE01"
+    db maze01 >> 13 + 5
+    dw maze01 & 0x1fff | 0x6000
 
-        db      "MAZE05"
-        db      maze05>>13 + 5
-        dw      maze05 and 01fffh or 6000h
+    db "MAZE02"
+    db maze02 >> 13 + 5
+    dw maze02 & 0x1fff | 0x6000
 
-        db      "MAZE06"
-        db      maze06>>13 + 5
-        dw      maze06 and 01fffh or 6000h
+    db "MAZE03"
+    db maze03 >> 13 + 5
+    dw maze03 & 0x1fff | 0x6000
 
-        db      "MAZE07"
-        db      maze07>>13 + 5
-        dw      maze07 and 01fffh or 6000h
+    db "MAZE04"
+    db maze04 >> 13 + 5
+    dw maze04 & 0x1fff | 0x6000
 
-        db      "MAZE08"
-        db      maze08>>13 + 5
-        dw      maze08 and 01fffh or 6000h
+    db "MAZE05"
+    db maze05 >> 13 + 5
+    dw maze05 & 0x1fff | 0x6000
 
-        db      "MAZE09"
-        db      maze09>>13 + 5
-        dw      maze09 and 01fffh or 6000h
+    db "MAZE06"
+    db maze06 >> 13 + 5
+    dw maze06 & 0x1fff | 0x6000
 
-        db      "MAZE10"
-        db      maze10>>13 + 5
-        dw      maze10 and 01fffh or 6000h
+    db "MAZE07"
+    db maze07 >> 13 + 5
+    dw maze07 & 0x1fff | 0x6000
 
-        db      "MAZE11"
-        db      maze11>>13 + 5
-        dw      maze11 and 01fffh or 6000h
+    db "MAZE08"
+    db maze08 >> 13 + 5
+    dw maze08 & 0x1fff | 0x6000
 
-        db      "MAZE12"
-        db      maze12>>13 + 5
-        dw      maze12 and 01fffh or 6000h
+    db "MAZE09"
+    db maze09 >> 13 + 5
+    dw maze09 & 0x1fff | 0x6000
 
-        db      "MAZE13"
-        db      maze13>>13 + 5
-        dw      maze13 and 01fffh or 6000h
+    db "MAZE10"
+    db maze10 >> 13 + 5
+    dw maze10 & 0x1fff | 0x6000
 
-        db      "MAZE14"
-        db      maze14>>13 + 5
-        dw      maze14 and 01fffh or 6000h
+    db "MAZE11"
+    db maze11 >> 13 + 5
+    dw maze11 & 0x1fff | 0x6000
 
-        db      "MAZE15"
-        db      maze15>>13 + 5
-        dw      maze15 and 01fffh or 6000h
+    db "MAZE12"
+    db maze12 >> 13 + 5
+    dw maze12 & 0x1fff | 0x6000
 
-        db      "MAZE16"
-        db      maze16>>13 + 5
-        dw      maze16 and 01fffh or 6000h
+    db "MAZE13"
+    db maze13 >> 13 + 5
+    dw maze13 & 0x1fff | 0x6000
 
-        db      "MAZE17"
-        db      maze17>>13 + 5
-        dw      maze17 and 01fffh or 6000h
+    db "MAZE14"
+    db maze14 >> 13 + 5
+    dw maze14 & 0x1fff | 0x6000
 
-        db      "MAZE18"
-        db      maze18>>13 + 5
-        dw      maze18 and 01fffh or 6000h
+    db "MAZE15"
+    db maze15 >> 13 + 5
+    dw maze15 & 0x1fff | 0x6000
 
-        db      "MAZE19"
-        db      maze19>>13 + 5
-        dw      maze19 and 01fffh or 6000h
+    db "MAZE16"
+    db maze16 >> 13 + 5
+    dw maze16 & 0x1fff | 0x6000
 
-        db      "MAZE20"
-        db      maze20>>13 + 5
-        dw      maze20 and 01fffh or 6000h
+    db "MAZE17"
+    db maze17 >> 13 + 5
+    dw maze17 & 0x1fff | 0x6000
 
-        db      "MAZE21"
-        db      maze21>>13 + 5
-        dw      maze21 and 01fffh or 6000h
+    db "MAZE18"
+    db maze18 >> 13 + 5
+    dw maze18 & 0x1fff | 0x6000
 
-        db      "MAZE22"
-        db      maze22>>13 + 5
-        dw      maze22 and 01fffh or 6000h
+    db "MAZE19"
+    db maze19 >> 13 + 5
+    dw maze19 & 0x1fff | 0x6000
 
-        db      "MAZE23"
-        db      maze23>>13 + 5
-        dw      maze23 and 01fffh or 6000h
+    db "MAZE20"
+    db maze20 >> 13 + 5
+    dw maze20 & 0x1fff | 0x6000
 
-        db      "MAZE24"
-        db      maze24>>13 + 5
-        dw      maze24 and 01fffh or 6000h
+    db "MAZE21"
+    db maze21 >> 13 + 5
+    dw maze21 & 0x1fff | 0x6000
 
-        db      "MAZE25"
-        db      maze25>>13 + 5
-        dw      maze25 and 01fffh or 6000h
+    db "MAZE22"
+    db maze22 >> 13 + 5
+    dw maze22 & 0x1fff | 0x6000
 
-        db      "MAZE26"
-        db      maze26>>13 + 5
-        dw      maze26 and 01fffh or 6000h
+    db "MAZE23"
+    db maze23 >> 13 + 5
+    dw maze23 & 0x1fff | 0x6000
 
-        db      "MAZE27"
-        db      maze27>>13 + 5
-        dw      maze27 and 01fffh or 6000h
+    db "MAZE24"
+    db maze24 >> 13 + 5
+    dw maze24 & 0x1fff | 0x6000
 
-        db      "MAZE28"
-        db      maze28>>13 + 5
-        dw      maze28 and 01fffh or 6000h
-	
-        db      "MAZE29"
-        db      maze29>>13 + 5
-        dw      maze29 and 01fffh or 6000h
+    db "MAZE25"
+    db maze25 >> 13 + 5
+    dw maze25 & 0x1fff | 0x6000
 
-        db      "MAZE30"
-        db      maze30>>13 + 5
-        dw      maze30 and 01fffh or 6000h
+    db "MAZE26"
+    db maze26 >> 13 + 5
+    dw maze26 & 0x1fff | 0x6000
+
+    db "MAZE27"
+    db maze27 >> 13 + 5
+    dw maze27 & 0x1fff | 0x6000
+
+    db "MAZE28"
+    db maze28 >> 13 + 5
+    dw maze28 & 0x1fff | 0x6000
+
+    db "MAZE29"
+    db maze29 >> 13 + 5
+    dw maze29 & 0x1fff | 0x6000
+
+    db "MAZE30"
+    db maze30 >> 13 + 5
+    dw maze30 & 0x1fff | 0x6000
 
 
 
@@ -263,36 +263,36 @@ LoadMazeR:
 
 
 
-_8KLdir:
-	ld	(6800h),a
-	
-.loop:
-	bit	7,h
-	jr	z,.copy
-	ld	h,60h
-	inc	a
-	ld	(6800h),a
-.copy:	ldi
-	jp	pe,.loop
-	ret
+_8kldir:
+    ld (0x6800), a
+
+_8kldir.loop:
+    bit 7, h
+    jr z, _8kldir.copy
+    ld h, 0x60
+    inc a
+    ld (0x6800), a
+_8kldir.copy:    ldi
+    jp pe, _8kldir.loop
+    ret
 ; *** MEMORY SUBROUTINES ***
 
-RAM8K:          equ             0
-RAM16K:         equ             1
-RAM32K:         equ             2
-RAM48K:         equ             3
-RAM64K:         equ             4
+ram8k: equ 0
+ram16k: equ 1
+ram32k: equ 2
+ram48k: equ 3
+ram64k: equ 4
 
 ; Especiales para lineal y carga de Roms
 
-NORAML:         equ             0    ; No hay Ram para cargar algo de 16k
-RAML16K:        equ             1    ; Podemos cargar algo de 16k
-RAML32K:        equ             2    ; Podemos cargar algo de 32k linealmente
-RAML48K:        equ             3    ; Podemos cargar algo de 48k linealmente
+noraml: equ 0  ; No hay Ram para cargar algo de 16k
+raml16k: equ 1  ; Podemos cargar algo de 16k
+raml32k: equ 2  ; Podemos cargar algo de 32k linealmente
+raml48k: equ 3  ; Podemos cargar algo de 48k linealmente
 
 
 
-BOTTOM:                 equ             0FC48h
+bottom: equ 0xfc48
 
 
 
@@ -306,100 +306,100 @@ BOTTOM:                 equ             0FC48h
 ; ---------------------------
 
 searchramnormal:
-        ld      a,RAM8K
-        ld      (ramtypus),a
-        ld      a,(EXPTBL)
-        ld      (rampage0),a
-        ld      (rampage1),a
-        ld      (rampage2),a
-        ld      (rampage3),a
+    ld a, ram8k
+    ld (ramtypus), a
+    ld a, (exptbl)
+    ld (rampage0), a
+    ld (rampage1), a
+    ld (rampage2), a
+    ld (rampage3), a
 
-        xor     a
-        ld      (ramcheck0),a
-        ld      (ramcheck1),a
-        ld      (ramcheck2),a
-        ld      (ramcheck3),a
+    xor a
+    ld (ramcheck0), a
+    ld (ramcheck1), a
+    ld (ramcheck2), a
+    ld (ramcheck3), a
 
 
-        call    search_slotram  ; Cogemos la Ram de sistema,
-                                ;porque el sistema ya entiende que es la mejor
-        ld      a,(slotram)
-        ld      (rampage3),a
+    call search_slotram  ; Cogemos la Ram de sistema,
+;porque el sistema ya entiende que es la mejor
+    ld a, (slotram)
+    ld (rampage3), a
 
-                                ; Comprobar 8k o 16k
+; Comprobar 8k o 16k
 
-        ld      c,0C0h
-        call    checkmemdirect
-        jr      c,searchramnormalend
+    ld c, 0x00c0
+    call checkmemdirect
+    jr c, searchramnormalend
 
-        ld      a,RAM16K
-        ld      (ramtypus),a
+    ld a, ram16k
+    ld (ramtypus), a
 
 
 
 searchramnormal00:
-                                ; Buscamos Ram en las otras paginas
+; Buscamos Ram en las otras paginas
 
-        ld      c,00h
-        call    checkmem
-        jr      c,searchramnormal40
+    ld c, 0x00
+    call checkmem
+    jr c, searchramnormal40
 
-        ld      (rampage0),a
-        ld      a,1
-        ld      (ramcheck0),a
+    ld (rampage0), a
+    ld a, 1
+    ld (ramcheck0), a
 
 
 
 searchramnormal40:
 
-        ld      c,40h
-        call    checkmem
-        jr      c,searchramnormal80
-        ld      (rampage1),a
-        ld      a,1
-        ld      (ramcheck1),a
+    ld c, 0x40
+    call checkmem
+    jr c, searchramnormal80
+    ld (rampage1), a
+    ld a, 1
+    ld (ramcheck1), a
 
 
 searchramnormal80:
 
-        ld      c,80h
-        call    checkmem
-        jr      c,searchramnormalend
-        ld      (rampage2),a
-        ld      a,1
-        ld      (ramcheck2),a
+    ld c, 0x80
+    call checkmem
+    jr c, searchramnormalend
+    ld (rampage2), a
+    ld a, 1
+    ld (ramcheck2), a
 
 
 
 searchramnormalend:
-                                ; Examinar la cantidad y apuntarla
+; Examinar la cantidad y apuntarla
 
-        ld      a,(ramtypus)
-        cp      RAM8K
-        ret     z
+    ld a, (ramtypus)
+    cp ram8k
+    ret z
 
-        ld      a,(ramcheck2)
-        or      a
-        ret     z
+    ld a, (ramcheck2)
+    or a
+    ret z
 
-        ld      a,RAM32K
-        ld      (ramtypus),a
+    ld a, ram32k
+    ld (ramtypus), a
 
-        ld      a,(ramcheck1)
-        or      a
-        ret     z
+    ld a, (ramcheck1)
+    or a
+    ret z
 
 
-        ld      a,RAM48K
-        ld      (ramtypus),a
+    ld a, ram48k
+    ld (ramtypus), a
 
-        ld      a,(ramcheck0)
-        or      a
-        ret     z
+    ld a, (ramcheck0)
+    or a
+    ret z
 
-        ld      a,RAM64K
-        ld      (ramtypus),a
-        ret
+    ld a, ram64k
+    ld (ramtypus), a
+    ret
 
 
 
@@ -421,27 +421,27 @@ searchramnormalend:
 
 checkmem:
 
-        ld      a,0FFh
-        ld      (thisslt),a
+    ld a, 0x00ff
+    ld (thisslt), a
 checkmem0:
-        push    bc
-        call    sigslot
-        pop     bc
-        cp      0FFh
-        jr      z,checkmemend
+    push bc
+    call sigslot
+    pop bc
+    cp 0x00ff
+    jr z, checkmemend
 
-        push    bc
-        call    checkmemgen
-        pop     bc
-        ld      a,(thisslt)
-        ret     nc
-        jr      checkmem0
+    push bc
+    call checkmemgen
+    pop bc
+    ld a, (thisslt)
+    ret nc
+    jr checkmem0
 
 
 
 checkmemend:
-        scf
-        ret
+    scf
+    ret
 
 
 
@@ -458,55 +458,55 @@ checkmemend:
 
 
 checkmemgen:
-        push    bc
-        push    hl
-        ld      h,c
-        ld      l,010h
+    push bc
+    push hl
+    ld h, c
+    ld l, 0x0010
 
 checkmemgen1:
 
-        push    af
-        call    RDSLT
-        cpl
-        ld      e,a
-        pop     af
+    push af
+    call rdslt
+    cpl
+    ld e, a
+    pop af
 
-        push    de
-        push    af
-        call    WRSLT
-        pop     af
-        pop     de
+    push de
+    push af
+    call wrslt
+    pop af
+    pop de
 
-        push    af
-        push    de
-        call    RDSLT
-        pop     bc
-        ld      b,a
-        ld      a,c
-        cpl
-        ld      e,a
-        pop     af
+    push af
+    push de
+    call rdslt
+    pop bc
+    ld b, a
+    ld a, c
+    cpl
+    ld e, a
+    pop af
 
-        push    af
-        push    bc
-        call    WRSLT
-        pop     bc
-        ld      a,c
-        cp      b
-        jr      nz,checkmemgen2
-        pop     af
-        dec     l
-        jr      nz,checkmemgen1
-        pop     hl
-        pop     bc
-        or      a
-        ret
+    push af
+    push bc
+    call wrslt
+    pop bc
+    ld a, c
+    cp b
+    jr nz, checkmemgen2
+    pop af
+    dec l
+    jr nz, checkmemgen1
+    pop hl
+    pop bc
+    or a
+    ret
 checkmemgen2:
-        pop     af
-        pop     hl
-        pop     bc
-        scf
-        ret
+    pop af
+    pop hl
+    pop bc
+    scf
+    ret
 
 
 ; --------------------------
@@ -518,29 +518,29 @@ checkmemgen2:
 
 checkmemdirect:
 
-        ld      h,c
-        ld      l,010h
+    ld h, c
+    ld l, 0x0010
 
 
 checkmemdirect0:
-        ld      a,(hl)
-        cpl
-        ld      c,a
-        ld      (hl),a
-        ld      a,(hl)
-        ld      b,a
-        cpl
-        ld      (hl),a
-        ld      a,b
-        cp      c
-        jr      nz,checkmemdirectno
-        dec     l
-        jr      nz,checkmemdirect0
-        or      a
-        ret
+    ld a, (hl)
+    cpl
+    ld c, a
+    ld (hl), a
+    ld a, (hl)
+    ld b, a
+    cpl
+    ld (hl), a
+    ld a, b
+    cp c
+    jr nz, checkmemdirectno
+    dec l
+    jr nz, checkmemdirect0
+    or a
+    ret
 checkmemdirectno:
-        scf
-        ret
+    scf
+    ret
 
 
 ; ---------------------
@@ -550,31 +550,31 @@ checkmemdirectno:
 ; ----------------------
 
 search_slotram:
-        call    0138h
-        rlca
-        rlca
-        and     3
-        ld      c,a
-        ld      b,0
-        ld      hl,0FCC1h
-        add     hl,bc
-        ld      a,(hl)
-        and     080h
-        or      c
-        ld      c,a
-        inc     hl
-        inc     hl
-        inc     hl
-        inc     hl
-        ld      a,(hl)
-        rlca
-        rlca
-        rlca
-        rlca
-        and     0Ch
-        or      c
-        ld      (slotram),a
-        ret
+    call 0x0138
+    rlca
+    rlca
+    and 3
+    ld c, a
+    ld b, 0
+    ld hl, 0xfcc1
+    add hl, bc
+    ld a, (hl)
+    and 0x0080
+    or c
+    ld c, a
+    inc hl
+    inc hl
+    inc hl
+    inc hl
+    ld a, (hl)
+    rlca
+    rlca
+    rlca
+    rlca
+    and 0x0c
+    or c
+    ld (slotram), a
+    ret
 
 
 ; -------------------------------------------------------
@@ -587,48 +587,48 @@ search_slotram:
 ;       ; this code is programmed by Nestor Soriano aka Konamiman
 
 sigslot:
-        ld      a,(thisslt)             ; Returns the next slot, starting by
-        cp      0FFh                    ; slot 0. Returns #FF when there are not more slots
-        jr      nz,sigslt1              ; Modifies AF, BC, HL.
-        ld      a,(EXPTBL)
-        and     010000000b
-        ld      (thisslt),a
-        ret
+    ld a, (thisslt)  ; Returns the next slot, starting by
+    cp 0x00ff  ; slot 0. Returns #FF when there are not more slots
+    jr nz, sigslt1  ; Modifies AF, BC, HL.
+    ld a, (exptbl)
+    and 0000000010000000B
+    ld (thisslt), a
+    ret
 
 sigslt1:
-        ld      a,(thisslt)
-        cp      010001111b
-        jr      z,nomaslt
-        cp      000000011b
-        jr      z,nomaslt
-        bit     7,a
-        jr      nz,sltexp
+    ld a, (thisslt)
+    cp 0000000010001111B
+    jr z, nomaslt
+    cp 0000000000000011B
+    jr z, nomaslt
+    bit 7, a
+    jr nz, sltexp
 sltsimp:
-        and     000000011b
-        inc     a
-        ld      c,a
-        ld      b,0
-        ld      hl,EXPTBL
-        add     hl,bc
-        ld      a,(hl)
-        and     010000000b
-        or      c
-        ld      (thisslt),a
-        ret
+    and 0000000000000011B
+    inc a
+    ld c, a
+    ld b, 0
+    ld hl, exptbl
+    add hl, bc
+    ld a, (hl)
+    and 0000000010000000B
+    or c
+    ld (thisslt), a
+    ret
 
 sltexp:
-        ld      c,a
-        and     000001100b
-        cp      000001100b
-        ld      a,c
-        jr      z,sltsimp
-        add     a,000000100b
-        ld      (thisslt),a
-        ret
+    ld c, a
+    and 0000000000001100B
+    cp 0000000000001100B
+    ld a, c
+    jr z, sltsimp
+    add a, 0000000000000100B
+    ld (thisslt), a
+    ret
 
 nomaslt:
-        ld      a,0FFh
-        ret
+    ld a, 0x00ff
+    ret
 sigslotend:
 
 
@@ -639,222 +639,233 @@ sigslotend:
 
 ; section rdata
 
-ramcheck0:              rb              1
-ramcheck1:              rb              1
-ramcheck2:              rb              1
-ramcheck3:              rb              1
-ramtypus:               rb              1
-slotram:                rb              1
-thisslt:                rb              1
+ramcheck0:
+    org $ + 1
+ramcheck1:
+    org $ + 1
+ramcheck2:
+    org $ + 1
+ramcheck3:
+    org $ + 1
+ramtypus:
+    org $ + 1
+slotram:
+    org $ + 1
+thisslt:
+    org $ + 1
 
 
 ; section code
 
 
 
-SetIntroPages:
+setintropages:
 
-        call    RomSlotPage2
-        xor     a
-        ld      (6000h),a
-        inc     a
-        ld      (6800h),a
-        inc     a
-        ld      (7000h),a
-        inc     a
-        ld      (7800h),a
-        ret
-
-
-
-SetBloadPages:
-        call    RomSlotPage2
-        ld      a,4
-        ld      (6800h),a
-        inc     a
-        ld      (7000h),a
-        inc     a
-        ld      (7800h),a
-        ret
+    call romslotpage2
+    xor a
+    ld (0x6000), a
+    inc a
+    ld (0x6800), a
+    inc a
+    ld (0x7000), a
+    inc a
+    ld (0x7800), a
+    ret
 
 
 
-LoadFirstBload:
-        ld      a,5
-        call    CHGMOD
-        call    VIS_OFF
-        call    RomSlotPage2
-        ld      hl,gaunt.n2
-        xor     a
-        ld      de,4000h
-i:      call    UnTCFV
-        call    RamSlotPage2
-        ld      hl,4000h
-        ld      de,87d0h
-        ld      bc,16433
-        call    LDIRMV
-        jp      87d0h
+setbloadpages:
+    call romslotpage2
+    ld a, 4
+    ld (0x6800), a
+    inc a
+    ld (0x7000), a
+    inc a
+    ld (0x7800), a
+    ret
 
 
 
-LoadSecondBload:
-	call 	PutSafeInt
-        ld      hl,gaunt.n3
-        xor     a
-        ld      de,4000h
-        call    UnTCFV
-        call    RamSlotPage2
-        ld      hl,4000h
-        ld      de,8000h
-        ld      bc,18977
-        call    LDIRMV
-
-        xor     a
-        ld      hl,0
-        ld      bc,0ffffh
-        call    FILVRM
-        call    vis_on
-        jp      8000h
+loadfirstbload:
+    ld a, 5
+    call chgmod
+    call vis_off
+    call romslotpage2
+    ld hl, gaunt.n2
+    xor a
+    ld de, 0x4000
+; i:    call untcfv
+    call ramslotpage2
+    ld hl, 0x4000
+    ld de, 0x87d0
+    ld bc, 16433
+    call ldirmv
+    jp 0x87d0
 
 
-PutSafeInt:
-	di
-	ld	b,.code_end - .code
-	ld	de,$38
-	ld	hl,.code
-.loop:
-	push	bc
-	push	de
-	push	hl
-	ld	l,(hl)
-	ex	de,hl
-	ld	a,(rampage0)
-	call	WRSLT
-	pop	hl
-	pop	de
-	pop	bc
-	inc	de
-	inc	hl
-	djnz	.loop
-	ret
 
-.code:
-	push	af
-	in	a,(099h)
-	pop	af
-	ei
-	ret
-.code_end:
+loadsecondbload:
+    call putsafeint
+    ld hl, gaunt.n3
+    xor a
+    ld de, 0x4000
+;    call untcfv
+    call ramslotpage2
+    ld hl, 0x4000
+    ld de, 0x8000
+    ld bc, 18977
+    call ldirmv
+
+    xor a
+    ld hl, 0
+    ld bc, 0xffff
+    call filvrm
+    call vis_on
+    jp 0x8000
+
+
+putsafeint:
+    di
+    ld b, putsafeint.code_end - putsafeint.code
+    ld de, 0x38
+    ld hl, putsafeint.code
+putsafeint.loop:
+    push bc
+    push de
+    push hl
+    ld l, (hl)
+    ex de, hl
+    ld a, (rampage0)
+    call wrslt
+    pop hl
+    pop de
+    pop bc
+    inc de
+    inc hl
+    djnz putsafeint.loop
+    ret
+
+putsafeint.code:
+    push af
+    in a, (0x0099)
+    pop af
+    ei
+    ret
+putsafeint.code_end:
 
 ;;; Name:       SaveSlotC
 ;;; Function:   Save Slot in which cartridge is inserted
 ;;; Modify:     A,HL,DE
 
 
-SaveSlotC:
-        call    RSLREG
-        rrca
-        rrca
-        and     11b
-        ld      e,a
-        ld      d,0
-        ld      hl,EXPTBL
-        add     hl,de
-        ld      e,a
-        ld      a,(hl)
-        and     80h
-        or      e
-        ld      e,a
+saveslotc:
+    call rslreg
+    rrca
+    rrca
+    and 00000011B
+    ld e, a
+    ld d, 0
+    ld hl, exptbl
+    add hl, de
+    ld e, a
+    ld a, (hl)
+    and 0x80
+    or e
+    ld e, a
 
-        inc     hl
-        inc     hl
-        inc     hl
-        inc     hl
-        ld      a,(hl)
+    inc hl
+    inc hl
+    inc hl
+    inc hl
+    ld a, (hl)
 
-        and     00001100b
-        or      e
-        ld      (romslt),a
-        ret
+    and 00001100B
+    or e
+    ld (romslt), a
+    ret
 
 
 ;;; Name:       RamSlotPageX
 ;;; Function:   Select Slot Cartridge for the page X
 
 
-RamSlotPage0:
-        ld      hl,0
-        ld      a,(rampage0)
-        jr      slotChg
+ramslotpage0:
+    ld hl, 0
+    ld a, (rampage0)
+    jr slotchg
 
-RamSlotPage1:
-        ld      hl,1<<14
-        ld      a,(rampage1)
-        jr      slotChg
+ramslotpage1:
+    ld hl, 1 << 14
+    ld a, (rampage1)
+    jr slotchg
 
-RamSlotPage2:
-        ld      hl,2<<14
-        ld      a,(rampage2)
-        jr      slotChg
+ramslotpage2:
+    ld hl, 2 << 14
+    ld a, (rampage2)
+    jr slotchg
 
-RamSlotPage3:
-        ld      hl,3<<14
-        ld      a,(rampage3)
-        jr      slotChg
+ramslotpage3:
+    ld hl, 3 << 14
+    ld a, (rampage3)
+    jr slotchg
 
 
 ;;; Name:       RomSlotPageX
 ;;; Function:   Select Slot Cartridge for the page X
 
 
-RomSlotPage0:
-        ld      hl,0
-        ld      a,(romslt)
-        jr      SlotChg
-RomSlotPage1:
-        ld      hl,1<<14
-        ld      a,(romslt)
-        jr      SlotChg
+romslotpage0:
+    ld hl, 0
+    ld a, (romslt)
+    jr slotchg
+romslotpage1:
+    ld hl, 1 << 14
+    ld a, (romslt)
+    jr slotchg
 
-RomSlotPage2:
-        ld      hl,2<<14
-        ld      a,(romslt)
-        jr      SlotChg
+romslotpage2:
+    ld hl, 2 << 14
+    ld a, (romslt)
+    jr slotchg
 
-RomSlotPage3:
-        ld      hl,3<<14
-        ld      a,(romslt)
+romslotpage3:
+    ld hl, 3 << 14
+    ld a, (romslt)
 
-SlotChg:
-        jp      ENASLT
-
-
-InitBasePorts:
-	ld	a,$10
-	ld	(BASEPORT.PSG),a
-
-        ld      de,BASEPORT.PPI
-        ld      hl,(WSLREG+1)
-
-.scan:  ld      a,$d3
-        ld      bc,16
-        cpir
-        ldi
-        ret
+slotchg:
+    jp enaslt
 
 
-romslt:         equ 0f37fh
-rampage0:       equ 0f37eh
-rampage1:       equ 0f37dh
-rampage2:       equ 0f37ch
-rampage3:       equ 0f37bh
+initbaseports:
+    ld a, 0x10
+    ld (baseport.psg), a
+
+    ld de, baseport.ppi
+    ld hl, (wslreg + 1)
+
+initbaseports.scan:    ld a, 0xd3
+    ld bc, 16
+    cpir
+    ldi
+    ret
+
+
+romslt: equ 0xf37f
+rampage0: equ 0xf37e
+rampage1: equ 0xf37d
+rampage2: equ 0xf37c
+rampage3: equ 0xf37b
 
 
 ; section rdata
-oldISR:         rb      5
-FMfound:	rb	1
-BASEPORT:
-.PSG:           rb      1
-.PPI:           rb      1
-playingsong: 	rb	1
-	
+oldisr:
+    org $ + 5
+fmfound:
+    org $ + 1
+baseport:
+baseport.psg:
+    org $ + 1
+baseport.ppi:
+    org $ + 1
+playingsong:
+    org $ + 1

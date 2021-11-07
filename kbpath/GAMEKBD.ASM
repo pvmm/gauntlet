@@ -1,8 +1,8 @@
 JOY1STAT:	equ	8427h
 JOY2STAT:	equ	8447h
-WRTPSG:	equ	0B3EFh
-RDPSG:	equ	0B3F9h
-SNSMAT:	equ	0B3FEh
+wrtpsg:	equ	0B3EFh
+rdpsg:	equ	0B3F9h
+snsmat:	equ	0B3FEh
 ROWTABLE:	equ	847Fh
 
 	org	0F975h
@@ -11,24 +11,24 @@ SCANJOY:	ld	de,ROWTABLE+5	;[8485h]
 	ld	b,4	;filas 6,7,8 (9 - 6)
 MATLOOP:	ld	a,9
 	sub	b
-	call	SNSMAT	;[0B3FEh]
+	call	snsmat	;[0B3FEh]
 	ld	(de),a
 	inc	e
 	djnz	MATLOOP	;[0B410h]
 
 	ld	a,3	;fila 3
-	call	SNSMAT
+	call	snsmat
 	ld	(ROWTABLE+3),a
         ld      a,4     ;fila 4
-	call	SNSMAT
+	call	snsmat
         ld      (ROWTABLE+4),a
 
 
 	ld	a,0Fh
 	ld	e,8Fh	;''
-	call	WRTPSG	;[0B3EFh]
+	call	wrtpsg	;[0B3EFh]
 	ld	a,0Eh
-	call	RDPSG	;[0B3F9h]
+	call	rdpsg	;[0B3F9h]
 	cpl
 	and	3Fh
 	bit	5,a
@@ -42,9 +42,9 @@ MATLOOP:	ld	a,9
 nojoy1B:ld	(JOY1STAT),a	;[8427h]
 	ld	a,0Fh
 	ld	e,0CFh		;'O'
-	call	WRTPSG	;[0B3EFh]
+	call	wrtpsg	;[0B3EFh]
 	ld	a,0Eh
-	call	RDPSG	;[0B3F9h]
+	call	rdpsg	;[0B3F9h]
 	cpl
 	and	3Fh
 	bit	5,a

@@ -1,165 +1,160 @@
 
-section         code
+	section         code
 MCDRV:				; ...
-		jp	IntFunct
+	jp	IntFunct
 
 
 ;****************************************************************************
 MCDRVC:
 Commands:				; ...
-		di			; Input	point for driver commands
-		push	ix
-		push	hl
-		push	de
-		push	bc
-		cp	13
-		jr	nc, EndCommand
-		add	a, a
-		ld 	d,0
-		ld 	e,a
-		push 	de
-		pop 	ix
-		ld	de, Table_CMD
-		add	ix, de
-		ld	e, (ix+0)
-		ld	d, (ix+1)
-		push 	de
-		pop 	ix
-		call	JumpCommand
+	di			; Input	point for driver commands
+	push	ix
+	push	hl
+	push	de
+	push	bc
+	cp	13
+	jr	nc, EndCommand
+	add	a, a
+	ld 	d,0
+	ld 	e,a
+	push 	de
+	pop 	ix
+	ld	de, Table_CMD
+	add	ix, de
+	ld	e, (ix+0)
+	ld	d, (ix+1)
+	push 	de
+	pop 	ix
+	call	JumpCommand
 
 EndCommand:				; ...
-		pop	bc
-		pop	de
-		pop	hl
-		pop	ix
-		ret
+	pop	bc
+	pop	de
+	pop	hl
+	pop	ix
+	ret
+
 ;****************************************************************************
 
 JumpCommand:				; ...
-		jp	(ix)
+	jp	(ix)
 ;****************************************************************************
-Table_CMD:	dw CMD_inivar		; ...
-		dw CMD_inivar
-		dw CMD_putSFX
-		dw CMD_inichips
-		dw CMD_fadeout
-		dw CMD_fadein
-		dw CMD_chkmus
-		dw CMD_sfx
-		dw CMD_chksfx
-		dw CMD_musicon
-		dw CMD_incmus
-		dw CMD_musicoff
-		dw CMD_putMinc
+Table_CMD:
+	dw CMD_inivar		; ...
+	dw CMD_inivar
+	dw CMD_putSFX
+	dw CMD_inichips
+	dw CMD_fadeout
+	dw CMD_fadein
+	dw CMD_chkmus
+	dw CMD_sfx
+	dw CMD_chksfx
+	dw CMD_musicon
+	dw CMD_incmus
+	dw CMD_musicoff
+	dw CMD_putMinc
 
 ;****************************************************************************
 
 CMD_inivar:				; ...
-		jp	inivars
+	jp	inivars
 ;****************************************************************************
 
 CMD_putSFX:
-		ld (Table_SFX),hl
-		ret
-
+	ld (Table_SFX),hl
+	ret
 
 ;********************************************************************
 CMD_putMinc:
-		ld (TableMinc),hl
-		ret
-
-
+	ld (TableMinc),hl
+	ret
 
 ;****************************************************************************
 
 CMD_musicon:				; ...
-		in	a, (0E6h)
-		ld	(Tlast_FM), a
-		jr	PutSong
+	in	a, (0E6h)
+	ld	(Tlast_FM), a
+	jr	PutSong
 ;****************************************************************************
 
 CMD_musicoff:				; ...
-		in	a, (0E6h)
-		ld	(Tlast_FM), a
-		ld	hl,EmptySong
+	in	a, (0E6h)
+	ld	(Tlast_FM), a
+	ld	hl,EmptySong
 
 PutSong:				; ...
-		push	hl		; Init all variables for playing a song
-		call	inivars
-		pop	hl
-		call	IniTblSng
-		ret
+	push	hl		; Init all variables for playing a song
+	call	inivars
+	pop	hl
+	call	IniTblSng
+	ret
 
-EmptySong:	db 0Ch, 0, 9, 0, 0A1h, 62h, 25h, 72h, 0
-		db 10h, 0, 0A1h, 62h, 25h, 72h, 0, 17h
-		db 0, 0A1h, 62h, 25h, 72h, 0, 1Eh, 0, 0A1h
-		db 62h, 25h, 72h, 0, 25h, 0, 0A1h, 62h
-		db 25h, 72h, 0, 2Ch, 0, 0A1h, 62h, 25h
-		db 72h, 0, 33h, 0, 0A1h, 62h, 25h, 72h
-		db 0, 3Ah, 0, 0A1h, 62h, 25h, 72h, 0, 41h
-		db 0, 0A1h, 62h, 25h, 72h, 0, 48h, 0, 0A1h
-		db 62h, 25h, 72h, 0, 4Fh, 0, 0A1h, 62h
-		db 25h, 72h, 0, 56h, 0, 0A1h, 62h, 25h
-		db 72h, 0, 0, 0
-
-
-
-
-
+EmptySong:
+	db 0Ch, 0, 9, 0, 0A1h, 62h, 25h, 72h, 0
+	db 10h, 0, 0A1h, 62h, 25h, 72h, 0, 17h
+	db 0, 0A1h, 62h, 25h, 72h, 0, 1Eh, 0, 0A1h
+	db 62h, 25h, 72h, 0, 25h, 0, 0A1h, 62h
+	db 25h, 72h, 0, 2Ch, 0, 0A1h, 62h, 25h
+	db 72h, 0, 33h, 0, 0A1h, 62h, 25h, 72h
+	db 0, 3Ah, 0, 0A1h, 62h, 25h, 72h, 0, 41h
+	db 0, 0A1h, 62h, 25h, 72h, 0, 48h, 0, 0A1h
+	db 62h, 25h, 72h, 0, 4Fh, 0, 0A1h, 62h
+	db 25h, 72h, 0, 56h, 0, 0A1h, 62h, 25h
+	db 72h, 0, 0, 0
 
 
 ;****************************************************************************
 
 CMD_inichips:				; ...
-		call	inivars
-		call	inichips
-		ret
+	call	inivars
+	call	inichips
+	ret
 ;****************************************************************************
 
 
 CMD_fadeout:				; ...
-		ld	b, c
-		ld	a, 80h
-		or	c
-		ld	(FadeCtl), a
-		ld	a, b
-		and	80h
-		ld	(FadeOutRest), a
-		ret
+	ld	b, c
+	ld	a, 80h
+	or	c
+	ld	(FadeCtl), a
+	ld	a, b
+	and	80h
+	ld	(FadeOutRest), a
+	ret
 ;****************************************************************************
 
 CMD_fadein:				; ...
-		ld	a, (SilenceFlag)
-		or	a
-		ret	z
-		ld	a, 0C0h
-		or	c
-		ld	(FadeCtl), a
-		ld	a, 0Fh
-		ld	(FadeNumPass), a
-		xor	a
-		ld	(SilenceFlag), a
-		ret
+	ld	a, (SilenceFlag)
+	or	a
+	ret	z
+	ld	a, 0C0h
+	or	c
+	ld	(FadeCtl), a
+	ld	a, 0Fh
+	ld	(FadeNumPass), a
+	xor	a
+	ld	(SilenceFlag), a
+	ret
 ;****************************************************************************
 
 CMD_chkmus:				; ...
-		ld	a, (ChannelOFF)
-		ld	b, a
-		ld	a, (FadeCtl)
-		or	b
-		ret
+	ld	a, (ChannelOFF)
+	ld	b, a
+	ld	a, (FadeCtl)
+	or	b
+	ret
 ;****************************************************************************
 
 CMD_sfx:				; ...
-		ld	hl, (Table_SFX)	; Definicion de	los SFX
-		ld	a,h
-		or	l
-		ret	z
-		call	SearchSong
-		ret	nc
-		call	PutSFX
-		xor	a
-		ret
+	ld	hl, (Table_SFX)	; Definicion de	los SFX
+	ld	a,h
+	or	l
+	ret	z
+	call	SearchSong
+	ret	nc
+	call	PutSFX
+	xor	a
+	ret
 ;****************************************************************************
 
 CMD_incmus:				; ...
@@ -393,13 +388,13 @@ DetectMSXMUSIC:
         xor     a
         ld      (FMSlot),a              ; reset slotnr
 	inc	a
-	ld	(FMfound),a
+	ld	(fmfound),a
 
 .pri_l: push    bc
         ld      a,4
         sub     b
         ld      c,a
-        ld      hl,EXPTBL
+        ld      hl,exptbl
         add     a,l
         ld      l,a
         ld      a,(hl)
@@ -427,7 +422,7 @@ DetectMSXMUSIC:
         pop     bc
         djnz    .pri_l
 	xor	a
-	ld	(FMfound),a	
+	ld	(fmfound),a	
         ret
 
 .notExp:                                ; slot is not expanded
@@ -459,12 +454,12 @@ DetectMSXMUSIC:
         ld      hl,7FF6h
         push    af
         push    hl
-        call    RDSLT
+        call    rdslt
         or      1
         ld      e,a
         pop     hl
         pop     af
-        call    WRSLT
+        call    wrslt
         or      a
 	ret
 
@@ -476,7 +471,7 @@ DetectMSXMUSIC:
         push    de
         ld      a,c
         ex      de,hl
-        call    RDSLT
+        call    rdslt
         pop     de
         pop     hl
         pop     bc
@@ -496,13 +491,15 @@ DetectMSXMUSIC:
 .TxtAPRL: db     "APRL"
 .TxtOPLL: db     "OPLL"
 
-section rdata
+	ends
+
+	section rdata
 SearchTemp:     rb      1
 FMSlot: 	rb      1
-section code	
+	ends
+
+	section code	
 	
-
-
 ;****************************************************************************
 ;Funcion execute on each interrupt
 
@@ -2259,7 +2256,9 @@ REL_TableMinc:	dw 0
 
 End_REL:      equ $
 
-section          rdata
+	ends
+
+	section rdata
 
 Start_RAM:    equ   $
 
@@ -2294,4 +2293,5 @@ Table_fmins:  equ   REL_Table_fmins - Start_REL + Start_RAM
 Table_SFX:    equ   REL_Table_SFX - Start_REL + Start_RAM
 TableMinc:    equ   REL_TableMinc - Start_REL + Start_RAM
 Tlast_FM:     equ   REL_Tlast_FM - Start_REL + Start_RAM
-section code
+
+	ends

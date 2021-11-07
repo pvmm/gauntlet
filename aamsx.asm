@@ -1,65 +1,66 @@
-section code
-
+    section code
 
 MSXPalet:
-	db 00h,0,00h,0,11h,6,33h,7,17h,1,27h,3,51h,1,27h,6
-	db 71h,1,73h,3,61h,6,64h,6,11h,4,65h,2,55h,5,77h,7
-
-
+    db #00, 0, #00, 0, #11, 6, #33, 7, #17, 1, #27, 3, #51, 1, #27, 6
+    db #71, 1, #73, 3, #61, 6, #64, 6, #11, 4, #65, 2, #55, 5, #77, 7
 
 StartLogo:
-                    xor		a
-                    ld		(CLIKSW),a
-                    ld		(CSRSW),a
-                    xor		a
-                    ld		(FORCLR),a
-                    ld		(BAKCLR),a
-                    ld		(BDRCLR),a
+    xor a
+    ld (cliksw), a
+    ld (csrsw), a
+    xor a
+    ld (forclr), a
+    ld (bakclr), a
+    ld (bdrclr), a
 
-		    call	VIS_OFF
-		    xor         a
-                    call        VER_PAGE
-		    ld 		hl, MSXPalet
-		    call        PutPal
-	
-	            ld          a,2
-		    call	CHGMOD
+    call vis_off
+    xor a
+    call VER_PAGE
+    ld hl, MSXPalet
+    call PutPal
 
-                    ; Logo!!
-                    ld		hl,AAMSX_PAT+8
-                    ld		de,0c000h
-        	    call    	UnTCF
-		    ld		hl,0c000h
-		    ld 		de,0
-		    ld		bc,3*0800h
-		    call	LDIRVM
+    ld a, 2
+    call chgmod
 
-                    ld		hl,AAMSX_COL+8
-                    ld		de,0c000h
-        	    call    	UnTCF
-		    ld		hl,0c000h
-		    ld 		de,02000h
-		    ld		bc,3*0800h
-		    call	LDIRVM
+; Logo!!
+    ld hl, AAMSX_PAT + 8
+    ld de, #c000
+    call UnTCF
+    ld hl, #c000
+    ld de, 0
+    ld bc, 3 * #0800
+    call ldirvm
 
-                    ld		bc,260
-.loop:		    push	bc
-		    ld 		a,8
-                    call	SNSMAT
-                    pop        	bc
-		    and 	1
-		    ret		z
-                    ei
-                    halt
-		    dec		bc
-		    ld		a,c
-		    or		b
-                    jr 		nz,.loop
+    ld hl, AAMSX_COL + 8
+    ld de, #c000
+    call UnTCF
+    ld hl, #c000
+    ld de, #2000
+    ld bc, 3 * #0800
+    call ldirvm
 
-                    ret
+    ld bc, 260
 
+StartLogo.loop:
+    push bc
+    ld a, 8
+    call snsmat
+    pop bc
+    and 1
+    ret z
+    ei
+    halt
+    dec bc
+    ld a, c
+    or b
+    jr nz, StartLogo.loop
+
+    ret
 
 AAMSX_COL:
-                    incbin "AAMSX.COL"
+    incbin "AAMSX.COL"
+
 AAMSX_PAT:
-                    incbin "AAMSX.PAT"
+    incbin "AAMSX.PAT"
+
+    ends

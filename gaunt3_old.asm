@@ -114,7 +114,7 @@ bios    macro   adr
 ;                       6 -> Indica si la vida del personaje ha cambiado.
 ;                            por el paso del tiempo.
 ;                       0 -> Es posible que indique que la vida del
-;                            personaje ha cambiado por da¤o recibido
+;                            personaje ha cambiado por daï¿½o recibido
 ;;;             +16h    Creo que se utiliza como contador en la secuencia
 ;;;                     de rotacion del paso de pantallas
 ;               +14h
@@ -145,7 +145,7 @@ bios    macro   adr
 ;               +02 y +03 -> Indican la vida disponible en codigo BCD
 ;               +04 +05 y +06 -> Indican la puntuacion disponible en codigo BCD
 ;               +0C     -> ESTO ESTA MAL!!!!!!
-;                          Creo que es el da¤o recibido en la iteracion
+;                          Creo que es el daï¿½o recibido en la iteracion
 ;               +00     -> Coordenada x del personaje
 ;               +01     -> Coordenada y del personaje
 
@@ -201,7 +201,7 @@ bios    macro   adr
 ;                        4 -> Indica que los disparos destruyen
 ;                             la comida.
 ;                        5 -> Indica que los disparos de los otros
-;                             jugadores causan da¤o
+;                             jugadores causan daï¿½o
 ;                        6 -> Indica si la pantalla actual es una pantalla
 ;                             de tesoro, o lo que es lo mismo si es
 ;                             necesario pintar la cuenta.
@@ -211,7 +211,7 @@ bios    macro   adr
 ;                              salir de GameLoop)
 ;                        5 ->  Indica si se esta tocando una cancion
 ;                        4 ->  Indica si el nivel tiene alguna
-;                              poci¢n m gica
+;                              pociï¿½n mï¿½gica
 ;                        2 ->  Indica que hay que esperar un tiempo.
 ;               -5d     Tipo del personaje 1 (Apunta a las tablas de
 ;               -3d     Tipo del personaje 2 (los personajes)
@@ -249,7 +249,7 @@ _MAIN:  ld      b,80h
         out     (0A8h),a        ;PSLOT register
         ld      a,(0FFFFh)
         cpl
-        and     0F0h            ;'ð'
+        and     0F0h            ;'ï¿½'
         ld      c,a
         rrca
         rrca
@@ -302,13 +302,13 @@ T8424:  db      0,0,0
 Joy1:  db      0
 T8428:  db      0,0
 B842A:  db      0
-B842B:  db      0C0h            ;'À'
+B842B:  db      0C0h            ;'ï¿½'
 B842C:  db      0
 T842D:  db      0,0
 B842F:  db      9
 T8430:  db      0,0,0
 TypePers1:  db      0
-B8434:  db      80h             ;'€'
+B8434:  db      80h             ;'ï¿½'
 B8435:  db      0
 T8436:  db      0
 T8437:  db      0,0,0,0,0,0,0,0,0
@@ -319,7 +319,7 @@ T8443:  db      0,0,0,0
 Joy2:  db      0
 T8448:  db      0,0
 B844A:  db      0
-T844B:  db      'À'
+T844B:  db      'ï¿½'
 B844C:  db      0
 T844D:  db      0,0
 B844F:  db      5
@@ -335,7 +335,7 @@ T8454:  add     a,b
 B8455:  db      0
 T8456:  db      0
 T8457:  db      0,0,0,0,0,0,0,0,0,6,2,0,4,2,6,4,0,6,0,1,4,9,10h,19h,'$'
-        db      '1@Qdy',0A9h,'Äáþ',0,0,0,0
+        db      '1@Qdy',0A9h,'ï¿½ï¿½ï¿½',0,0,0,0
 B847D:  db      0
 B847E:  db      0
 RowKeyb:  db      0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
@@ -738,7 +738,7 @@ S8673:  ld      a,(T848B)       ;[848Bh]
         ld      l,a
         ld      a,h
         sub     4
-        cp      80h             ;'€'
+        cp      80h             ;'ï¿½'
         jp      nz,.19          ;[8692h]
 
         ld      h,a
@@ -810,7 +810,7 @@ B86BD   equ     $-1
         inc     h
         ld      a,h
         sub     4
-        cp      80h             ;'€'
+        cp      80h             ;'ï¿½'
         jr      nz,.25          ;[8707h]
 
         ld      h,a
@@ -889,7 +889,7 @@ W873A:  nop
 
 
 PSGChanellOFF:                  ;875dh
-        ld      a,0B8h          ;'¸'
+        ld      a,0B8h          ;'ï¿½'
         ld      (PSGConfR),a       ;[8B18h]
 
         ld      c,a
@@ -1043,7 +1043,7 @@ S8837:  push    de
         ld      iy,T8B16        ;[8B16h]
         ld      a,(iy+1)
         and     7
-        ld      a,0B8h          ;'¸'
+        ld      a,0B8h          ;'ï¿½'
         ld      (iy+2),a
         jr      z,.38           ;[8883h]
 
@@ -1089,11 +1089,11 @@ S8837:  push    de
 
 ;Nombre: PlaySFX
 ;Esta funcion es llamada desde el vector de interrupcion
-;Entrada: ix -> Puntero al buffer del PSG con la siguiente informaci¢n
+;Entrada: ix -> Puntero al buffer del PSG con la siguiente informaciï¿½n
 ;                 -Frecuencia del canal
 ;         iy ->
 ;         b  -> Numero del canal (en orden inverso
-;De esta funcion se puede extrarer informaci¢n de varias posiciones de
+;De esta funcion se puede extrarer informaciï¿½n de varias posiciones de
 ;memoria alrededor de 8b16
 
 
@@ -1500,7 +1500,7 @@ B8B0D:  db      0
 T8B0E:  db      0,0,0,0,0,0,0,0
 T8B16:  db      0
 B8B17:  db      0
-PSGConfR:  db      0BFh            ;'¿'
+PSGConfR:  db      0BFh            ;'ï¿½'
 T8B19:  db      0,0
 B8B1B:  db      0
 T8B1C:  db      0,0,0,0,0,0
@@ -1568,10 +1568,10 @@ PrintNextRecord:
         ld      hl,T8DB2        ;[8DB2h]
         ld      b,3
 .68:    ld      a,(hl)
-        and     0C0h            ;'À'
+        and     0C0h            ;'ï¿½'
         ld      c,a
         ld      a,(ix)
-        and     0C0h            ;'À'
+        and     0C0h            ;'ï¿½'
         cp      c
         jr      c,.66             ;[8BDAh]
         jr      nz,.67          ;[8BBBh]
@@ -1657,16 +1657,16 @@ LoadIncHL:  ld      (hl),a
 
 
 ;Nombre: PrintRecord
-;Objetivo: Ense¤ar la tabla de record de un personaje determinado
+;Objetivo: Enseï¿½ar la tabla de record de un personaje determinado
 
 
 PrintRecord:
         ld      de,158h         ;Limpio el record anterior
         ld      hl,50h
         ld      b,0
-        call    SetVRAM           ;[0B5DCh]
+        call    setvram           ;[0B5DCh]
 
-        ld      a,0F8h          ;¨EINSSSS?
+        ld      a,0F8h          ;ï¿½EINSSSS?
         ld      b,(iy+4Ch)      ;Incremento de manera circular
         inc     b               ;el numero de personaje
         ld      (iy+4Ch),b      ;para mostrar los records
@@ -2581,7 +2581,7 @@ S90AD:  ld      a,(ix+2)
         ld      (ix+1),a
         ld      a,(ix+3)
         add     a,(ix-3)
-        or      80h             ;'€'
+        or      80h             ;'ï¿½'
         ld      (ix+2),a
         ld      a,4
         call    S8787           ;[8787h]
@@ -2689,15 +2689,15 @@ S90AD:  ld      a,(ix+2)
         ld      b,(hl)
         inc     l
         ld      a,(hl)
-        cp      0A0h            ;' '
+        cp      0A0h            ;'ï¿½'
         call    c,S944A         ;[944Ah]
         bit     7,(ix+3)
         jr      nz,.130         ;[91F0h]
-        and     0E0h            ;'à'
+        and     0E0h            ;'ï¿½'
         ld      e,10h
         jr      z,.129          ;[91E4h]
         ld      e,5
-        cp      0A0h            ;' '
+        cp      0A0h            ;'ï¿½'
         jr      nz,.129         ;[91E4h]
         ld      e,1
         call    Rand           ;[0B4E1h]
@@ -2986,10 +2986,10 @@ S9327:  ld      de,(W84A9)      ;[84A9h]
         inc     l
         ld      a,(hl)
         and     7
-        or      90h             ;''
+        or      90h             ;'ï¿½'
         ld      (de),a
         inc     e
-        ld      a,80h           ;'€'
+        ld      a,80h           ;'ï¿½'
         ld      (de),a
         inc     e
 .149:   inc     l
@@ -3101,12 +3101,12 @@ S9411:  ld      a,(ix+3)
         cp      5
         ld      a,e
         jr      c,.160          ;[9439h]
-        cp      0E0h            ;'à'
+        cp      0E0h            ;'ï¿½'
         jr      nc,.162         ;[9440h]
         dec     b
         add     a,10h
         jr      .162            ;[9440h]
-.160:   cp      0CFh            ;'Ï'
+.160:   cp      0CFh            ;'ï¿½'
         jr      c,.162          ;[9440h]
         inc     b
         sub     10h
@@ -3157,7 +3157,7 @@ S944A:  push    af
 ;::===============================::
 
 S9479:  ld      a,(ix+2)
-        and     0F8h            ;'ø'
+        and     0F8h            ;'ï¿½'
         cp      (iy-4Ch)
         jr      nz,.166         ;[948Eh]
 
@@ -3253,11 +3253,11 @@ S94E7:  res     6,(iy-1)
         call    LdirPat         ;[958Eh] a las salidas y a la sidra
         bit     7,(iy+4Dh)
         jr      nz,.172         ;[950Bh]
-        ld      (iy+4Eh),80h    ;'€'
+        ld      (iy+4Eh),80h    ;'ï¿½'
         call    LoadMaze           ;[956Ch]
 
         ld      a,1
-.172:   ld      e,80h           ;'€'
+.172:   ld      e,80h           ;'ï¿½'
         ld      b,a
 .173:   rlc     e
         djnz    .173            ;[950Eh]
@@ -3318,7 +3318,7 @@ LoadMaze:
                                 ;de la bios porque antes se colocan las
                                 ;0 y 1 al slot 0 y subslot 0
 
-        ld      b,80h           ;'€'
+        ld      b,80h           ;'ï¿½'
 .180:   push    bc
         call    h.TIMI          ;[0FD9Fh]
         pop     bc
@@ -3364,12 +3364,12 @@ PutBiosBasic:
         ld      sp,(0E000h)
         in      a,(0A8h)        ;PSLOT register
         ld      d,a
-        and     0F0h            ;'ð'
+        and     0F0h            ;'ï¿½'
         out     (0A8h),a        ;PSLOT register
         ld      a,(0FFFFh)
         cpl
         ld      e,a
-        and     0F0h            ;'ð'
+        and     0F0h            ;'ï¿½'
         ld      (0FFFFh),a
         ei
         push    de
@@ -3395,11 +3395,11 @@ PutSlotRam:
 
 ;Nombre: selectMaze
 ;Entrada: a  -> 80h si la partida esta al comienzo
-;Objetivo: Seleccionar el maze que se va a jugar a continuaci¢n
+;Objetivo: Seleccionar el maze que se va a jugar a continuaciï¿½n
 
 
 SelectMaze:
-        cp      80h             ;'€'
+        cp      80h             ;'ï¿½'
         ld      hl,3030h
         jr      z,.182          ;[95F9h]
 
@@ -3630,7 +3630,7 @@ DoHarmPj:
 
 
 ;Nombre: DoHarmPj_1
-;Objetivo: Decrementar la vida de un PJ segun los da¤os obtenidos en la iteracion
+;Objetivo: Decrementar la vida de un PJ segun los daï¿½os obtenidos en la iteracion
 ;Entrada: ix -> Puntero al personaje.
 
 DoHarmPj_1:
@@ -3941,7 +3941,7 @@ S98E6:  bit     3,(iy+1Fh)
 .220:   ld      (W849A),hl      ;[849Ah]
         ld      (hl),0
         ld      a,(B849E)       ;[849Eh]
-        and     0F0h            ;'ð'
+        and     0F0h            ;'ï¿½'
         or      c
         or      8
         ld      (B849E),a       ;[849Eh]
@@ -3972,7 +3972,7 @@ S98E6:  bit     3,(iy+1Fh)
         ld      a,(B849E)       ;[849Eh]
         and     0Fh
         or      c
-        or      80h             ;'€'
+        or      80h             ;'ï¿½'
         ld      (B849E),a       ;[849Eh]
         ret
 
@@ -4095,7 +4095,7 @@ S99C1:  bit     7,(ix+14h)
         ld      bc,(W8492)      ;[8492h]
 
 .230:   call    GetPositionMap  ;[0AD6Ch]
-        ld      a,80h           ;'€'
+        ld      a,80h           ;'ï¿½'
         ld      (BB1E5),a       ;[0B1E5h]
         call    SB1E3           ;[0B1E3h]
         ex      af,af'
@@ -4170,7 +4170,7 @@ S9A47:  bit     6,(iy-1)        ;Es una pantalla de tesoro?
 .236:   ld      (hl),36h
 .235:   inc     hl
         ld      a,h
-        cp      84h             ;'„'
+        cp      84h             ;'ï¿½'
         jr      nz,.237         ;[9A60h]
         set     1,(iy-2)
         ld      (iy+39h),0
@@ -4198,7 +4198,7 @@ S9A47:  bit     6,(iy-1)        ;Es una pantalla de tesoro?
 .239:   ld      (hl),0
 .238:   inc     hl
         ld      a,h
-        cp      84h             ;'„'
+        cp      84h             ;'ï¿½'
         jr      nz,.240         ;[9A91h]
         ld      (iy+39h),0
         ld      a,0Eh
@@ -4240,19 +4240,19 @@ PutPatSpPjs:
 
 
 GetPatSpPj:
-        ld      e,8             ;¨Es el Guerrero?
+        ld      e,8             ;ï¿½Es el Guerrero?
         sub     8
         jr      c,.242          ;[9AE8h]
 
-        ld      e,4             ;¨Es la walkyria?
+        ld      e,4             ;ï¿½Es la walkyria?
         sub     8
         jr      c,.242          ;[9AE8h]
 
-        ld      e,0Ah           ;¨Es el mago?
+        ld      e,0Ah           ;ï¿½Es el mago?
         sub     8
         jr      c,.242          ;[9AE8h]
 
-        ld      e,2             ;¨Es el elfo?
+        ld      e,2             ;ï¿½Es el elfo?
 .242:   ld      a,b
         cp      2
         jr      nc,.243         ;[9AF4h]
@@ -4275,7 +4275,7 @@ S9AF6:  bit     0,(ix+1)
 .245:   call    S9DE4           ;[9DE4h]
         bit     7,(ix+1)
         jr      nz,.246         ;[9B20h]
-        ld      a,97h           ;'—'
+        ld      a,97h           ;'ï¿½'
         ld      (BB502),a       ;[0B502h]
         ld      hl,423Eh
         ld      (WB50D),hl      ;[0B50Dh]
@@ -4287,7 +4287,7 @@ S9AF6:  bit     0,(ix+1)
         ld      (WB50D),hl      ;[0B50Dh]
 .247:   bit     6,(ix+1)
         jr      nz,.248         ;[9B3Ch]
-        ld      a,97h           ;'—'
+        ld      a,97h           ;'ï¿½'
         ld      (BB528),a       ;[0B528h]
         ld      hl,5C3Eh
         ld      (WB533),hl      ;[0B533h]
@@ -4337,7 +4337,7 @@ S9AF6:  bit     0,(ix+1)
         jr      nc,.251         ;[9B9Ch]
         res     7,(ix+2)
 .251:   ld      a,(de)
-        cp      80h             ;'€'
+        cp      80h             ;'ï¿½'
         jr      c,.252          ;[9BD3h]
         and     7Fh             ;''
         inc     a
@@ -4428,7 +4428,7 @@ S9BF1:  ld      a,c
         ld      l,a
         ld      a,b
         exx
-        and     0E0h            ;'à'
+        and     0E0h            ;'ï¿½'
         ld      b,a
         exx
         call    S9C70           ;[9C70h]
@@ -4449,12 +4449,12 @@ S9BF1:  ld      a,c
         ld      d,0
         add     hl,de
         ld      a,b
-        cp      0C0h            ;'À'
+        cp      0C0h            ;'ï¿½'
         jr      nc,.263         ;[9C5Ah]
         cp      20h             ;' '
         jr      z,.263          ;[9C5Ah]
         bit     2,e
-        ld      b,80h           ;'€'
+        ld      b,80h           ;'ï¿½'
         jr      nz,.263         ;[9C5Ah]
         ld      b,40h           ;'@'
 .263:   ld      e,(hl)
@@ -4480,12 +4480,12 @@ S9BF1:  ld      a,c
 S9C70:  exx
         ld      a,b
         exx
-        cp      0C0h            ;'À'
+        cp      0C0h            ;'ï¿½'
         jp      nc,.266         ;[9CE5h]
         exx
         ld      c,11h
         exx
-        cp      80h             ;'€'
+        cp      80h             ;'ï¿½'
         jr      z,S9C8B         ;[9C8Bh]
         exx
         inc     c
@@ -4590,7 +4590,7 @@ S9CDE:  ld      a,(hl)
 .276:   ld      (hl),a
         exx
         ld      a,b
-        cp      0C0h            ;'À'
+        cp      0C0h            ;'ï¿½'
         exx
         ret     nz
         set     7,(hl)
@@ -4605,7 +4605,7 @@ S9D2F:  ld      a,(hl)
         ret     c
         ret     nz
         ld      a,(hl)
-        and     80h             ;'€'
+        and     80h             ;'ï¿½'
         ld      (hl),a
         scf
         ret
@@ -4673,7 +4673,7 @@ S9D68:  ld      a,l
         inc     h
         ld      a,h
         sub     4
-        cp      80h             ;'€'
+        cp      80h             ;'ï¿½'
         ret     nz
         ld      h,a
         ret
@@ -4712,7 +4712,7 @@ S9D87:  ex      de,hl
         xor     (hl)
         dec     hl
         ex      de,hl
-        and     0E0h            ;'à'
+        and     0E0h            ;'ï¿½'
         ret
 ;::===============================::
 ;||          SUBROUTINE           ||
@@ -4775,7 +4775,7 @@ S9DA5:  exx
         ld      (hl),a
         inc     hl
         call    Rand           ;[0B4E1h]
-        and     0C0h            ;'À'
+        and     0C0h            ;'ï¿½'
         ld      (hl),a
         inc     hl
         ld      (W8494),hl      ;[8494h]
@@ -4800,7 +4800,7 @@ S9DE4:  ld      a,(ix+2)
         ld      e,60h           ;'`'
         dec     a
         jr      z,.279          ;[9DFFh]
-        ld      e,0C0h          ;'À'
+        ld      e,0C0h          ;'ï¿½'
 .279:   ld      hl,0EE0h
         add     hl,de
         push    de
@@ -4817,7 +4817,7 @@ S9DE4:  ld      a,(ix+2)
         ld      hl,T9E76        ;[9E76h]
         add     hl,de
         ld      a,(hl)
-        and     0F0h            ;'ð'
+        and     0F0h            ;'ï¿½'
         ld      (B9E6D),a       ;[9E6Dh]
         rrca
         rrca
@@ -4859,7 +4859,7 @@ B9E58   equ     $-1
 B9E5C   equ     $-1
 .282:   ld      c,a
 .280:   ld      a,(hl)
-        and     0F0h            ;'ð'
+        and     0F0h            ;'ï¿½'
         jr      z,.283          ;[9E6Fh]
         cp      70h             ;'p'
         ld      a,c
@@ -4884,7 +4884,7 @@ T9E76:  and     (hl)
         ld      (hl),h
         push    de
         xor     c
-        cp      0A6h            ;'¦'
+        cp      0A6h            ;'ï¿½'
         xor     c
 ;::===============================::
 ;||          SUBROUTINE           ||
@@ -4902,8 +4902,8 @@ S9E7E:  ld      hl,5B60h
         ret     z
         ld      b,a
 .287:   ld      a,(ix+2)
-        and     0E0h            ;'à'
-        cp      0A0h            ;' '
+        and     0E0h            ;'ï¿½'
+        cp      0A0h            ;'ï¿½'
         jr      nz,.286         ;[9EC4h]
         ld      a,(ix)
         ld      c,(hl)
@@ -4942,7 +4942,7 @@ S9ECF:  ld      hl,8000h
         inc     b
 .288:   inc     hl
         ld      a,h
-        cp      84h             ;'„'
+        cp      84h             ;'ï¿½'
         jr      nz,.289         ;[9ED4h]
 .290:   call    Rand           ;[0B4E1h]
         and     3Fh             ;'?'
@@ -4978,7 +4978,7 @@ S9F09:  call    Rand           ;[0B4E1h]
         ld      l,a
         call    Rand           ;[0B4E1h]
         and     3
-        or      80h             ;'€'
+        or      80h             ;'ï¿½'
         ld      h,a
         ld      a,(hl)
         or      a
@@ -5047,7 +5047,7 @@ ChangeSpetialPotion:
         rlca
         rlca
         rlca
-        add     a,80h           ;'€'
+        add     a,80h           ;'ï¿½'
         ld      l,a
         ld      h,0Eh
         ld      de,2970h
@@ -5171,7 +5171,7 @@ TA000:  ret     z
         ld      e,a
         push    hl
         ld      a,l
-        xor     0E0h            ;'à'
+        xor     0E0h            ;'ï¿½'
         ld      l,a
         ld      a,h
         xor     3
@@ -5202,7 +5202,7 @@ TA000:  ret     z
 SA054:  call    SA079           ;[0A079h]
         ret     nc
         ld      c,a
-        and     8Ah             ;'Š'
+        and     8Ah             ;'ï¿½'
         bit     2,c
         jr      z,.310          ;[0A060h]
         inc     a
@@ -5216,7 +5216,7 @@ SA054:  call    SA079           ;[0A079h]
 SA066:  call    SA079           ;[0A079h]
         ret     nc
         ld      c,a
-        and     85h             ;'…'
+        and     85h             ;'ï¿½'
         bit     3,c
         jr      z,.311          ;[0A073h]
         or      2
@@ -5231,7 +5231,7 @@ SA079:  cp      7Fh             ;''
         jr      nc,.312         ;[0A080h]
         cp      10h
         ret
-.312:   cp      90h             ;''
+.312:   cp      90h             ;'ï¿½'
         ret
 ;::===============================::
 ;||          SUBROUTINE           ||
@@ -5250,8 +5250,8 @@ RefreshScr:
         inc     (iy+12h)
         sub     a
         bit     3,(iy-1)
-        jr      z,.313          ;[0A08Fh]   ¨Hay relampago?
-        ld      a,0Fh           ;           ¨Pues pon el blanco como
+        jr      z,.313          ;[0A08Fh]   ï¿½Hay relampago?
+        ld      a,0Fh           ;           ï¿½Pues pon el blanco como
                                 ;            color de fondo?
 .313:   call    PutColorF       ;[0B4A6h]
         ld      hl,(PatternMapPtr) ;[84D3h]
@@ -5320,7 +5320,7 @@ RefreshScr:
         add     hl,de
         ex      de,hl
 
-        ld      a,3             ;¨Por que le resta 220h?
+        ld      a,3             ;ï¿½Por que le resta 220h?
         ld      b,0
 .317:   ex      af,af'
 .316:   ld      a,(de)
@@ -5465,7 +5465,7 @@ RefreshScr:
         or      20h             ;' '
         ld      h,a
         ld      a,(de)
-        and     0F8h            ;'ø'
+        and     0F8h            ;'ï¿½'
         ld      l,a
         inc     de
         outi
@@ -5508,7 +5508,7 @@ WaitTime:
 
         res     2,(iy-2)
 
-        ld      b,82h           ;'‚'
+        ld      b,82h           ;'ï¿½'
         bit     5,(iy-2)
         jr      nz,.324         ;[0A271h]
 
@@ -5909,9 +5909,9 @@ SA3F0:  ld      a,(hl)
         inc     l
         ld      a,(hl)
         ld      e,a
-        and     0E0h            ;'à'
+        and     0E0h            ;'ï¿½'
         jr      z,.355          ;[0A53Ah]
-        cp      0A0h            ;' '
+        cp      0A0h            ;'ï¿½'
         ret     z
         ld      a,(iy+12h)
         and     3
@@ -6067,7 +6067,7 @@ QuitHealthGen:
 
 
 .358:   ld      a,(B849E)       ;[849Eh]
-        and     88h             ;'ˆ'
+        and     88h             ;'ï¿½'
         ret     nz
 
         bit     3,(ix+0Bh)
@@ -6077,7 +6077,7 @@ QuitHealthGen:
         set     3,(ix+0Bh)
         ld      (W849A),hl      ;[849Ah]
         ld      (W849C),hl      ;[849Ch]
-        ld      (iy+1Fh),0FDh   ;'ý'
+        ld      (iy+1Fh),0FDh   ;'ï¿½'
         ld      a,0Eh
         call    S8787           ;[8787h]
         ret
@@ -6101,7 +6101,7 @@ QuitHealthGen:
         set     5,(ix+0Bh)
 
 .372:   call    SA6D6           ;[0A6D6h]
-        ld      d,99h           ;'™'
+        ld      d,99h           ;'ï¿½'
         jp      SB86D           ;[0B86Dh]
 
 .371:   call    Rand           ;[0B4E1h]
@@ -6150,7 +6150,7 @@ QuitHealthGen:
         set     4,(ix+0Bh)
         jr      SA6D6           ;[0A6D6h]
 .377:   jr      nz,.378         ;[0A69Bh]
-        ld      (ix+0Ah),8Ch    ;'Œ'
+        ld      (ix+0Ah),8Ch    ;'ï¿½'
         ld      a,4
         call    S8787           ;[8787h]
         jr      .379            ;[0A6E1h]
@@ -6165,7 +6165,7 @@ QuitHealthGen:
         ld      a,7
         call    S8787           ;[8787h]
         jr      .381            ;[0A6DBh]
-.380:   ld      e,80h           ;'€'
+.380:   ld      e,80h           ;'ï¿½'
         sub     18h
 .382:   rlc     e
         dec     a
@@ -6223,11 +6223,11 @@ SA6D6:  ld      a,11h
         cp      2Fh             ;'/'
         jr      nz,.388         ;[0A723h]
         ld      (hl),0
-.388:   cp      80h             ;'€'
+.388:   cp      80h             ;'ï¿½'
         call    nc,S9C92        ;[9C92h]
         inc     hl
         ld      a,h
-        cp      84h             ;'„'
+        cp      84h             ;'ï¿½'
         jr      nz,.389         ;[0A71Ch]
         pop     bc
         ret
@@ -6520,7 +6520,7 @@ BA8E1   equ     $-1
         sub     (iy+24h)
         ld      (hl),a
 .411:   ld      a,(B8496)       ;[8496h]
-        cp      0C0h            ;'À'
+        cp      0C0h            ;'ï¿½'
         jr      nc,.414         ;[0A950h]
         rra
         rra
@@ -6574,7 +6574,7 @@ SA95D:  ld      a,e
         add     a,18h
         exx
         ld      l,a
-        ld      h,84h           ;'„'
+        ld      h,84h           ;'ï¿½'
         ld      a,(hl)
         exx
         ld      d,a
@@ -6764,7 +6764,7 @@ SAA93:  ld      hl,5B90h        ;Desplazo 64 bytes una posicion hacia arriba
         ld      ix,5C00h
         ld      hl,TAAFE        ;[0AAFEh]
         ld      (W873A),hl      ;[873Ah]
-        ld      a,0CDh          ;'Í'
+        ld      a,0CDh          ;'ï¿½'
         ld      (B8739),a       ;[8739h]
         res     2,(iy-1)
         bit     1,(iy-1)
@@ -6818,7 +6818,7 @@ SAB02:  ld      e,a
         rra
         jr      c,.427          ;[0AB24h]
         ld      a,e
-        cp      0A0h            ;' '
+        cp      0A0h            ;'ï¿½'
         jp      c,.428          ;[0ABC1h]
         bit     1,(iy+12h)
         jp      z,.428          ;[0ABC1h]
@@ -6827,7 +6827,7 @@ SAB02:  ld      e,a
         jr      c,.429          ;[0AB62h]
         call    SAC50           ;[0AC50h]
         ld      a,e
-        and     0E0h            ;'à'
+        and     0E0h            ;'ï¿½'
         cp      60h             ;'`'
         jp      nz,.430         ;[0AB3Fh]
         ld      a,(BAC92)       ;[0AC92h]
@@ -6837,7 +6837,7 @@ SAB02:  ld      e,a
         xor     4
         ld      d,a
 .430:   ld      a,e
-        and     0F8h            ;'ø'
+        and     0F8h            ;'ï¿½'
         ld      e,a
         ld      a,d
         ex      af,af'
@@ -6849,7 +6849,7 @@ SAB02:  ld      e,a
         ld      a,d
         add     a,60h           ;'`'
         ld      l,a
-        ld      h,84h           ;'„'
+        ld      h,84h           ;'ï¿½'
         bit     4,(ix+3)
         jr      z,.432          ;[0AB5Eh]
         inc     l
@@ -6881,33 +6881,33 @@ BAB8B   equ     $-1
 .436:   or      20h             ;' '
         ld      (ix+3),a
         ld      a,e
-        and     0F8h            ;'ø'
+        and     0F8h            ;'ï¿½'
         ld      e,a
         ex      af,af'
         or      e
         ld      e,a
 .435:   ld      a,e
-        and     0E0h            ;'à'
-        cp      80h             ;'€'
+        and     0E0h            ;'ï¿½'
+        cp      80h             ;'ï¿½'
         jp      nz,.428         ;[0ABC1h]
         ld      a,(ix+3)
-        cp      0C0h            ;'À'
+        cp      0C0h            ;'ï¿½'
         jr      c,.437          ;[0ABB8h]
         xor     8
 .437:   bit     5,a
         jr      z,.438          ;[0ABBEh]
-        and     0F7h            ;'÷'
+        and     0F7h            ;'ï¿½'
 .438:   ld      (ix+3),a
 .428:   ld      a,e
-        and     0E0h            ;'à'
+        and     0E0h            ;'ï¿½'
         cp      40h             ;'@'
         jr      c,.439          ;[0ABCDh]
-        cp      80h             ;'€'
+        cp      80h             ;'ï¿½'
         call    c,SAE8E         ;[0AE8Eh]
 .439:   bit     2,(iy-1)
         jp      z,.440          ;[0ABF1h]
         ld      a,e
-        and     0E0h            ;'à'
+        and     0E0h            ;'ï¿½'
         jr      z,.441          ;[0ABE3h]
         cp      60h             ;'`'
         jr      z,.441          ;[0ABE3h]
@@ -6922,7 +6922,7 @@ BAB8B   equ     $-1
 .442:   ld      (ix+3),d
 .440:   ld      (ix+2),e
         ld      a,e
-        and     0E0h            ;'à'
+        and     0E0h            ;'ï¿½'
         rra
         ld      c,a
         rra
@@ -6951,7 +6951,7 @@ SAC1B:  ld      a,c
         sub     l
         call    SAC36           ;[0AC36h]
         ld      l,a
-        cp      80h             ;'€'
+        cp      80h             ;'ï¿½'
         jr      c,.444          ;[0AC27h]
         neg
 .444:   ld      d,a
@@ -6959,7 +6959,7 @@ SAC1B:  ld      a,c
         sub     h
         call    SAC36           ;[0AC36h]
         ld      h,a
-        cp      80h             ;'€'
+        cp      80h             ;'ï¿½'
         jr      c,.445          ;[0AC34h]
         neg
 .445:   add     a,d
@@ -6967,21 +6967,21 @@ SAC1B:  ld      a,c
 ;::===============================::
 ;||          SUBROUTINE           ||
 ;::===============================::
-SAC36:  cp      80h             ;'€'
+SAC36:  cp      80h             ;'ï¿½'
         jr      nc,.446         ;[0AC40h]
         cp      40h             ;'@'
         ret     c
-        xor     80h             ;'€'
+        xor     80h             ;'ï¿½'
         ret
-.446:   cp      0C0h            ;'À'
+.446:   cp      0C0h            ;'ï¿½'
         ret     nc
-        xor     80h             ;'€'
+        xor     80h             ;'ï¿½'
         ret
 ;::===============================::
 ;||          SUBROUTINE           ||
 ;::===============================::
 SAC46:  call    SAC36           ;[0AC36h]
-        cp      80h             ;'€'
+        cp      80h             ;'ï¿½'
         ret     c
         neg
         ccf
@@ -6997,7 +6997,7 @@ BAC51   equ     $-1
         cp      55h             ;'U'
         jr      c,.448          ;[0AC61h]
         inc     d
-        cp      0AAh            ;'ª'
+        cp      0AAh            ;'ï¿½'
         jr      c,.448          ;[0AC61h]
         inc     d
 .448:   ld      a,d
@@ -7121,7 +7121,7 @@ SACF7:  ld      a,e
         and     7
         add     a,18h
         ld      l,a
-        ld      h,84h           ;'„'
+        ld      h,84h           ;'ï¿½'
         ld      a,(hl)
         rra
         jr      nc,.457         ;[0AD07h]
@@ -7147,7 +7147,7 @@ SACF7:  ld      a,e
         and     7Ch             ;'|'
         add     a,a
         ld      l,a
-        ld      h,0E0h          ;'à'
+        ld      h,0E0h          ;'ï¿½'
         add     hl,hl
         add     hl,hl
         ld      a,c
@@ -7182,7 +7182,7 @@ SACF7:  ld      a,e
         inc     h
         ld      a,h
         sub     4
-        cp      80h             ;'€'
+        cp      80h             ;'ï¿½'
         jr      nz,.463         ;[0AD56h]
         ld      h,a
 .463:   ld      a,(hl)
@@ -7300,7 +7300,7 @@ SAD9F:  bit     7,(iy-54h)
         ld      b,(ix+1)
         res     3,(ix+3)
         ld      a,e
-        and     0E0h            ;'à'
+        and     0E0h            ;'ï¿½'
         jr      nz,.467         ;[0AE05h]
         call    SAE48           ;[0AE48h]
         sub     a
@@ -7312,7 +7312,7 @@ TAE00   equ     $-1
         pop     af
         ret
 .467:   res     5,(ix+3)
-        cp      0A0h            ;' '
+        cp      0A0h            ;'ï¿½'
         jr      z,.468          ;[0AE25h]
         ld      a,(ix+3)
         and     3
@@ -7337,7 +7337,7 @@ TAE00   equ     $-1
 .470:   ld      a,(hl)
         add     a,4
         ld      (hl),a
-        cp      0C8h            ;'È'
+        cp      0C8h            ;'ï¿½'
         jr      nc,.471         ;[0ADFEh]
         bit     0,d
         ld      d,4
@@ -7372,7 +7372,7 @@ SAE48:  bit     3,(ix+2)
 
 
 SAE5C:  ld      a,e
-        cp      0A0h            ;' '
+        cp      0A0h            ;'ï¿½'
         jr      c,.474          ;[0AE71h]
 
         ld      a,(B84B2)       ;[84B2h]
@@ -7503,7 +7503,7 @@ SAE8E:  bit     4,(iy+29h)
         and     7
         add     a,a
         add     a,a
-        add     a,90h           ;''
+        add     a,90h           ;'ï¿½'
         add     a,l
         ld      l,a
         ld      h,5Bh           ;'['
@@ -7570,7 +7570,7 @@ SAE8E:  bit     4,(iy+29h)
         or      (iy+2Ch)
         ld      d,a
         ld      a,l
-        or      0C0h            ;'À'
+        or      0C0h            ;'ï¿½'
         ld      hl,(W84A9)      ;[84A9h]
         ld      (hl),c
         inc     l
@@ -7814,7 +7814,7 @@ SB146:  ld      (iy+31h),0
         ld      hx,(ix+1Fh)
         call    S9D90           ;[9D90h]
         ld      (iy+30h),0FFh   ;
-        ld      h,84h           ;'„'
+        ld      h,84h           ;'ï¿½'
         ld      de,5BD0h
 .516:   ld      a,(de)
         sub     c
@@ -7977,7 +7977,7 @@ MainLoop:
         inc     a
         ld      (PantActual),a  ;[8403h]
         ld      (B842C),a       ;[842Ch]  Esto es algo relativo a
-        ld      (B844C),a       ;[844Ch]  los personajes (Es el da¤o
+        ld      (B844C),a       ;[844Ch]  los personajes (Es el daï¿½o
                                 ;         recibido en la iteracion por
                                 ;         cada uno
 
@@ -8045,7 +8045,7 @@ SB2CA:  sub     a
         call    SB342           ;[0B342h]
         ld      (iy+40h),b
         ld      c,1
-        ld      b,0B4h          ;'´'
+        ld      b,0B4h          ;'ï¿½'
         call    SB342           ;[0B342h]
         ld      (iy+3Eh),b
         ld      bc,(W8492)      ;[8492h]Lee las coordenadas donde
@@ -8129,7 +8129,7 @@ WaitInitGame:  ei
         call    CleanVRAM           ;[0B5D9h]
 
         ld      de,2000h
-        ld      b,0F0h          ;'ð'
+        ld      b,0F0h          ;'ï¿½'
         call    CleanVRAM           ;[0B5D9h]
         bit     7,(iy+4Dh)
         ret     nz
@@ -8259,7 +8259,7 @@ ReadRowKB:
         ld      c,a
         di
         in      a,(0AAh)        ;PPI port C (misc ctrl)
-        and     0F0h            ;'ð'
+        and     0F0h            ;'ï¿½'
         add     a,c
         out     (0AAh),a        ;PPI port C (misc ctrl)
         ei
@@ -8287,7 +8287,7 @@ ReadJoy1:
 
 .540:   ld      a,0Fh
 .538    equ     $-1
-.539:   ld      e,8Fh           ;''
+.539:   ld      e,8Fh           ;'ï¿½'
         call    WritePSG           ;[0B3EFh]
         ld      a,0Eh
         call    ReadPSG           ;[0B3F9h]
@@ -8296,7 +8296,7 @@ ReadJoy1:
         ld      (Joy1),a       ;[8427h]
 
         ld      a,0Fh
-        ld      e,0CFh          ;'Ï'
+        ld      e,0CFh          ;'ï¿½'
 .542    equ     $-1
         call    WritePSG           ;[0B3EFh]
         ld      a,0Eh
@@ -8468,7 +8468,7 @@ PutColorF:
 
 WriteVDP_Reg:
         ld      c,99h
-        or      80h             ;'€'
+        or      80h             ;'ï¿½'
         di
         out     (c),b
         out     (c),a
@@ -8718,14 +8718,14 @@ InitScr:
 
 
 
-;Nombre:   SetVRAM
+;Nombre:   setvram
 ;Entrada:  hl -> Numero de bytes a poner a 0, y direccion de comienzo
 ;          (Se decrementa hacia abajo).
 ;          b  -> Valor a escribir en la VRAM
 
 CleanVRAM:
         ld      hl,1300h
-SetVRAM:
+setvram:
         call    WritePTR_VRAMI           ;[0B43Fh]
         ld      c,98h
 .561:   out     (c),b
@@ -8825,12 +8825,12 @@ SB63C:  bit     0,e
         sub     a
         rr      c
         jr      nc,.566         ;[0B65Ah]
-        ld      a,0A0h          ;' '
+        ld      a,0A0h          ;'ï¿½'
 .566:   call    SB693           ;[0B693h]
         sub     a
         rr      c
         jr      nc,.567         ;[0B664h]
-        ld      a,0D0h          ;'Ð'
+        ld      a,0D0h          ;'ï¿½'
 .567:   call    SB693           ;[0B693h]
         sub     a
         rr      c
@@ -8844,12 +8844,12 @@ SB63C:  bit     0,e
         sub     a
         rr      c
         jr      nc,.569         ;[0B67Fh]
-        ld      a,80h           ;'€'
+        ld      a,80h           ;'ï¿½'
 .569:   call    SB693           ;[0B693h]
         sub     a
         rr      c
         jr      nc,.570         ;[0B689h]
-        ld      a,0E0h          ;'à'
+        ld      a,0E0h          ;'ï¿½'
 .570:   call    SB693           ;[0B693h]
         sub     a
         rr      c
@@ -9009,7 +9009,7 @@ WritePatternText:
 
 DecLifePj:
         ld      a,(B8497)       ;[8497h]
-        and     0C0h            ;'À'
+        and     0C0h            ;'ï¿½'
         cp      (iy+20h)
         jr      nz,.577         ;[0B73Dh]
 
@@ -9080,7 +9080,7 @@ DecLifePj:
         res     5,c
 
 .585:   ld      (ix+0Bh),c
-        ld      b,0A0h          ;' '
+        ld      b,0A0h          ;'ï¿½'
         ld      a,(ix+8)
         bit     2,(ix+0Bh)
         jr      z,.586          ;[0B7B7h]
@@ -9162,7 +9162,7 @@ EraseMarc:
 
 PrintDataPer:
         ld      c,0
-        bit     1,(iy+12h)              ;Y QUE CO¥O ES ESTO????
+        bit     1,(iy+12h)              ;Y QUE COï¿½O ES ESTO????
         jr      z,.593          ;[0B80Dh]
 
         ld      a,l
@@ -9304,7 +9304,7 @@ DecBCD_HL:  ld      a,(hl)
 
 DefSymbols:
         ld      hl,43E6h
-        ld      bc,0F04h        ;Al final se escriben ¨70 patrones?
+        ld      bc,0F04h        ;Al final se escriben ï¿½70 patrones?
 .598:   push    bc
 
 .597:   ld      a,(hl)
@@ -9501,11 +9501,11 @@ InitGame:
         ld      bc,600h
         ldir
 
-        ld      a,0C3h          ;'Ã'
+        ld      a,0C3h          ;'ï¿½'
         ld      (38h),a
         ld      hl,VectorInt        ;[0B45Bh]
         ld      (39h),hl
-        ld      a,0D0h          ;'Ð'
+        ld      a,0D0h          ;'ï¿½'
         ld      (0D380h),a
 
         call    HideAllSprites  ;[94C2h]
@@ -9629,7 +9629,7 @@ DefNumSP:
                                            ;en a-> 4
                                            ;Por tanto se escriben
                                            ;400h bytes en la posicion
-                                           ;3ec0h de VRAM -> ¨Da la vuelta
+                                           ;3ec0h de VRAM -> ï¿½Da la vuelta
                                            ;en los MSX1?, porque me paso
                                            ;de 4000h
 ;::===============================::
@@ -9695,7 +9695,7 @@ SBAA4:  call    SBAF6           ;[0BAF6h]
         and     30h             ;'0'
         ld      b,a
         in      a,(0A8h)        ;PSLOT register
-        and     0FCh            ;'ü'
+        and     0FCh            ;'ï¿½'
         dec     a
         ld      hl,0
 .613:   inc     a
@@ -9711,12 +9711,12 @@ SBAA4:  call    SBAF6           ;[0BAF6h]
 .612:   ld      a,c
         rrca
         rrca
-        and     0C0h            ;'À'
+        and     0C0h            ;'ï¿½'
         or      b
         out     (0A8h),a        ;PSLOT register
         ld      a,(0FFFFh)
         cpl
-        and     0FCh            ;'ü'
+        and     0FCh            ;'ï¿½'
         or      e
         ld      (0FFFFh),a
         ld      a,c
@@ -9751,7 +9751,7 @@ SBAF6:  in      a,(0A8h)        ;PSLOT register
         and     30h             ;'0'
         ld      b,a
         in      a,(0A8h)        ;PSLOT register
-        and     0F3h            ;'ó'
+        and     0F3h            ;'ï¿½'
         sub     4
         ld      hl,4000h
 .616:   add     a,4
@@ -9769,12 +9769,12 @@ SBAF6:  in      a,(0A8h)        ;PSLOT register
         rrca
         rrca
         rrca
-        and     0C0h            ;'À'
+        and     0C0h            ;'ï¿½'
         or      b
         out     (0A8h),a        ;PSLOT register
         ld      a,(0FFFFh)
         cpl
-        and     0F3h            ;'ó'
+        and     0F3h            ;'ï¿½'
         or      e
         ld      (0FFFFh),a
         ld      a,c
@@ -9894,10 +9894,10 @@ TBC00:  nop
         ret     nz
         add     a,0Fh
         rrca
-        xor     0E0h            ;'à'
+        xor     0E0h            ;'ï¿½'
         ret     po
         ret     pe
-        xor     0CFh            ;'Ï'
+        xor     0CFh            ;'ï¿½'
         scf
         ld      (hl),38h        ;'8'
         inc     a
@@ -9927,7 +9927,7 @@ TBC00:  nop
         nop
         add     a,(hl)
         synchr  8Fh             ;Check BASIC program char
-        ld      b,0C0h          ;'À'
+        ld      b,0C0h          ;'ï¿½'
         ret     c
         nop
         jr      nz,.624         ;[0BCE7h]
@@ -10004,7 +10004,7 @@ TBC00:  nop
         out     (73h),a         ;Unknown port
         synchr  0CBh            ;Check BASIC program char
         call    SC0C0           ;[0C0C0h]
-        db      0FDh            ;Invalid op-code 'ý'
+        db      0FDh            ;Invalid op-code 'ï¿½'
         rst     30h
         db      0FDh
         dw      0F3E3h          ;Far call to slot 1 (slot A)
@@ -10013,61 +10013,61 @@ TBC00:  nop
         rst     38h
         rst     18h             ;Print character [A] (BASIC,NIKE)
 ;
-.624:   db      0BFh,7Fh,'Ejjjm',7Fh,0,'þöæÖÂöþ',0,'þæÚæÚæþ',0,0FFh,0FFh
+.624:   db      0BFh,7Fh,'Ejjjm',7Fh,0,'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',0,'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',0,0FFh,0FFh
         db      0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
         db      0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
         db      0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0A0h,9Ah,0B1h
-        db      8Ah,80h,80h,'Àð',5,'Y',8Dh,'Q',5,0Dh,0BBh,0Fh,0FFh,'Ï'
-        db      0Fh,7,80h,'Ààà',0FFh,0FFh,0FFh,0FFh,7Fh,0Fh,':BÐÐ',0A8h
-        db      'T',92h,'éôûÂ',92h,92h,86h,89h,'ò',0Eh,'þüü',0FFh,'ü'
-        db      'üüøà?',0BFh,0FFh,0BFh,0BFh,0BFh,'O''À',80h,80h,80h,80h
-        db      'Àçø',13h,9,9,19h,19h,'3ç',1Fh,'Í',8Ah,89h,8Bh,85h,'Â'
-        db      'áø',0B3h,'U',95h,'Õ',0ADh,'[',0A7h,1Fh,'À',0BFh,7Fh
-        db      7Fh,9Ch,'ã',0FFh,0FFh,7Fh,8Fh,'óýþ~',0BEh,0BEh,'Ã',81h
-        db      0Ch,'l`,',89h,'Ã',0BEh,'}ý',0BBh,'Ç',0FFh,'?Ï<aá',91h
-        db      89h,81h,1,7Fh,'<',86h,87h,89h,91h,81h,80h,'þ',7Fh,1,81h
-        db      89h,91h,'áa<þ',80h,81h,91h,89h,87h,86h,'<',0FFh,0FFh
-        db      0FFh,'õïþïû',0FFh,0FFh,0FFh,'_ï',0FFh,'ï',0BFh,'ïþïõ'
-        db      0FFh,0FFh,0FFh,0FFh,'ï',0FFh,'ï_',0FFh,0FFh,0FFh,0FFh
+        db      8Ah,80h,80h,'ï¿½ï¿½',5,'Y',8Dh,'Q',5,0Dh,0BBh,0Fh,0FFh,'ï¿½'
+        db      0Fh,7,80h,'ï¿½ï¿½ï¿½',0FFh,0FFh,0FFh,0FFh,7Fh,0Fh,':Bï¿½ï¿½',0A8h
+        db      'T',92h,'ï¿½ï¿½ï¿½ï¿½',92h,92h,86h,89h,'ï¿½',0Eh,'ï¿½ï¿½ï¿½',0FFh,'ï¿½'
+        db      'ï¿½ï¿½ï¿½ï¿½?',0BFh,0FFh,0BFh,0BFh,0BFh,'O''ï¿½',80h,80h,80h,80h
+        db      'ï¿½ï¿½ï¿½',13h,9,9,19h,19h,'3ï¿½',1Fh,'ï¿½',8Ah,89h,8Bh,85h,'ï¿½'
+        db      'ï¿½ï¿½',0B3h,'U',95h,'ï¿½',0ADh,'[',0A7h,1Fh,'ï¿½',0BFh,7Fh
+        db      7Fh,9Ch,'ï¿½',0FFh,0FFh,7Fh,8Fh,'ï¿½ï¿½ï¿½~',0BEh,0BEh,'ï¿½',81h
+        db      0Ch,'l`,',89h,'ï¿½',0BEh,'}ï¿½',0BBh,'ï¿½',0FFh,'?ï¿½<aï¿½',91h
+        db      89h,81h,1,7Fh,'<',86h,87h,89h,91h,81h,80h,'ï¿½',7Fh,1,81h
+        db      89h,91h,'ï¿½a<ï¿½',80h,81h,91h,89h,87h,86h,'<',0FFh,0FFh
+        db      0FFh,'ï¿½ï¿½ï¿½ï¿½ï¿½',0FFh,0FFh,0FFh,'_ï¿½',0FFh,'ï¿½',0BFh,'ï¿½ï¿½ï¿½ï¿½'
+        db      0FFh,0FFh,0FFh,0FFh,'ï¿½',0FFh,'ï¿½_',0FFh,0FFh,0FFh,0FFh
         db      0FFh,0FFh,0FFh,0FFh,80h,80h,80h,0FFh,0FFh,0FFh,0FFh,0FFh
         db      0,0,0,0FFh,0,0,0,0,0,0,0FFh,0FFh,1,1,2,2,4,4,0FFh,0FFh
-        db      7Fh,0FFh,'üøøøøø',0FFh,0FFh,0FFh,'øðððè',0FFh,0FFh,0FFh
-        db      7Fh,'?',1Fh,1Fh,9Fh,3,7,0Fh,0FFh,0FFh,0FFh,0FFh,'þo',0FFh
-        db      7Fh,'ýüøøú',0FFh,'üðàÀÇøÄ',0FFh,7Fh,'OG×/''''ï',1Fh,0BFh
-        db      0FFh,0FFh,'þ',0FFh,'û',6,1Fh,0BFh,7Fh,0FFh,'ï',0FFh,0FFh
-        db      '3wóôm',1Dh,0Ch,0,8Eh,0BFh,'?ØÀÆ',0Fh,0Fh,'öþöüôZ',0B4h
-        db      'ùáæøààààà8<',18h,0,'$d`',0,'`ðf',7,7,13h,18h,18h,'G'
-        db      'GGGGGG',7Fh,90h,0AAh,0A9h,92h,80h,80h,'Àð',0,' dH',0
-        db      0,'@',0,'ÀÁ',83h,'60',0,0,2,0FFh,0FFh,'ïäÀÃûø',0FFh,0FFh
+        db      7Fh,0FFh,'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',0FFh,0FFh,0FFh,'ï¿½ï¿½ï¿½ï¿½ï¿½',0FFh,0FFh,0FFh
+        db      7Fh,'?',1Fh,1Fh,9Fh,3,7,0Fh,0FFh,0FFh,0FFh,0FFh,'ï¿½o',0FFh
+        db      7Fh,'ï¿½ï¿½ï¿½ï¿½ï¿½',0FFh,'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',0FFh,7Fh,'OGï¿½/''''ï¿½',1Fh,0BFh
+        db      0FFh,0FFh,'ï¿½',0FFh,'ï¿½',6,1Fh,0BFh,7Fh,0FFh,'ï¿½',0FFh,0FFh
+        db      '3wï¿½ï¿½m',1Dh,0Ch,0,8Eh,0BFh,'?ï¿½ï¿½ï¿½',0Fh,0Fh,'ï¿½ï¿½ï¿½ï¿½ï¿½Z',0B4h
+        db      'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½8<',18h,0,'$d`',0,'`ï¿½f',7,7,13h,18h,18h,'G'
+        db      'GGGGGG',7Fh,90h,0AAh,0A9h,92h,80h,80h,'ï¿½ï¿½',0,' dH',0
+        db      0,'@',0,'ï¿½ï¿½',83h,'60',0,0,2,0FFh,0FFh,'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',0FFh,0FFh
         db      0FFh,13h,8,'lk',8Fh,0,'@',0,0,2,0,0,0,0,10h,0,2,0,0,1
-        db      0,15h,'*Õê÷üÀøP',0A8h,'V',0AAh,'Ô~',4,':',15h,'*Õê÷ü'
-        db      'ðøP',0A8h,'V',0AAh,'Ôz',14h,':',7Fh,7Fh,7Fh,7Fh,7Fh
-        db      7Fh,7Fh,0,0FFh,0FFh,0FFh,'üøøøø',0FFh,0FFh,0FFh,8Fh,'C'
-        db      'ÃCóçÈ',90h,'òò',0FFh,0FFh,0FFh,'Ç',7Fh,7Fh,7Fh,7Fh,0FFh
-        db      0FFh,0FFh,0FFh,'ÏÇÎÌÌÄÀààãàðø',0FFh,0FFh,'o',0Fh,0Fh
-        db      9Fh,7Fh,0FFh,0FFh,0FFh,'G',8Fh,1Fh,1Fh,'???',7Fh,'þü'
-        db      'øóôèèàÅÀÊôáñ',0FFh,0FFh,'G',0AFh,1Fh,87h,7,8Fh,0FFh
-        db      0FFh,'sã',7,0Fh,1Fh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
-        db      0FFh,'þøüaóóc=}x0îààèîÏ76',0Fh,1Fh,7Fh,'??',1Bh,1,'Á'
-        db      0FFh,0FFh,0FFh,'?',7,81h,'ÂÀ `qssp!',1,0,0,86h,'Ï',8Fh
-        db      6,'ÀØ#S',0BFh,7Fh,0FFh,0FFh,0FFh,0FFh,0FFh,'þþþüøðà',10h
-        db      0,0,'`p8',0,0,2,0,0,80h,0,6,'``''ã#sóãó',0FFh,0FFh,0FFh
-        db      0FFh,0FFh,'à',84h,18h,'4',0,0,'@',0,0,' ',10h,0,0,0,0
+        db      0,15h,'*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½P',0A8h,'V',0AAh,'ï¿½~',4,':',15h,'*ï¿½ï¿½ï¿½ï¿½'
+        db      'ï¿½ï¿½P',0A8h,'V',0AAh,'ï¿½z',14h,':',7Fh,7Fh,7Fh,7Fh,7Fh
+        db      7Fh,7Fh,0,0FFh,0FFh,0FFh,'ï¿½ï¿½ï¿½ï¿½ï¿½',0FFh,0FFh,0FFh,8Fh,'C'
+        db      'ï¿½Cï¿½ï¿½ï¿½',90h,'ï¿½ï¿½',0FFh,0FFh,0FFh,'ï¿½',7Fh,7Fh,7Fh,7Fh,0FFh
+        db      0FFh,0FFh,0FFh,'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',0FFh,0FFh,'o',0Fh,0Fh
+        db      9Fh,7Fh,0FFh,0FFh,0FFh,'G',8Fh,1Fh,1Fh,'???',7Fh,'ï¿½ï¿½'
+        db      'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',0FFh,0FFh,'G',0AFh,1Fh,87h,7,8Fh,0FFh
+        db      0FFh,'sï¿½',7,0Fh,1Fh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
+        db      0FFh,'ï¿½ï¿½ï¿½aï¿½ï¿½c=}x0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½76',0Fh,1Fh,7Fh,'??',1Bh,1,'ï¿½'
+        db      0FFh,0FFh,0FFh,'?',7,81h,'ï¿½ï¿½ `qssp!',1,0,0,86h,'ï¿½',8Fh
+        db      6,'ï¿½ï¿½#S',0BFh,7Fh,0FFh,0FFh,0FFh,0FFh,0FFh,'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½',10h
+        db      0,0,'`p8',0,0,2,0,0,80h,0,6,'``''ï¿½#sï¿½ï¿½ï¿½',0FFh,0FFh,0FFh
+        db      0FFh,0FFh,'ï¿½',84h,18h,'4',0,0,'@',0,0,' ',10h,0,0,0,0
         db      0,0,2,0,80h,'OO',9Fh,9Fh,9Fh,1Fh,'?',7Fh,0FFh,0FFh,83h
-        db      80h,'ßøðð',0FFh,0FFh,0FFh,0FFh,0FFh,7Fh,1Fh,1Fh,'ðøþ'
-        db      'üüÜ',80h,80h,'?o',0,0,0,1,'G',0FFh,'þ',0FFh,'þ',0FFh
-        db      0FFh,'ü',0B8h,18h,7Fh,'?',1Fh,8Fh,'ÏO//',18h,84h,'Àà'
-        db      'üþ',0FFh,0FFh,'/''Ç',7,3,3,'Áø'
+        db      80h,'ï¿½ï¿½ï¿½ï¿½',0FFh,0FFh,0FFh,0FFh,0FFh,7Fh,1Fh,1Fh,'ï¿½ï¿½ï¿½'
+        db      'ï¿½ï¿½ï¿½',80h,80h,'?o',0,0,0,1,'G',0FFh,'ï¿½',0FFh,'ï¿½',0FFh
+        db      0FFh,'ï¿½',0B8h,18h,7Fh,'?',1Fh,8Fh,'ï¿½O//',18h,84h,'ï¿½ï¿½'
+        db      'ï¿½ï¿½',0FFh,0FFh,'/''ï¿½',7,3,3,'ï¿½ï¿½'
 PatternMap:  db      '6',3,'M',3,'M',3,'M',3,'M',3,'M',3,'M',3,1,0Ch,0Ch,0Ch
         db      8,4,5,4,5,5,5,5,5,5,4,4,3,3,2,1,1,1,0,1,0Fh,0Fh,0Eh,0Dh
         db      0Dh,0Ch,0Ch,0Bh,0Ah,9,9,8,8,7,7,6,6,5,5,4,3,3,3,2,2,2
-        db      1,1,1,1,1,1,1,1,1,1,1,1,1,0,'a',19h,'õ',17h,9Ch,16h,'W'
-        db      15h,'%',14h,3,13h,'ó',11h,'ñ',10h,'þ',0Fh,18h,0Fh,'?'
-        db      0Eh,'s',0Dh,'9',0Dh,'û',0Bh,'O',0Bh,0ACh,0Ah,13h,0Ah
-        db      82h,9,'ù',8,'y',8,0FFh,7,8Bh,7,' ',7,0B8h,6,'Y',6,'ý'
-        db      5,0A7h,5,'W',5,9,5,'Á',4,'}',4,'=',4,0FFh,3,'Æ',3,8Fh
-        db      3,'\',3,',',3,0FFh,2,'Ô',2,0ABh,2,84h,2,'a',2,'?',2,1Eh
-        db      2,0,2,'ã',1,'È',1,0AEh,1,96h,1,'~',1,'j',1,'V',1,'C',1
+        db      1,1,1,1,1,1,1,1,1,1,1,1,1,0,'a',19h,'ï¿½',17h,9Ch,16h,'W'
+        db      15h,'%',14h,3,13h,'ï¿½',11h,'ï¿½',10h,'ï¿½',0Fh,18h,0Fh,'?'
+        db      0Eh,'s',0Dh,'9',0Dh,'ï¿½',0Bh,'O',0Bh,0ACh,0Ah,13h,0Ah
+        db      82h,9,'ï¿½',8,'y',8,0FFh,7,8Bh,7,' ',7,0B8h,6,'Y',6,'ï¿½'
+        db      5,0A7h,5,'W',5,9,5,'ï¿½',4,'}',4,'=',4,0FFh,3,'ï¿½',3,8Fh
+        db      3,'\',3,',',3,0FFh,2,'ï¿½',2,0ABh,2,84h,2,'a',2,'?',2,1Eh
+        db      2,0,2,'ï¿½',1,'ï¿½',1,0AEh,1,96h,1,'~',1,'j',1,'V',1,'C',1
         db      '0',1,1Fh,1,0Eh,1,0FFh,0
 ;::===============================::
 ;||          SUBROUTINE           ||
@@ -10382,7 +10382,7 @@ TC101:  nop
         djnz    .668            ;[0C2BBh]
 .668    equ     $-1
         db      0,1,11h,0,93h,1,96h,1,98h,1,98h,1,96h,1,98h,2,98h,1,10h
-        db      3,11h,1,1Eh,0,0,'þ',10h,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
+        db      3,11h,1,1Eh,0,0,'ï¿½',10h,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
         db      0FFh,0FFh,0FFh,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0FFh,0FFh
         db      0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
 ;::===============================::
@@ -10753,7 +10753,7 @@ SC501:  and     l
         pop     bc
         jp      nz,.686         ;[0C4C3h]
         push    bc
-        add     a,0C7h          ;'Ç'
+        add     a,0C7h          ;'ï¿½'
         ret     z
         ret
 ;::===============================::
@@ -10765,17 +10765,17 @@ SC501:  and     l
         pop     de
         jp      nc,0D4D3h
         push    de
-        sub     0D7h            ;'×'
+        sub     0D7h            ;'ï¿½'
         ret     c
         exx
         jp      c,0DCDBh
-        db      0DDh            ;Invalid op-code 'Ý'
-        sbc     a,0DFh          ;'ß'
+        db      0DDh            ;Invalid op-code 'ï¿½'
+        sbc     a,0DFh          ;'ï¿½'
         ret     nz
         pop     bc
         jp      nz,.686         ;[0C4C3h]
         push    bc
-        add     a,0C7h          ;'Ç'
+        add     a,0C7h          ;'ï¿½'
         ret     z
         ret
 ;::===============================::
@@ -10787,17 +10787,17 @@ SC501:  and     l
         pop     de
         jp      nc,0D4D3h
         push    de
-        sub     0D7h            ;'×'
+        sub     0D7h            ;'ï¿½'
         ret     c
         exx
         jp      c,0DCDBh
-        db      0DDh            ;Invalid op-code 'Ý'
-        sbc     a,0DFh          ;'ß'
+        db      0DDh            ;Invalid op-code 'ï¿½'
+        sbc     a,0DFh          ;'ï¿½'
         ret     nz
         pop     bc
         jp      nz,.686         ;[0C4C3h]
         push    bc
-        add     a,0C7h          ;'Ç'
+        add     a,0C7h          ;'ï¿½'
         ret     z
         ret
 ;::===============================::
@@ -10809,80 +10809,80 @@ SC501:  and     l
         pop     de
         jp      nc,0D4D3h
         push    de
-        sub     0D7h            ;'×'
+        sub     0D7h            ;'ï¿½'
         ret     c
         exx
         jp      c,0DCDBh
-        db      0DDh            ;Invalid op-code 'Ý'
-        sbc     a,0DFh          ;'ß'
+        db      0DDh            ;Invalid op-code 'ï¿½'
+        sbc     a,0DFh          ;'ï¿½'
         ret     po
         pop     hl
         jp      po,0E4E3h
         push    hl
-        and     0E7h            ;'ç'
+        and     0E7h            ;'ï¿½'
         ret     pe
         jp      (hl)
 ;::===============================::
 ;||   No execution path to here   ||
 ;::===============================::
         jp      pe,0ECEBh
-        db      0EDh            ;Invalid op-code 'í'
-        xor     0EFh            ;'ï'
+        db      0EDh            ;Invalid op-code 'ï¿½'
+        xor     0EFh            ;'ï¿½'
         ret     p
         pop     af
         jp      p,0F4F3h
         push    af
-        or      0F7h            ;'÷'
+        or      0F7h            ;'ï¿½'
         ret     m
         ld      sp,hl
         jp      m,0FCFBh
-        db      0FDh            ;Invalid op-code 'ý'
+        db      0FDh            ;Invalid op-code 'ï¿½'
         cp      0FFh            ;
         ret     po
         pop     hl
         jp      po,0E4E3h
 .662:   push    hl
-        and     0E7h            ;'ç'
+        and     0E7h            ;'ï¿½'
         ret     pe
         jp      (hl)
 ;::===============================::
 ;||   No execution path to here   ||
 ;::===============================::
         jp      pe,0ECEBh
-        db      0EDh            ;Invalid op-code 'í'
-        xor     0EFh            ;'ï'
+        db      0EDh            ;Invalid op-code 'ï¿½'
+        xor     0EFh            ;'ï¿½'
         ret     p
         pop     af
         jp      p,0F4F3h
         push    af
-        or      0F7h            ;'÷'
+        or      0F7h            ;'ï¿½'
         ret     m
         ld      sp,hl
         jp      m,0FCFBh
-        db      0FDh            ;Invalid op-code 'ý'
+        db      0FDh            ;Invalid op-code 'ï¿½'
         cp      0FFh            ;
         ret     po
         pop     hl
         jp      po,0E4E3h
         push    hl
-        and     0E7h            ;'ç'
+        and     0E7h            ;'ï¿½'
         ret     pe
         jp      (hl)
 ;::===============================::
 ;||   No execution path to here   ||
 ;::===============================::
         jp      pe,0ECEBh
-        db      0EDh            ;Invalid op-code 'í'
-        xor     0EFh            ;'ï'
+        db      0EDh            ;Invalid op-code 'ï¿½'
+        xor     0EFh            ;'ï¿½'
         ret     p
         pop     af
         jp      p,0F4F3h
         push    af
-        or      0F7h            ;'÷'
+        or      0F7h            ;'ï¿½'
         ret     m
         ld      sp,hl
         jp      m,0FCFBh
-        db      0FDh            ;Invalid op-code 'ý'
+        db      0FDh            ;Invalid op-code 'ï¿½'
         cp      0FFh            ;
         nop
         ex      af,af'
@@ -11008,7 +11008,7 @@ SC501:  and     l
         ld      (bc),a
         cp      2
         cp      0
-        cp      0FEh            ;'þ'
+        cp      0FEh            ;'ï¿½'
         ld      d,27h           ;'''
         dec     c
         dec     bc
@@ -11030,7 +11030,7 @@ SC501:  and     l
         rst     38h
         rst     38h
         ret     po
-        sbc     a,9Eh           ;'ž'
+        sbc     a,9Eh           ;'ï¿½'
         jr      nz,.708         ;[0C749h]
         ld      h,d
         ld      h,e
@@ -11475,7 +11475,7 @@ DataMazeAct:  ld      b,c             ;Aqui van los datos de la pantalla
         xor     h
         inc     bc
         sbc     a,c
-.769:   sbc     a,85h           ;'…'
+.769:   sbc     a,85h           ;'ï¿½'
         ret     nc
         nop
         call    nz,0D205h

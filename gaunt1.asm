@@ -2,19 +2,15 @@
 ;;; %include "z80r800.inc"
 ;;; %include "z80().inc"
 
+	include "tniasm.inc"
 
+LINEINT:  equ     140
+TIMEFADE: equ     3
 
-LINEINT: equ     140
-TIMEFADE: equ    3
-
-
-
-; %macro RGB %n,%n,%n
-; %def16 #2*256+#1*16+#3
-; %endmacro
-#define RGB(r,g,b)      dw (g)*256+(r)*16+(b)
-
-
+; RGB macro
+RGB:	macro ?r8,?g8,?b8
+	dw ?r8*256+?g8*16+?b8
+	endm
 
 ; section code
 
@@ -40,8 +36,7 @@ ShowIntro:
         ret
 
 
-PAL_NEGRO:      DS      32,0
-
+PAL_NEGRO:      ds      32,0
 
 
 SelectChars:
@@ -75,29 +70,28 @@ SelectChars:
         ld    	hl,SelectPallette
 	call	FADE_OFF
 	ld	b,160
-.loop:  ei
+
+SelectChars.loop:
+	ei
 	halt
-	djnz .loop
+	djnz SelectChars.loop
 
         ld      IY,AYREGS
-        ld      [IY+7],$BF
-        ld      [IY+8],0
-        ld      [IY+8],0
-        ld      [IY+9],0
-        ld      [IY+10],0
+        ld      (IY+7),$BF
+        ld      (IY+8),0
+        ld      (IY+8),0
+        ld      (IY+9),0
+        ld      (IY+10),0
         call     PT3_ROUT
         ret
-
-
 
 
 selectP2:
         ld      a,1
         ld      (copyline+3),a
         call    selectP1
-        ld      (0fffe),a
+        ld      (0fffeh),a
         ret
-
 
 
 selectP1:
@@ -106,33 +100,28 @@ selectP1:
         ld      (copyline),a
         call    showCart
         ld      b,120
-.wait:  ei
+
+selectP1.wait:  ei
         halt
-        djnz    .wait
+        djnz    selectP1.wait
 
         call    hideCart
         call    SPD_ON
 
-.loop:
+selectP1.loop:
         ei
         halt
         call    MoveHand
         call    PutHand
         call    TestF
-        jr      z,.loop
+        jr      z,selectP1.loop
 
         call    searchButton
         or      a
-        jr      z,.loop
+        jr      z,selectP1.loop
         dec     a
         out     (2fh),a
         ret
-
-
-
-
-
-
 
 
 getNumbers:
@@ -141,67 +130,70 @@ getNumbers:
         ld      hl,rcopy1p
         ld      (copyptr),hl
 
-.loop:
+getNumbers.loop:
         ei
         halt
         call    MoveHand
         call    PutHand
         call    searchButton
         or      a
-        jr      nz,.one
-.erase:
+        jr      nz,getNumbers.one
+
+getNumbers.erase:
         ld      hl,(copyptr)
         call    WAIT_COM
         call    COPYVRAM
-        jr      .loop
+        jr      getNumbers.loop
 
-.one:   dec     a
+getNumbers.one:
+        dec     a
         cp      4
-        jr      nz,.two
+        jr      nz,getNumbers.two
         ld      hl,rcopy1p
         ld      (copyptr),hl
         ld      hl,copy1p
         ld      a,1
-        jr      .tfire
+        jr      getNumbers.tfire
 
-.two:   cp      5
-        jr      nz,.erase
+getNumbers.two:
+        cp      5
+        jr      nz,getNumbers.erase
         ld      hl,rcopy2p
         ld      (copyptr),hl
         ld      hl,copy2p
         ld      a,2
 
-.tfire:
+getNumbers.tfire:
         ld      (nplayers),a
         CALL    WAIT_COM
         CALL    COPYVRAM
         call    TestF
-        jr      z,.loop
+        jr      z,getNumbers.loop
         call    SPD_OFF
         call    hideCart
         ret
-
-
-
-
 
 
 ;;; e <-x
 ;;; d <- y
 
 searchButton:
-        ld      hl,COOR_XY
+        ld      hl,coor_xy
         ld      d,(hl)
         inc     hl
         ld      e,(hl)
         ld      hl,Pos-5
-.next1:
+
+searchButton.next1:
         inc     hl
-.next2:
+
+searchButton.next2:
         inc     hl
-.next3:
+
+searchButton.next3:
         inc     hl
-.next4:
+
+searchButton.next4:
         inc     hl
 
         inc     hl
@@ -211,24 +203,23 @@ searchButton:
         ret     z
 
         cp      e
-        jr      nc,.next1
+        jr      nc,searchButton.next1
         inc     hl
         ld      a,(hl)
         cp      d
-        jr      nc,.next2
+        jr      nc,searchButton.next2
 
         inc     hl
         ld      a,(hl)
         cp      e
-        jr      c,.next3
+        jr      c,searchButton.next3
         inc     hl
         ld      a,(hl)
         cp      d
-        jr      c,.next4
+        jr      c,searchButton.next4
         inc     hl
         ld      a,(hl)
         ret
-
 
 
 Pos:    db      143,90,167,99,6
@@ -240,53 +231,46 @@ Pos:    db      143,90,167,99,6
         db      0
 
 
-
-
-
 hideCart:
-
         ld      e,80
         ld      d,80+44
         ld      b,46/2
 
-.n1:    ei
+hideCart.n1:
+        ei
         halt
 
         ld      a,e
         inc     e
-        ld      (copylineI+2),a
-        ld      (copylineI+6),a
+        ld      (copylinei+2),a
+        ld      (copylinei+6),a
         exx
         CALL    WAIT_COM
-        ld      hl,copylineI
+        ld      hl,copylinei
         CALL    COPYVRAM
         exx
-
 
         ld      a,d
         dec     d
-        ld      (copylineI+2),a
-        ld      (copylineI+6),a
+        ld      (copylinei+2),a
+        ld      (copylinei+6),a
         exx
         CALL    WAIT_COM
-        ld      hl,copylineI
+        ld      hl,copylinei
         CALL    COPYVRAM
         exx
-        djnz .n1
+        djnz    hideCart.n1
 
         ei
         halt
 
         ld      a,80+43/2+2
-        ld      (copylineI+2),a
-        ld      (copylineI+6),a
+        ld      (copylinei+2),a
+        ld      (copylinei+6),a
         call    WAIT_COM
-        ld      hl,copylineI
+        ld      hl,copylinei
         call    COPYVRAM
         ret
-
-
-
 
 
 showCart:
@@ -296,9 +280,9 @@ showCart:
         ld      l,80+44/2+1
         ld      b,44/2
 
-.n1:    ei
+showCart.n1:
+        ei
         halt
-
 
         ld      a,e
         dec     e
@@ -312,7 +296,6 @@ showCart:
         CALL    COPYVRAM
         exx
 
-
         ld      a,d
         inc     d
         ld      (copyline+2),a
@@ -324,55 +307,54 @@ showCart:
         ld      hl,copyline
         CALL    COPYVRAM
         exx
-        djnz .n1
+        djnz    showCart.n1
         ret
-
 
 
 MoveHand:
         call    ST_AMPL
-        ld      a,(JOYPORT1)
+        ld      a,(joyport1)
         ld      b,a
-        ld      a,(JOYPORT2)
+        ld      a,(joyport2)
         or      b
 
-        ld      hl,OffsetX
+        ld      hl,offsetx
         bit     2,a
-        jr      z,.derecha
+        jr      z,MoveHand.derecha
         ld      b,a
-        ld      a,(COOR_XY+1)
+        ld      a,(coor_xy+1)
         or      a
         ld      a,b
-        jr      z,.derecha
+        jr      z,MoveHand.derecha
         dec     (hl)
         dec     (hl)
 
-.derecha:
+MoveHand.derecha:
         bit     3,a
-        jr      z,.abajo
+        jr      z,MoveHand.abajo
         ld      b,a
-        ld      a,(COOR_XY+1)
+        ld      a,(coor_xy+1)
         cp      224
         ld      a,b
-        jr      z,.abajo
+        jr      z,MoveHand.abajo
         inc     (hl)
         inc     (hl)
 
-.abajo: ld      hl,OffsetY
+MoveHand.abajo: ld      hl,offsety
         bit     1,a
-        jr      z,.arriba
+        jr      z,MoveHand.arriba
         ld      b,a
-        ld      a,(COOR_XY)
+        ld      a,(coor_xy)
         cp      182
         ld      a,b
-        jr      z,.arriba
+        jr      z,MoveHand.arriba
         inc     (hl)
         inc     (hl)
 
-.arriba:
+MoveHand.arriba:
         bit     0,a
         ret     z
-        ld      a,(COOR_XY)
+        ld      a,(coor_xy)
         or      a
         ret     z
         dec     (hl)
@@ -380,46 +362,34 @@ MoveHand:
         ret
 
 
-
-
-
-
-
 PutHand:
-        ld      hl,COOR_XY
+        ld      hl,coor_xy
         ld      b,16
 
-.loop:
+PutHand.loop:
         ld      e,(hl)
-        ld      a,(OffsetY)
+        ld      a,(offsety)
         add     a,e
         ld      (hl),a
         inc     hl
         ld      e,(hl)
-        ld      a,(OffsetX)
+        ld      a,(offsetx)
         add     a,e
         ld      (hl),a
         inc     hl
         inc     hl
         inc     hl
-        djnz    .loop
+        djnz    PutHand.loop
 
         ld      a,1
-        ld      hl,COOR_XY
+        ld      hl,coor_xy
         ld      de,03600h
         ld      bc,16*4
         call    wvram
         xor     a
-        ld      (OffsetX),a
-        ld      (OffsetY),a
+        ld      (offsetx),a
+        ld      (offsety),a
         ret
-
-
-
-
-
-
-
 
 
 ;NOMBRE: COPYVRAM
@@ -449,8 +419,8 @@ COPYVRAM:
 
 
 TESTCOM:
-	      DI
-              LD    C,99h
+        DI
+        LD      C,99h
         LD      A,2
         DI
         OUT     (C),A
@@ -467,16 +437,14 @@ TESTCOM:
         RET
 
 
-
-
 ;NOMBRE: WAIT_COM
 ;OBJETIVO: ESPERAR HASTA QUE SE PRODUZCA EL FINAL DE UN COMANDO DEL VDP
 
 
-WAIT_COM:       CALL    TESTCOM
+WAIT_COM:
+        CALL    TESTCOM
         JR      NZ,WAIT_COM
         RET
-
 
 
 ;NOMBRE: SPD_OFF
@@ -484,10 +452,11 @@ WAIT_COM:       CALL    TESTCOM
 ;MODIFICA: A
 
 
-SPD_OFF:        DI
-        LD      A,(RG8SAV)
+SPD_OFF:
+        DI
+        LD      A,(rg8sav)
         SET     1,A
-        LD      (RG8SAV),A
+        LD      (rg8sav),A
         OUT     (99h),A
         LD      A,88H
         OUT     (99h),A
@@ -500,14 +469,13 @@ SPD_OFF:        DI
 
 
 SPD_ON: DI
-        LD      A,(RG8SAV)
+        LD      A,(rg8sav)
         RES     1,A
-        LD      (RG8SAV),A
+        LD      (rg8sav),A
         OUT     (99h),A
         LD      A,128+8
         OUT     (99h),A
         RET
-
 
 
 ;NOMBRE: FADE_OFF
@@ -515,13 +483,12 @@ SPD_ON: DI
 
 
 FADE_OFF:
-        LD      DE,PALETAW1
+        LD      DE,paletaw1
         LD      BC,32
         LDIR
         LD      HL,PAL_NEGRO
-        LD      (PALETAD1),HL
+        LD      (paletad1),HL
         JR      PUT_FADET
-
 
 
 ;NOMBRE: FADE_ON
@@ -531,11 +498,11 @@ FADE_OFF:
 FADE_ON:
         EXX
         LD      HL,PAL_NEGRO
-        LD      DE,PALETAW1
+        LD      DE,paletaw1
         LD      BC,32
         LDIR
         EXX
-        LD      (PALETAD1),HL
+        LD      (paletad1),HL
 
 
 PUT_FADET:      LD      B,16    ;ESTA LA QUE REALMENTE SE ENCARGA DE
@@ -544,36 +511,31 @@ PFADE_OFFB:
         PUSH    BC
 PFADE_OFFW:
 	EI
-        LD      A,(TIME)
+        LD      A,(time)
         OR      A
         JR      NZ,PFADE_OFFW
 
-        LD      DE,(PALETAD1)
-        LD      IX,PALETAW1
-        LD      HL,PALETAW1
+        LD      DE,(paletad1)
+        LD      IX,paletaw1
+        LD      HL,paletaw1
         CALL    DOFADE
 
 
 
-        LD      HL,PALETAW1
-        LD      DE,PAL_GM
+        LD      HL,paletaw1
+        LD      DE,pal_gm
         LD      BC,32
         LDIR
 
         DI
         LD      A,TIMEFADE
-        LD      (TIME),A
+        LD      (time),A
         EI
 
         POP     BC
         DJNZ    PFADE_OFFB
 
-
-
         RET
-
-
-
 
 
 
@@ -582,8 +544,6 @@ PFADE_OFFW:
 ;ENTRADA: HL -> PALETA INICIAL
 ;         DE -> PALETA DESTINO
 ;SALIDA: (IX)-> RESULTADO DEL FADE
-
-
 
 
 DOFADE: LD      B,32
@@ -616,10 +576,12 @@ DOFADEIG:
         ADD     A,16
         LD      B,A
         JR      DOFADEIG2
+
 DOFADEMAY2:
         LD      A,B
         SUB     16
         LD      B,A
+
 DOFADEIG2:
         LD      A,C
         ADD     A,B
@@ -633,28 +595,25 @@ DOFADEIG2:
         RET
 
 
-
-
 XINICIAL:       equ     128
 YINICIAL:       equ     96
 
 
-
-
-
-COLOR0_ON:     DI
-        LD      A,(RG8SAV)
+COLOR0_ON:
+        DI
+        LD      A,(rg8sav)
         RES     5,A
-        LD      (RG8SAV),A
+        LD      (rg8sav),A
         OUT     (99h),A
         LD      A,128+8
         OUT     (99h),A
         RET
 
-COLOR0_OFF:     DI
-        LD      A,(RG8SAV)
+COLOR0_OFF:
+        DI
+        LD      A,(rg8sav)
         SET     5,A
-        LD      (RG8SAV),A
+        LD      (rg8sav),A
         OUT     (99h),A
         LD      A,128+8
         OUT     (99h),A
@@ -691,17 +650,17 @@ Interrupt:
         ld      (aux),a
         inc     a
         cp      138
-        jr      nz,.n2
+        jr      nz,Interrupt.n2
         xor     a
 
-
-.n2:    ld      c,a
+Interrupt.n2:
+        ld      c,a
         ld      a,(counter)
         inc     a
         ld      (counter),a
         cp      1
         ld      a,c
-        jp      nz,.n1
+        jp      nz,Interrupt.n1
 
         xor     a
         ld      (counter),a
@@ -709,16 +668,14 @@ Interrupt:
         ld      (pointer),a
         ld      (aux),a
 
-.n1:
+Interrupt.n1:
         add     a,a
         ld      e,a
         ld      d,0
         add     hl,de
         ld      c,9ah
 
-
-.loop:
-
+Interrupt.loop:
         ld      a,1
         call    ChangeColor
 
@@ -726,40 +683,37 @@ Interrupt:
         ld      a,(aux)
         inc     a
         cp      138
-        jp      nz,.n3
+        jp      nz,Interrupt.n3
         xor     a
 
-.n3:    ld      (aux),a
+Interrupt.n3:
+        ld      (aux),a
         ex      de,hl
         ld      l,a
         ld      h,0
         add     hl,hl
         add     hl,de
 
-.waitnhr:
+Interrupt.waitnhr:
         in      a,(99h)
         and     20h
-        jp      nz,.waitnhr
+        jp      nz,Interrupt.waitnhr
 
-
-
-.waithr:
+Interrupt.waithr:
         in      a,(99h)
         and     20h
-        jp      z,.waithr
+        jp      z,Interrupt.waithr
 
         outi
         outi
-        djnz    .loop
+        djnz    Interrupt.loop
 
         pop     bc
         pop     de
         pop     hl
 
 
-
 endint:
-
         xor     a
         out     (99h),a
         ld      a,128+15
@@ -769,176 +723,170 @@ endint:
         reti
 
 
-
-
-
-
-
 PalletteSFX2:
-        RGB(0,1,0)           ; 1
-        RGB(0,2,0)
-        RGB(0,3,0)
-        RGB(0,4,0)
-        RGB(0,5,0)
-        RGB(0,5,0)
-        RGB(0,6,0)
-        RGB(0,6,0)
-        RGB(0,6,0)
-        RGB(0,7,0)
-        RGB(0,7,0)
-        RGB(0,7,0)
-        RGB(0,7,0)
-        RGB(0,6,0)
-        RGB(0,6,0)
-        RGB(0,6,0)
-        RGB(0,5,0)
-        RGB(0,5,0)
-        RGB(0,4,0)
-        RGB(0,3,0)
-        RGB(0,2,0)
-        RGB(0,1,0)
-        RGB(0,0,0)
+        RGB     0,1,0           ; 1
+        RGB     0,2,0
+        RGB     0,3,0
+        RGB     0,4,0
+        RGB     0,5,0
+        RGB     0,5,0
+        RGB     0,6,0
+        RGB     0,6,0
+        RGB     0,6,0
+        RGB     0,7,0
+        RGB     0,7,0
+        RGB     0,7,0
+        RGB     0,7,0
+        RGB     0,6,0
+        RGB     0,6,0
+        RGB     0,6,0
+        RGB     0,5,0
+        RGB     0,5,0
+        RGB     0,4,0
+        RGB     0,3,0
+        RGB     0,2,0
+        RGB     0,1,0
+        RGB     0,0,0
 
 
-        RGB(1,1,0)           ; 2
-        RGB(2,2,0)
-        RGB(3,3,0)
-        RGB(4,4,0)
-        RGB(5,5,0)
-        RGB(5,5,0)
-        RGB(6,6,0)
-        RGB(6,6,0)
-        RGB(6,6,0)
-        RGB(7,7,0)
-        RGB(7,7,0)
-        RGB(7,7,0)
-        RGB(7,7,0)
-        RGB(6,6,0)
-        RGB(6,6,0)
-        RGB(6,6,0)
-        RGB(5,5,0)
-        RGB(5,5,0)
-        RGB(4,4,0)
-        RGB(3,3,0)
-        RGB(2,2,0)
-        RGB(1,1,0)
-        RGB(0,0,0)
+        RGB     1,1,0           ; 2
+        RGB     2,2,0
+        RGB     3,3,0
+        RGB     4,4,0
+        RGB     5,5,0
+        RGB     5,5,0
+        RGB     6,6,0
+        RGB     6,6,0
+        RGB     6,6,0
+        RGB     7,7,0
+        RGB     7,7,0
+        RGB     7,7,0
+        RGB     7,7,0
+        RGB     6,6,0
+        RGB     6,6,0
+        RGB     6,6,0
+        RGB     5,5,0
+        RGB     5,5,0
+        RGB     4,4,0
+        RGB     3,3,0
+        RGB     2,2,0
+        RGB     1,1,0
+        RGB     0,0,0
 
-        RGB(1,0,0)           ; 3
-        RGB(2,0,0)
-        RGB(3,0,0)
-        RGB(4,0,0)
-        RGB(5,0,0)
-        RGB(5,0,0)
-        RGB(6,0,0)
-        RGB(6,0,0)
-        RGB(6,0,0)
-        RGB(7,0,0)
-        RGB(7,0,0)
-        RGB(7,0,0)
-        RGB(7,0,0)
-        RGB(6,0,0)
-        RGB(6,0,0)
-        RGB(6,0,0)
-        RGB(5,0,0)
-        RGB(5,0,0)
-        RGB(4,0,0)
-        RGB(3,0,0)
-        RGB(2,0,0)
-        RGB(1,0,0)
-        RGB(0,0,0)
+        RGB     1,0,0           ; 3
+        RGB     2,0,0
+        RGB     3,0,0
+        RGB     4,0,0
+        RGB     5,0,0
+        RGB     5,0,0
+        RGB     6,0,0
+        RGB     6,0,0
+        RGB     6,0,0
+        RGB     7,0,0
+        RGB     7,0,0
+        RGB     7,0,0
+        RGB     7,0,0
+        RGB     6,0,0
+        RGB     6,0,0
+        RGB     6,0,0
+        RGB     5,0,0
+        RGB     5,0,0
+        RGB     4,0,0
+        RGB     3,0,0
+        RGB     2,0,0
+        RGB     1,0,0
+        RGB     0,0,0
 
-        RGB(1,0,1)           ; 4
-        RGB(2,0,2)
-        RGB(3,0,3)
-        RGB(4,0,4)
-        RGB(5,0,5)
-        RGB(5,0,5)
-        RGB(6,0,6)
-        RGB(6,0,6)
-        RGB(6,0,6)
-        RGB(7,0,7)
-        RGB(7,0,7)
-        RGB(7,0,7)
-        RGB(7,0,7)
-        RGB(6,0,6)
-        RGB(6,0,6)
-        RGB(6,0,6)
-        RGB(5,0,5)
-        RGB(5,0,5)
-        RGB(4,0,4)
-        RGB(3,0,3)
-        RGB(2,0,2)
-        RGB(1,0,1)
-        RGB(0,0,0)
+        RGB     1,0,1           ; 4
+        RGB     2,0,2
+        RGB     3,0,3
+        RGB     4,0,4
+        RGB     5,0,5
+        RGB     5,0,5
+        RGB     6,0,6
+        RGB     6,0,6
+        RGB     6,0,6
+        RGB     7,0,7
+        RGB     7,0,7
+        RGB     7,0,7
+        RGB     7,0,7
+        RGB     6,0,6
+        RGB     6,0,6
+        RGB     6,0,6
+        RGB     5,0,5
+        RGB     5,0,5
+        RGB     4,0,4
+        RGB     3,0,3
+        RGB     2,0,2
+        RGB     1,0,1
+        RGB     0,0,0
 
-        RGB(0,0,1)           ; 5
-        RGB(0,0,2)
-        RGB(0,0,3)
-        RGB(0,0,4)
-        RGB(0,0,5)
-        RGB(0,0,5)
-        RGB(0,0,6)
-        RGB(0,0,6)
-        RGB(0,0,6)
-        RGB(0,0,7)
-        RGB(0,0,7)
-        RGB(0,0,7)
-        RGB(0,0,7)
-        RGB(0,0,6)
-        RGB(0,0,6)
-        RGB(0,0,6)
-        RGB(0,0,5)
-        RGB(0,0,5)
-        RGB(0,0,4)
-        RGB(0,0,3)
-        RGB(0,0,2)
-        RGB(0,0,1)
-        RGB(0,0,0)
+        RGB     0,0,1           ; 5
+        RGB     0,0,2
+        RGB     0,0,3
+        RGB     0,0,4
+        RGB     0,0,5
+        RGB     0,0,5
+        RGB     0,0,6
+        RGB     0,0,6
+        RGB     0,0,6
+        RGB     0,0,7
+        RGB     0,0,7
+        RGB     0,0,7
+        RGB     0,0,7
+        RGB     0,0,6
+        RGB     0,0,6
+        RGB     0,0,6
+        RGB     0,0,5
+        RGB     0,0,5
+        RGB     0,0,4
+        RGB     0,0,3
+        RGB     0,0,2
+        RGB     0,0,1
+        RGB     0,0,0
 
-        RGB(0,1,1)           ; 6
-        RGB(0,2,2)
-        RGB(0,3,3)
-        RGB(0,4,4)
-        RGB(0,5,5)
-        RGB(0,5,5)
-        RGB(0,6,6)
-        RGB(0,6,6)
-        RGB(0,6,6)
-        RGB(0,7,7)
-        RGB(0,7,7)
-        RGB(0,7,7)
-        RGB(0,7,7)
-        RGB(0,6,6)
-        RGB(0,6,6)
-        RGB(0,6,6)
-        RGB(0,5,5)
-        RGB(0,5,5)
-        RGB(0,4,4)
-        RGB(0,3,3)
-        RGB(0,2,2)
-        RGB(0,1,1)
-        RGB(0,0,0)
-
+        RGB     0,1,1           ; 6
+        RGB     0,2,2
+        RGB     0,3,3
+        RGB     0,4,4
+        RGB     0,5,5
+        RGB     0,5,5
+        RGB     0,6,6
+        RGB     0,6,6
+        RGB     0,6,6
+        RGB     0,7,7
+        RGB     0,7,7
+        RGB     0,7,7
+        RGB     0,7,7
+        RGB     0,6,6
+        RGB     0,6,6
+        RGB     0,6,6
+        RGB     0,5,5
+        RGB     0,5,5
+        RGB     0,4,4
+        RGB     0,3,3
+        RGB     0,2,2
+        RGB     0,1,1
+        RGB     0,0,0
 
 
 oldvector1:
-              ld	a,(TIME)
+              ld	a,(time)
               or	a
-              jp	z,.n2
+              jp	z,oldvector1.n2
               dec	a
-              ld	(TIME),a
+              ld	(time),a
 
-.n2:
+oldvector1.n2:
               push  	hl
 	      push  	de
               push  	bc
               push	ix
               push      iy
-              ld	hl,PAL_GM
+              ld	hl,pal_gm
               call	PutPal
 	      call	isrsound
-              pop      iy
+              pop       iy
               pop	ix
               pop  	bc
 	      pop  	de
@@ -952,12 +900,8 @@ newvector:
         jp      Interrupt
 
 
-
-
-
-
 ColourSFX:
-        call    VIS_OFF
+        call    vis_off
         ld      hl,gtitle
         ld      de,0
         scf
@@ -969,7 +913,7 @@ ColourSFX:
         di
         ld      a,LINEINT
         call    SETVDP_LI
-        call    VIS_ON
+        call    vis_on
 	call	initmusic
         ld      hl,TitlePallette
         CALL    FADE_ON
@@ -980,63 +924,62 @@ ColourSFX:
         LD      HL,TitlePallette
         call    FADE_OFF
 
-	ld      hl,(WAITTIME)
+	ld      hl,(waittime)
         ld      a,l
 	or      h
         ret
 
 
-
 waitKB:
-        ld    hl,60*60
-        ld    (WAITTIME),hl
-.loop:
-	ld      hl,(WAITTIME)
+        ld      hl,60*60
+        ld      (waittime),hl
+
+waitKB.loop:
+	ld      hl,(waittime)
 	dec     hl
-        ld      (WAITTIME),hl
+        ld      (waittime),hl
         ld      a,l
 	or      h
-        jr      nz,.wait
+        jr      nz,waitKB.wait
         xor     a
 	ret
-.wait:
+
+waitKB.wait:
 	ei
         halt
         call    ST_AMPL
-        ld      a,(JOYPORT1)
+        ld      a,(joyport1)
         ld      b,a
-        ld      a,(JOYPORT2)
+        ld      a,(joyport2)
         or      b
         ret     nz
-        jr      .loop
+        jr      waitKB.loop
 
 
 waitnKB:
-	ld    hl,(WAITTIME)
+	ld    hl,(waittime)
 	ld    a,h
         or    l
         ret   z
-.loop:
+
+waitnKB.loop:
         call    ST_AMPL
-        ld      a,(JOYPORT1)
+        ld      a,(joyport1)
         ld      b,a
-        ld      a,(JOYPORT2)
+        ld      a,(joyport2)
         or      b
         ret     z
-        jr      .loop
-
-
+        jr      waitnKB.loop
 
 
 TestF:
         call    ST_AMPL
-        ld      a,(JOYPORT1)
+        ld      a,(joyport1)
         bit     4,a
         ret     nz
-        ld      a,(JOYPORT2)
+        ld      a,(joyport2)
         bit     4,a
         ret
-
 
 
 RestVDP:
@@ -1049,20 +992,15 @@ RestVDP:
         ret
 
 
-
-
-
-
-
 InitVDP:
         ld      a,5
-        call    CHGMOD
+        call    chgmod
         call    SET_SPD16
         call    COLOR0_OFF
         xor     a
         call    SET_CFONDO
         ld      hl,PAL_NEGRO
-        ld      de,PAL_GM
+        ld      de,pal_gm
         ld      bc,32
         ldir
         call    SPD_OFF
@@ -1070,11 +1008,11 @@ InitVDP:
         ld      hl,PAL_NEGRO
         call    PutPal
 
-	ld	l,0
-	ld	de,0
-	ld	4000h
-	ld	a,7
-	call	svram
+        ld	l,0
+        ld	de,0
+        ld	bc,4000h
+        ld	a,7
+        call	svram
 
         ld      hl,0fd9ah
         ld      de,oldvector
@@ -1091,10 +1029,6 @@ InitVDP:
         ei
 
         ret
-
-
-
-
 
 
 BuildHand:
@@ -1128,7 +1062,6 @@ BuildHand:
         ld      de,3400h+32*4
         call    svram
 
-
         ld      l,13
         ld      a,1
         ld      bc,16*4
@@ -1137,36 +1070,32 @@ BuildHand:
 
 
         ld      a,1
-        ld      hl,COOR_XY
+        ld      hl,coor_xy
         ld      de,03600h
         ld      bc,32
         call    wvram
         ret
 
 
-
-VIS_ON: DI
-        LD      A,(RG1SAV)
+vis_on: DI
+        LD      A,(rg1sav)
         SET     6,A
-        LD      (RG1SAV),A
+        LD      (rg1sav),A
         OUT     (99h),A
         LD      A,128+1
         OUT     (99h),A
         RET
 
 
-
-VIS_OFF:
+vis_off:
         DI
-        LD      A,(RG1SAV)
+        LD      A,(rg1sav)
         RES     6,A
-        LD      (RG1SAV),A
+        LD      (rg1sav),A
         OUT     (99h),A
         LD      A,128+1
         OUT     (99h),A
         RET
-
-
 
 
 ;NOMBRE: SET_CFONDO
@@ -1183,7 +1112,6 @@ SET_CFONDO:
         RET
 
 
-
 ChangeColor:
         di
         out     (99h),a
@@ -1191,9 +1119,6 @@ ChangeColor:
         out     (99h),a
 
         ret
-
-
-
 
 
 PutPal: di
@@ -1220,7 +1145,6 @@ SelectPallette:
         dw 0000h,0333h,0630h,0574h,0026h,0237h,0040h,0547h
         dw 0060h,0463h,0570h,0774h,0420h,0251h,0555h,0777h
 
-
 VER_PAGE:
         DI
         LD HL,PAGE0
@@ -1240,12 +1164,10 @@ PAGE2:          DB 01011111B
 PAGE3:          DB 01111111B
 
 
-
-
 SET_SPD16:      DI
-        LD      A,(RG1SAV)
+        LD      A,(rg1sav)
         SET     1,A
-        LD      (RG1SAV),A
+        LD      (rg1sav),A
         OUT     (99h),A
         LD      A,128+1
         OUT     (99h),A
@@ -1258,7 +1180,7 @@ SETVDP_LI:
         LD      A,128+19
         OUT     (99h),A
 
-        LD      A,(RG0SAV)
+        LD      A,(rg0sav)
         SET     4,A
         OUT     (99h),A
         LD      A,128+0
@@ -1270,15 +1192,14 @@ SETVDP_LI:
 ;OBJETIVO: DESACTIVAR LAS INTERRUPCIONES HORIZONTALES
 
 
-RESVDP_LI:      DI
-        LD      A,(RG0SAV)
+RESVDP_LI:
+		DI
+        LD      A,(rg0sav)
         RES     4,A
         OUT     (99h),A
         LD      A,128+0
         OUT     (99h),A
         RET
-
-
 
 
 ;;; Parametros de entrada
@@ -1288,12 +1209,12 @@ RESVDP_LI:      DI
 ;;; a -> Pagina
 
 
-wvram:  call    setVram
+wvram:  call    setvram
         call    WriteVRAM
         ret
 
 
-svram:  call    setVram
+svram:  call    setvram
         call    FillVRAM
         ret
 
@@ -1304,12 +1225,10 @@ FillVRAM:
         ret     z
 
         ld      a,l
-.FillVRAM1:
+_FillVRAM1:
         out     (98h),a
         dec     bc
         jp      nz,FillVRAM
-
-
 
 
 WriteVRAM:
@@ -1320,17 +1239,20 @@ WriteVRAM:
         xor     a
         or      d
         ld      b,0
-        jr      z,.end
-.loop:  otir
-        dec     d
-        jr      nz,.loop
+        jr      z,WriteVRAM.end
 
-.end:   ld      b,e
+WriteVRAM.loop:
+        otir
+        dec     d
+        jr      nz,WriteVRAM.loop
+
+WriteVRAM.end:
+        ld      b,e
         otir
         ret
 
 
-SetVram:
+setvram:
         DI
         PUSH    AF
         LD      A,E     ;Y ENVIRLA COMO PUNTERO RAM
@@ -1340,7 +1262,6 @@ SetVram:
         OR      40h
         OUT     (99h),A
 
-
         POP     AF              ; AHORA ESCRIBO LA PAGINA
         OUT     (99h),A
         LD      A,128+14
@@ -1348,26 +1269,24 @@ SetVram:
         RET
 
 
-
-
 ST_AMPL:
-
         ld      e,8Fh           ;'~O'
-        call    LEE_JOY           ;[88DEh]
-        ld      (JOYPORT1),a       ;[9439h]
+        call    LEE_JOY         ;[88DEh]
+        ld      (joyport1),a    ;[9439h]
         ld      e,0CFh
-        call    LEE_JOY           ;[88DEh]
-        ld      (JOYPORT2),a       ;[943AH]
+        call    LEE_JOY         ;[88DEh]
+        ld      (joyport2),a    ;[943AH]
 
         push    bc
         push    af
 
         ld      b,0
         ld      a,8
-        call    SNSMAT
+        call    snsmat
         bit     0,a
         jr      nz,nojoy
         set     4,b
+
 
 nojoy:
         and     0f0h
@@ -1394,13 +1313,13 @@ LEE_JOY_2:
 
         ld      b,a
 
-        ld      hl,JOYPORT1
+        ld      hl,joyport1
         or      (hl)
         ld      (hl),a
 
         ld      a,b
 
-        ld      hl,JOYPORT2
+        ld      hl,joyport2
         or      (hl)
         ld      (hl),a
 
@@ -1409,13 +1328,11 @@ LEE_JOY_2:
         ret
 
 
-
-
 LEE_JOY:
         ld      a,0Fh
-        call    WRTPSG
+        call    wrtpsg
         ld      a,0Eh
-        call    RDPSG
+        call    rdpsg
         cpl
         and     1Fh
         ret
@@ -1429,47 +1346,49 @@ LEE_JOY:
 ;     de = destination
 ; changes: af,af',bc,de,hl,ix
 
-UnTCF:: ld      ix,-1           ; last_m_off
+UnTCF:  ld      ix,-1           ; last_m_off
 
-        ld      a,[hl]          ; read first byte
+        ld      a,(hl)          ; read first byte
         inc     hl
         scf
         adc     a,a
-        jr      nc,.endlit
+        jr      nc,UnTCF.endlit
 
-.litlp: ldi
-.loop:  call    GetBit
-        jp      c,.litlp
-.endlit:
+UnTCF.litlp: ldi
+UnTCF.loop: call    GetBit
+        jp      c,UnTCF.litlp
 
+UnTCF.endlit:
         push    de              ; save dst
         ld      de,1
-.moff:  call    GetBit
+
+UnTCF.moff:
+        call    GetBit
         rl      e
         rl      d
         call    GetBit
-        jr      c,.gotmoff
+        jr      c,UnTCF.gotmoff
         dec     de
         call    GetBit
         rl      e
         rl      d
-        jp      nc,.moff
+        jp      nc,UnTCF.moff
         pop     de              ; end of compression
         ret
 
-.gotmoff:
+UnTCF.gotmoff:
         ex      af,af'
         ld      bc,0            ; m_len
         dec     de
         dec     de
         ld      a,e
         or      d
-        jr      z,.prevdist
+        jr      z,UnTCF.prevdist
         ld      a,e
         dec     a
         cpl
         ld      d,a
-        ld      e,[hl]
+        ld      e,(hl)
         inc     hl
         ex      af,af'
         ; scf - carry is already set!
@@ -1477,51 +1396,53 @@ UnTCF:: ld      ix,-1           ; last_m_off
         rr      e
         ld      ixl,e
         ld      ixh,d
-        jp      .newdist
-.prevdist:
+        jp      UnTCF.newdist
+
+UnTCF.prevdist:
         ex      af,af'
         ld      e,ixl
         ld      d,ixh
         call    GetBit
-.newdist:
-        jr      c,.mlenx
+
+UnTCF.newdist:
+        jr      c,UnTCF.mlenx
         inc     bc
         call    GetBit
-        jr      c,.mlenx
+        jr      c,UnTCF.mlenx
 
-.mlen:  call    GetBit
+UnTCF.mlen:
+        call    GetBit
         rl      c
         rl      b
         call    GetBit
-        jp      nc,.mlen
+        jp      nc,UnTCF.mlen
         inc     bc
         inc     bc
-.gotmlen:
+
+UnTCF.gotmlen:
         ex      af,af'
         ld      a,d
         cp      -5
-        jp      nc,.nc
+        jp      nc,UnTCF.nc
         inc     bc
-.nc:    inc     bc
+
+UnTCF.nc:
+        inc     bc
         inc     bc
         ex      af,af'
 
-        ex      [sp],hl         ; save src, and get dst in hl, de = offset
+        ex      (sp),hl         ; save src, and get dst in hl, de = offset
         ex      de,hl           ; de = dst, hl = offset
         add     hl,de           ; new src = dst+offset
         ldir
         pop     hl              ; get src back
-        jp      .loop
+        jp      UnTCF.loop
 
-.mlenx: call    GetBit
+UnTCF.mlenx:
+        call    GetBit
         rl      c
         rl      b
-        jp      .gotmlen
-
-
-
-
-
+        jp      UnTCF.gotmlen
 
 
 ; decompresses to VRAM
@@ -1551,7 +1472,7 @@ UnTCFV:
         rla
         rla
         and     00000011b
-        ld      [hmmc+3],a
+        ld      (hmmc+3),a
         and     00000010b
         ld      iyl,a
 
@@ -1559,25 +1480,27 @@ UnTCFV:
         add     a,a
         ld      a,d
         adc     a,a
-        ld      [hmmc+2],a
+        ld      (hmmc+2),a
 
-        ld      a,[hl]          ; read first byte
+        ld      a,(hl)          ; read first byte
         inc     hl
         scf
         adc     a,a
-        ;jr      nc,.endlit
+        ;jr      nc,UnTCFV.endlit
 
         ex      af,af'
-        ld      a,[hl]
+        ld      a,(hl)
         inc     hl
-        ld      [hmmc+8],a
+        ld      (hmmc+8),a
         inc     de
 
         ld      a,36                    ; start HMMC
-.di1:   di
-        out     [99h],a
+
+UnTCFV.di1:
+        di
+        out     (99h),a
         ld      a,17+128
-        out     [99h],a
+        out     (99h),a
         ei
         push    hl
         ld      hl,hmmc
@@ -1585,57 +1508,63 @@ UnTCFV:
         otir
         pop     hl
         ld      a,44+128                ; continue HMMC
-.di2:   di
-        out     [99h],a
+
+UnTCFV.di2:
+        di
+        out     (99h),a
         ld      a,17+128
-        out     [99h],a
+        out     (99h),a
         ei
         ex      af,af'
-        jp      .loop
+        jp      UnTCFV.loop
 
-.litlp: outi
+UnTCFV.litlp: outi
         inc     de
 
-.loop:  call    GetBit
-        jp      c,.litlp
-.endlit:
+UnTCFV.loop:
+        call    GetBit
+        jp      c,UnTCFV.litlp
 
+UnTCFV.endlit:
         push    de              ; save dst
         ld      de,1
-.moff:  call    GetBit
+
+UnTCFV.moff:
+        call    GetBit
         rl      e
         rl      d
         call    GetBit
-        jr      c,.gotmoff
+        jr      c,UnTCFV.gotmoff
         dec     de
         call    GetBit
         rl      e
         rl      d
-        jp      nc,.moff
+        jp      nc,UnTCFV.moff
 
         xor     a               ; stop HMMC
-.di3:   di
-        out     [99h],a
+UnTCFV.di3:
+        di
+        out     (99h),a
         ld      a,46+128
-        out     [99h],a
+        out     (99h),a
         ei
 
         pop     de              ; end of compression
         ret
 
-.gotmoff:
+UnTCFV.gotmoff:
         ex      af,af'
         ld      bc,0            ; m_len
         dec     de
         dec     de
         ld      a,e
         or      d
-        jr      z,.prevdist
+        jr      z,UnTCFV.prevdist
         ld      a,e
         dec     a
         cpl
         ld      d,a
-        ld      e,[hl]
+        ld      e,(hl)
         inc     hl
         ex      af,af'
         ; scf - carry is already set!
@@ -1643,41 +1572,47 @@ UnTCFV:
         rr      e
         ld      ixl,e
         ld      ixh,d
-        jp      .newdist
+        jp      UnTCFV.newdist
 
-.mlenx: call    GetBit
+UnTCFV.mlenx:
+        call    GetBit
         rl      c
         rl      b
-        jp      .gotmlen
+        jp      UnTCFV.gotmlen
 
-.prevdist:
+UnTCFV.prevdist:
         ex      af,af'
         ld      e,ixl
         ld      d,ixh
         call    GetBit
-.newdist:
-        jr      c,.mlenx
+
+UnTCFV.newdist:
+        jr      c,UnTCFV.mlenx
         inc     bc
         call    GetBit
-        jr      c,.mlenx
+        jr      c,UnTCFV.mlenx
 
-.mlen:  call    GetBit
+UnTCFV.mlen:
+        call    GetBit
         rl      c
         rl      b
         call    GetBit
-        jp      nc,.mlen
+        jp      nc,UnTCFV.mlen
         inc     bc
         inc     bc
-.gotmlen:
+
+UnTCFV.gotmlen:
         ex      af,af'
         ld      a,d
         cp      -5
-        jp      nc,.nc
-        inc     bc
-.nc:    inc     bc
+        jp      nc,UnTCFV.nc
         inc     bc
 
-        ex      [sp],hl         ; save src, and get dst in hl, de = offset
+UnTCFV.nc:
+        inc     bc
+        inc     bc
+
+        ex      (sp),hl         ; save src, and get dst in hl, de = offset
         ex      de,hl           ; de = dst, hl = offset
         add     hl,de           ; new src = dst+offset
 
@@ -1686,64 +1621,68 @@ UnTCFV:
         rlca
         or      iyl
         rlca
-.di4:   di
-        out     [99h],a
+
+UnTCFV.di4:
+        di
+        out     (99h),a
         ld      a,14+128
         ei
-        out     [99h],a
+        out     (99h),a
         ld      a,l
         di
-.di5:   out     [99h],a
+UnTCFV.di5:
+        out     (99h),a
         ld      a,h
         and     00111111b
-        out     [99h],a
+        out     (99h),a
         ei
 
         inc     hl
         sbc     hl,de
-        jp      z,.unbuffer
+        jp      z,UnTCFV.unbuffer
 
         ex      de,hl
         add     hl,bc
         ex      de,hl
 
-.matchlp:
-        in      a,[98h]                 ; read byte
+UnTCFV.matchlp:
+        in      a,(98h)                 ; read byte
         dec     bc
-        out     [9Bh],a                 ; write byte
+        out     (9Bh),a                 ; write byte
         ld      a,c
         or      b
-        jp      nz,.matchlp
+        jp      nz,UnTCFV.matchlp
         ex      af,af'
 
         pop     hl                      ; get src back
         ld      c,9Bh
-        jp      .loop
+        jp      UnTCFV.loop
 
-.unbuffer:
+UnTCFV.unbuffer:
         ex      de,hl
         add     hl,bc
         ex      de,hl
 
-        in      a,[98h]                 ; read byte
+        in      a,(98h)                 ; read byte
         ld      iyh,a
-.bufmatch:
+
+UnTCFV.bufmatch:
         ld      a,iyh
-        out     [9Bh],a                 ; write byte
+        out     (9Bh),a                 ; write byte
         dec     bc
         ld      a,c
         or      b
-        jp      nz,.bufmatch
+        jp      nz,UnTCFV.bufmatch
         ex      af,af'
 
         pop     hl                      ; get src back
         ld      c,9Bh
-        jp      .loop
+        jp      UnTCFV.loop
 
 
 GetBit: add     a,a
         ret     nz
-        ld      a,[hl]          ; read new byte
+        ld      a,(hl)          ; read new byte
         inc     hl
         adc     a,a             ; cf = 1, last bit shifted is always 1
         ret
@@ -1755,12 +1694,12 @@ hand:   incbin "hand.spr"
 datab:  equ     $
 
 
-hmmc_sh:  db     0,0,0,0
-        db     0,1,0,3
-        db     0,0,F0h
+hmmc_sh: db     0,0,0,0
+         db     0,1,0,3
+         db     0,0,0F0h
 
 
-COOR_XY_sh:
+coor_xy_sh:
          db YINICIAL,XINICIAL
          db 0,0
          db YINICIAL,XINICIAL+16
@@ -1798,33 +1737,27 @@ COOR_XY_sh:
          db 15*4,0
 
 
-
-
-
 rcopy1p_sh:     db      1,0,   213,3, 80,0,  82,3, 32,0, 18,0, 0,0, 0d0h
 rcopy2p_sh:     db      56,0,  213,3, 136,0, 82,3, 32,0, 18,0, 0,0, 0d0h
-copy1p_sh:              db      224,0, 213,3, 87,0,  82,3, 32,0, 18,0, 0,0, 0d0h
-copy2p_sh:              db      224,0, 237,3, 136,0, 82,3, 32,0, 18,0, 0,0, 0d0h
+copy1p_sh:      db      224,0, 213,3, 87,0,  82,3, 32,0, 18,0, 0,0, 0d0h
+copy2p_sh:      db      224,0, 237,3, 136,0, 82,3, 32,0, 18,0, 0,0, 0d0h
 copyptr_sh:     dw      0
 nplayers_sh:    db      0
 copyscr_sh:     db      0,0,   0,3,   0,0,   0,1,   255,0, 0,1,  0,0, 0d0h
 buildp2_sh:     db      192,0, 211,1, 161,0, 211,1, 32,0,  45,0, 0,0, 0d0h
 copyline_sh:    db      0,0,   212,3, 80,0,  80,3,  96,0,  1,0,  0,0, 0d0h
-copylineI_sh:   db      80,0,  0,1,   80,0,  0,3,   96,0,  1,0,  0,0, 0d0h
-Pointer_sh:     db      0
+copylinei_sh:   db      80,0,  0,1,   80,0,  0,3,   96,0,  1,0,  0,0, 0d0h
+pointer_sh:     db      0
 counter_sh:     db      0
 TIME_sh:        db      0
-OffsetX_sh:     db      0
-OffsetY_sh:     db      0
-
+offsetx_sh:     db      0
+offsety_sh:     db      0
 
 
 datae:          equ $
 
 
-
-end:            equ     $
-
+end_:           equ     $
 
 
 ; section rdata
@@ -1832,7 +1765,7 @@ end:            equ     $
 
 databss:        equ     $
 hmmc:           rb      11
-COOR_XY:        rw      32
+coor_xy:        rw      32
 rcopy1p:        rb      15
 rcopy2p:        rb      15
 copy1p:         rb      15
@@ -1842,20 +1775,20 @@ nplayers:       rb      1
 copyscr:        rb      15
 buildp2:        rb      15
 copyline:       rb      15
-copylineI:      rb      15
-Pointer:        rb      1
+copylinei:      rb      15
+pointer:        rb      1
 counter:        rb      1
-TIME:           rb      1
-OffsetX:        rb      1
-OffsetY:        rb      1
-WAITTIME:       rb      1
+time:           rb      1
+offsetx:        rb      1
+offsety:        rb      1
+waittime:       rb      1
 
 bufmatch_v:     rb      1
 hmod:           rb      1
 aux:            rb      1
 oldvector:      rb      5
-JOYPORT1:       rb      1
-JOYPORT2:       rb      1
-PALETAD1:       rw      1
-PALETAW1:       rb      32
-PAL_GM:         rb      32
+joyport1:       rb      1
+joyport2:       rb      1
+paletad1:       rw      1
+paletaw1:       rb      32
+pal_gm:         rb      32

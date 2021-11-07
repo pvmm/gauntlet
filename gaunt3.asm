@@ -44,81 +44,83 @@ RowKeyb:        equ     847Fh
         dw      0ca20h
         dw      8000h
 
-	forg	02d7h+7
-	org	082d7h
+        forg	02d7h+7
+        org	082d7h
 
-	ld	hl,kbd
-	ld	de,0f975h
-	ld	bc,KBDEND-SCANJOY
-	ldir
+        ld	hl,kbd
+        ld	de,0f975h
+        ld	bc,KBDEND-SCANJOY
+        ldir
         jp      0b90fh           ; evito rutina de slot
 
 JOY1STAT:	equ	8427h
 JOY2STAT:	equ	8447h
-SNSMAT:	equ	0B3FEh
+snsmat:	    equ	0B3FEh
 ROWTABLE:	equ	847Fh
 
 kbd:
-	org	0F975h
+            org	0F975h
 
-SCANJOY:	ld	de,ROWTABLE+5	;[8485h]
-	ld	b,4	;filas 6,7,8 (9 - 6)
+SCANJOY:
+            ld	de,ROWTABLE+5	;[8485h]
+            ld	b,4	;filas 6,7,8 (9 - 6)
 MATLOOP:	ld	a,9
-	sub	b
-	call	SNSMAT	;[0B3FEh]
-	ld	(de),a
-	inc	e
-	djnz	MATLOOP	;[0B410h]
+            sub	b
+            call	snsmat	;[0B3FEh]
+            ld	(de),a
+            inc	e
+            djnz	MATLOOP	;[0B410h]
 
-	ld	a,3	;fila 3
-	call	SNSMAT
-	ld	(ROWTABLE+3),a
-        ld      a,4     ;fila 4
-	call	SNSMAT
-        ld      (ROWTABLE+4),a
+            ld	a,3	;fila 3
+            call	snsmat
+            ld	(ROWTABLE+3),a
+            ld      a,4     ;fila 4
+            call	snsmat
+            ld      (ROWTABLE+4),a
 
+            ld	a,0Fh
+            ld	e,8Fh	;''
+            call	WritePSG_  ;[0B3EFh]
+            ld	a,0Eh
+            call	ReadPSG_  ;[0B3F9h]
+            cpl
+            and	3Fh
+            bit	5,a
+            jr      z,nojoy1B
+            ld	b,a
+            ld      a,(ROWTABLE+7)
+            res     7,a
+            ld      (ROWTABLE+7),a
+            ld	a,b
 
-	ld	a,0Fh
-	ld	e,8Fh	;''
-	call	WritePSG_  ;[0B3EFh]
-	ld	a,0Eh
-	call	ReadPSG_  ;[0B3F9h]
-	cpl
-	and	3Fh
-	bit	5,a
-        jr      z,nojoy1B
-	ld	b,a
-        ld      a,(ROWTABLE+7)
-        res     7,a
-        ld      (ROWTABLE+7),a
-	ld	a,b
+nojoy1B:
+            ld	    (JOY1STAT),a	;[8427h]
+            ld	    a,0Fh
+            ld	    e,0CFh		;'O'
+            call	WritePSG_ ;[0B3EFh]
+            ld	    a,0Eh
+            call	ReadPSG_ ;[0B3F9h]
+            cpl
+            and	    3Fh
+            bit	    5,a
+            jr      z,nojoy2B
+            ld	    b,a
+            ld      a,(ROWTABLE+6)
+            res     2,a
+            ld      (ROWTABLE+6),a
+            ld	    a,b
 
-nojoy1B: ld	(JOY1STAT),a	;[8427h]
-	ld	a,0Fh
-	ld	e,0CFh		;'O'
-	call	WritePSG_ ;[0B3EFh]
-	ld	a,0Eh
-	call	ReadPSG_ ;[0B3F9h]
-	cpl
-	and	3Fh
-	bit	5,a
-        jr      z,nojoy2B
-	ld	b,a
-        ld      a,(ROWTABLE+6)
-        res     2,a
-        ld      (ROWTABLE+6),a
-	ld	a,b
+nojoy2B:
+            ld	(JOY2STAT),a	;[8447h]
 
-nojoy2B: ld	(JOY2STAT),a	;[8447h]
+            push	bc
+            push	af
 
-	push	bc
-	push	af
-
-	ld	b,0
-	ld	a,(ROWTABLE+8)
-	bit	0,a
-	jr	nz,JOY1
-	set	4,b
+            ld	    b,0
+            ld	    a,(ROWTABLE+8)
+            bit	    0,a
+            jr	    nz,JOY1
+            set	    4,b
 
 JOY1:
 	and	0f0h
@@ -227,42 +229,41 @@ ReadPSG_:
         in      a,(0A2h)        ;read PSG register
         ret
 
-KBDEND: equ $
-
+KBDEND:
+        equ $
         forg    979fh-LdAddress
         org     979fh
-	bit	7,(iy+07)
+        bit	7,(iy+07)
 
         forg    97a9h-LdAddress
         org     97a9h
-	bit	1,(iy+06)
-
+        bit	1,(iy+06)
 
         forg    95DDh-LdAddress
-	org     95DDh
+        org     95DDh
 
 MazeNumber:	equ 9602h
+
 SelectMaze:
         cp      80h
         ld      hl,3030h
-	jr	z,.n4
+        jr	    z,SelectMaze.n4
+        call 	randscr
 
-	call 	randscr
-.n2:	cp	10
-	jr	c,.n3
-	inc	l
-	sub	10
-	jr	.n2
+SelectMaze.n2:
+        cp	10
+        jr	c,SelectMaze.n3
+        inc	l
+        sub	10
+        jr	.n2
 
-.n3:	add	a,h
-	ld 	h,a
+SelectMaze.n3:
+        add	a,h
+        ld 	h,a
 
-.n4:	ld	(MazeNumber),hl
-	ret
-
-
-
-
+SelectMaze.n4:
+        ld	(MazeNumber),hl
+        ret
 
         forg 0956ch-LdAddress
         call    PutBios         ; Put Bios and Rom slot
@@ -342,7 +343,7 @@ ReadPSG:
         forg 0ba8dh-LdAddress
         org 0ba8dh
 
-SetVRAM:        equ 0b5dch
+setvram:        equ 0b5dch
 
 Pallette:
         db 11h,1, 73h,4, 70h,0, 44h,4, 00h,5, 50h,3, 27h,2, 70h,6
@@ -361,7 +362,7 @@ PutPal:
         ld      de,3000h
         ld      hl,800h
         ld      b,0bbh
-        call    SetVRAM
+        call    setvram
         ei
         ret
 
@@ -381,28 +382,32 @@ InitPatScr:
         call    DisableSCR           ;[0B5E9h]
 
         ld      hl,PatternGenPers
-        ld      (.pointer),hl
+        ld      (InitPatScr.pointer),hl
         ld      b,3
         xor     a
-.n0:    push    bc
+
+InitPatScr.n0:
+        push    bc
         push    af
 
         ld      de,0
         call    SetPtr_VRAM           ;[0B444h]
 
         ld      b,3
-.n1:    push    bc
-        ld      hl,(.pointer)       ;Copio a VRAM 800 bytes de patrones :       2800
+
+InitPatScr.n1:
+        push    bc
+        ld      hl,(InitPatScr.pointer)       ;Copio a VRAM 800 bytes de patrones :       2800
         ld      bc,98h                  ;del banco 1
         call    WritePortRW_8           ;[0B585h]
         pop     bc
-        djnz    .n1
+        djnz    InitPatScr.n1
 
-        ld      hl,(.pointer)
+        ld      hl,(InitPatScr.pointer)
         ld      a,8
         add     a,h
         ld      h,a
-        ld      (.pointer),hl
+        ld      (InitPatScr.pointer),hl
         pop     af
         inc     a
         ld      b,a
@@ -422,7 +427,9 @@ InitPatScr:
         call    SetPtr_VRAM           ;[0B444h]
 
         ld      b,3
-.loop:  push    bc
+
+InitPatScr.loop:
+        push    bc
         ld      hl,2000h              ;y hago lo mismo con 200 bytes de la
         ld      bc,98h                ;tabla de colores del banco 1
         call    WritePortRW_8           ;[0B585h]
@@ -435,7 +442,8 @@ InitPatScr:
         ldir
         ret
 
-.pointer:       dw      0
+InitPatScr.pointer:
+        dw      0
 
 SB63C:
         bit     0,e
@@ -446,12 +454,14 @@ SB63C:
 
 SB693:
         or      a
-        jr      nz,.n1
+        jr      nz,SB693.n1
         ld      a,0bbh
-.n1:    ld      b,8
-.n571:  out     (98h),a         ;VRAM access
+SB693.n1:
+        ld      b,8
+SB693.n571:
+        out     (98h),a         ;VRAM access
         inc     e
-        djnz    .n571            ;[0B695h]
+        djnz    SB693.n571            ;[0B695h]
         ret
 
         forg    97c9h-LdAddress
@@ -656,8 +666,8 @@ RefreshScr:
         inc     (iy+12h)
         ld      a,0bh
         bit     3,(iy-1)
-        jr      z,.n313         ;[0A08Fh]   ¨Hay relampago?
-        ld      a,0Fh           ;           ¨Pues pon el blanco como
+        jr      z,.n313         ;[0A08Fh]   ï¿½Hay relampago?
+        ld      a,0Fh           ;           ï¿½Pues pon el blanco como
                                 ;            color de fondo?
 .n313:  call    PutColorF       ;[0B4A6h]
         sub     a
@@ -1032,17 +1042,18 @@ ChangePatPer:
         ld      a,(ContItera)       ;[84D9h]
         inc     a
         cp      TIME_CHANGE_ENEMY
-        jr      nz,.n9           ;[85ABh]
+        jr      nz,ChangePatPer.n9           ;[85ABh]
 
         ld      a,(PaginaV)     ;[84DAh]
         add     a,8
         cp      18h
-        jr      nz,.n1
+        jr      nz,ChangePatPer.n1
         xor     a
-.n1:    ld      (PaginaV),a       ;[84DAh] otro sitio
-
+ChangePatPer.n1:
+        ld      (PaginaV),a       ;[84DAh] otro sitio
         xor     a
-.n9:    ld      (ContItera),a   ;[84D9h] En esta primera llamada creo que
+ChangePatPer.n9:
+        ld      (ContItera),a   ;[84D9h] En esta primera llamada creo que
         ret
 
 PaginaV:        db 0
@@ -1177,19 +1188,21 @@ ChangeWalls:
         rra
         and     7
         cp      3
-        jr      c,.n278         ;[9DF2h]
+        jr      c,ChangeWalls.n278         ;[9DF2h]
         sub     3
 
-.n278:  ld      de,0
+ChangeWalls.n278:
+        ld      de,0
         or      a
-        jr      z,.n279         ;[9DFFh]
+        jr      z,ChangeWalls.n279         ;[9DFFh]
 
         ld      e,60h           ;'`'
         dec     a
-        jr      z,.n279         ;[9DFFh]
+        jr      z,ChangeWalls.n279         ;[9DFFh]
 
-        ld      e,0C0h          ;'À'
-.n279:  ld      hl,0EE0h
+        ld      e,0C0h          ;'ï¿½'
+ChangeWalls.n279:
+        ld      hl,0EE0h
         add     hl,de
         push    de
 
@@ -1225,7 +1238,8 @@ ChangeWalls:
         ld      a,128+16
         out     (99h),a
         ld      b,4
-.n1:    ld      c,9Ah
+ChangeWalls.n1:
+        ld      c,9Ah
         otir
         ei
         jp      ChangeWallColor
@@ -1270,11 +1284,11 @@ RELMEM: equ 0f41fh
         call    WritePtr_VRAMI           ;[0B43Fh]
         ld      a,9
         ld      e,2
-.n2:    ld      bc,098h
-.n1:    out     (c),a
+.nn2:   ld      bc,098h
+.nn1:   out     (c),a
         djnz    .n1
         dec     e
-        jr      nz,.n2
+        jr      nz,.nn2
 
         call    PutSlotRam
         xor     a
@@ -1488,18 +1502,17 @@ InitScrP:                       ; Reubicada entera, hay espacio en la posicion
 
 randscr:
 	ld	a,r
-.n1:	cp	30
-	jr	c,.n2
+randscr.n1:
+	cp	30
+	jr	c,randscr.n2
 	sub	30
-	jr	.n1
+	jr	randscr.n1
 
-.n2:	or 	a
+randscr.n2:
+	or 	a
 	ret	nz
 	inc	a
 	ret
-
-
-
 
 
 romslt:         equ 0f37fh
@@ -1507,12 +1520,12 @@ rampage0:       equ 0f37eh
 rampage1:       equ 0f37dh
 rampage2:       equ 0f37ch
 rampage3:       equ 0f37bh
-EXPTBL:         equ 0fcc1h
+exptbl:         equ 0fcc1h
 ENASLT:         equ 24h
 
 PutBios:
         di
-        ld      a,(EXPTBL)
+        ld      a,(exptbl)
         call    ENASLT_0
         ld      a,(romslt)
         ld      hl,1<<14
@@ -1571,10 +1584,11 @@ RestoreSpriteColor:
         ld      b,32
         ld      hl,SpriteAttrib
         ld      de,01c00h
-        ld      (.ptr),de
+        ld      (RestoreSpriteColor.ptr),de
         ld      de,Spritecolorcache
 
-.n2:    push    de
+RestoreSpriteColor.n2:
+        push    de
         inc     hl
         inc     hl
         inc     hl
@@ -1583,15 +1597,15 @@ RestoreSpriteColor:
         ld      a,(hl)
         ex      de,hl
         cp      (hl)
-        jr      z,.n3
+        jr      z,RestoreSpriteColor.n3
 
         ld      (hl),a
         push    af
-        ld      de,(.ptr)
+        ld      de,(RestoreSpriteColor.ptr)
         call    SetPtrVram
         pop     af
         cp      61h
-        jr      z,.write
+        jr      z,RestoreSpriteColor.write
 
         and     0Fh
         ld      de,SpriteColorLT
@@ -1602,26 +1616,29 @@ RestoreSpriteColor:
         or      20h
 
 
-.write:
+RestoreSpriteColor.write:
         ld      c,b
         ld      b,16
-.loop:  out     (98h),a
-        djnz    .loop
+RestoreSpriteColor.loop:
+        out     (98h),a
+        djnz    RestoreSpriteColor.loop
         ld      b,c
 
 
-.n3:    ld      hl,(.ptr)
+RestoreSpriteColor.n3:
+        ld      hl,(RestoreSpriteColor.ptr)
         ld      de,16
         add     hl,de
-        ld      (.ptr),hl
+        ld      (RestoreSpriteColor.ptr),hl
         pop     hl
         pop     de
         inc     de
         inc     hl
-        djnz    .n2
+        djnz    RestoreSpriteColor.n2
         ret
 
-.ptr:   dw      0
+RestoreSpriteColor.ptr:
+        dw      0
 
 
 
@@ -1640,7 +1657,7 @@ Put2Sprites:
 
         ld      a,(842bh)
         bit     7,a
-        jr      nz,.no1p
+        jr      nz,Put2Sprites.no1p
 
         ld      de,1e00h+20*4
         call    SetPtrVram
@@ -1653,66 +1670,71 @@ Put2Sprites:
         call    SndSprPat       ; Put Pattern of 2nd spr
 
         ld      hl,SpriteAttrib+19*4
-        ld      de,1e00h+21*4   ; spriteatt => y el sprite 20 (2º personaje)
+        ld      de,1e00h+21*4   ; spriteatt => y el sprite 20 (2ï¿½ personaje)
         ld      a,6*4           ; Number of pattern and color
         call    SndSprAtt
-        jr      .n2p
+        jr      Put2Sprites.n2p
 
-.no1p:
+Put2Sprites.no1p:
         ld      de,1e00h+20*4   ; Esto hay que hacerlo si no se pone
         call    SetPtrVram      ; player 2
         ld      bc,0298h
         ld      a,230
-.n11:   out     (c),a
-        djnz    .n11
+
+Put2Sprites.n11:
+        out     (c),a
+        djnz    Put2Sprites.n11
 
         ld      de,1e00h+21*4   ; Esto hay que hacerlo si no se pone
         call    SetPtrVram      ; player 2
         ld      bc,0298h
         ld      a,230
-.n12:   out     (c),a
-        djnz    .n12
 
-.n2p:
+Put2Sprites.n12:
+        out     (c),a
+        djnz    Put2Sprites.n12
+
+Put2Sprites.n2p:
         ld      a,(844bh)
         bit     7,a
-        jr      nz,.no2p
+        jr      nz,Put2Sprites.no2p
 
         ld      de,DataPers2    ; Character data
         ld      bc,3800h+32*5   ; Cogo el patron 5
         call    SndSprPat       ; Put Pattern of 2nd spr
 
         ld      hl,SpriteAttrib+18*4
-        ld      de,1e00h+19*4   ; spriteatt => y el sprite 19 (2º personaje)
+        ld      de,1e00h+19*4   ; spriteatt => y el sprite 19 (2ï¿½ personaje)
         ld      a,5*4           ; Number of pattern and color
         call    SndSprAtt
-        jr      .end
+        jr      Put2Sprites.end
 
-.no2p:
+Put2Sprites.no2p:
         ld      de,1e00h+19*4   ; Esto hay que hacerlo si no se pone
         call    SetPtrVram      ; player 2
         ld      bc,0298h
         ld      a,230
-.n21:   out     (c),a
-        djnz    .n21
+
+Put2Sprites.n21:
+        out     (c),a
+        djnz    Put2Sprites.n21
 
         ld      de,1e00h+18*4   ; Esto hay que hacerlo si no se pone
         call    SetPtrVram      ; player 2
         ld      bc,0298h
         ld      a,230
-.n22:   out    (c),a
-        djnz    .n22
 
+Put2Sprites.n22:
+        out    (c),a
+        djnz    Put2Sprites.n22
 
-.end:   call    PutSlotRam
+Put2Sprites.end:
+        call    PutSlotRam
         ret
 
 
-
-
-;;; de -> Pointer to data
-;;; bc -> Pointer to vram pattern
-
+;;; de -> pointer to data
+;;; bc -> pointer to vram pattern
 
 SndSprPat:
         ld      a,8
@@ -1725,41 +1747,44 @@ SndSprPat:
         add     hl,de
         ld      a,(hl)
         or      a
-        jr      nz,.nowar
+        jr      nz,SndSprPat.nowar
         ld      hl,warspr
-        jr      .endc
+        jr      SndSprPat.endc
 
-.nowar:
+SndSprPat.nowar:
         cp      8
-        jr      nz,.noval
+        jr      nz,SndSprPat.noval
         ld      hl,valspr
-        jr      .endc
+        jr      SndSprPat.endc
 
-.noval: cp      10h
-        jr      nz,.nowiz
+SndSprPat.noval:
+        cp      10h
+        jr      nz,SndSprPat.nowiz
         ld      hl,wizspr
-        jr      .endc
+        jr      SndSprPat.endc
 
-.nowiz: ld      hl,elfspr
+SndSprPat.nowiz:
+        ld      hl,elfspr
 
-
-.endc:                          ; hl=ram pattern table
+SndSprPat.endc:                          ; hl=ram pattern table
 
         ld      d,0
         bit     6,(ix+0Eh)
-        jr      z,.n15          ;[8630h]
+        jr      z,SndSprPat.n15          ;[8630h]
 
         inc     d
         bit     7,(ix+0Eh)
-        jr      z,.n15          ;[8630h]
+        jr      z,SndSprPat.n15          ;[8630h]
         inc     d
 
-.n15:   ld      a,(ix+0Dh)
+SndSprPat.n15:
+        ld      a,(ix+0Dh)
         bit     0,(ix+0Eh)
-        jr      z,.n16          ;[863Bh]
+        jr      z,SndSprPat.n16          ;[863Bh]
         ld      a,4
 
-.n16:   rrca
+SndSprPat.n16:
+        rrca
         rrca
         rrca
         and     0E0h

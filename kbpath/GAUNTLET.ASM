@@ -25,7 +25,7 @@ h.TIMI	equ	0FD9Fh
 ;::===============================::
 ;||      Program entry point      ||
 ;::===============================::
-_MAIN:	ld	b,80h		;'Ä'
+_MAIN:	ld	b,80h		;'ÔøΩ'
 .n0:	push	bc
 	call	h.TIMI		;[0FD9Fh]
 	pop	bc
@@ -41,7 +41,7 @@ _MAIN:	ld	b,80h		;'Ä'
 	out	(0A8h),a	;PSLOT register
 	ld	a,(0FFFFh)
 	cpl
-	and	0F0h		;''
+	and	0F0h		;'ÔøΩ'
 	ld	c,a
 	rrca
 	rrca
@@ -93,13 +93,13 @@ T8424:	db	0,0,0
 B8427:	db	0
 T8428:	db	0,0
 B842A:	db	0
-B842B:	db	0C0h		;'¿'
+B842B:	db	0C0h		;'ÔøΩ'
 B842C:	db	0
 T842D:	db	0,0
 B842F:	db	9
 T8430:	db	0,0,0
 B8433:	db	0
-B8434:	db	80h		;'Ä'
+B8434:	db	80h		;'ÔøΩ'
 B8435:	db	0
 T8436:	db	0
 T8437:	db	0,0,0,0,0,0,0,0,0
@@ -110,7 +110,7 @@ T8443:	db	0,0,0,0
 B8447:	db	0
 T8448:	db	0,0
 B844A:	db	0
-T844B:	db	'¿'
+T844B:	db	'ÔøΩ'
 B844C:	db	0
 T844D:	db	0,0
 B844F:	db	5
@@ -124,7 +124,7 @@ T8454:	add	a,b
 B8455:	db	0
 T8456:	db	0
 T8457:	db	0,0,0,0,0,0,0,0,0,6,2,0,4,2,6,4,0,6,0,1,4,9,10h,19h,'$'
-	db	'1@Qdy',0A9h,'ƒ·˛',0,0,0,0
+	db	'1@Qdy',0A9h,'ÔøΩÔøΩÔøΩ',0,0,0,0
 B847D:	db	0
 B847E:	db	0
 ROWTABLE:  db      0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
@@ -401,7 +401,7 @@ S85FE:	bit	7,(ix+0Bh)
 .16:	rrca
 	rrca
 	rrca
-	and	0E0h		;'‡'
+	and	0E0h		;'ÔøΩ'
 	ld	e,a
 	add	hl,de
 	ld	bc,2098h
@@ -446,7 +446,7 @@ S8673:	ld	a,(T848B)	;[848Bh]
 	ld	l,a
 	ld	a,h
 	sub	4
-	cp	80h		;'Ä'
+	cp	80h		;'ÔøΩ'
 	jp	nz,.19		;[8692h]
 	ld	h,a
 .19:	ld	(W84D7),hl	;[84D7h]
@@ -511,7 +511,7 @@ B86BD	equ	$-1
 	inc	h
 	ld	a,h
 	sub	4
-	cp	80h		;'Ä'
+	cp	80h		;'ÔøΩ'
 	jr	nz,.25		;[8707h]
 	ld	h,a
 .25:	ld	ix,0
@@ -572,7 +572,7 @@ W873A:	nop
 ;::===============================::
 ;||          SUBROUTINE           ||
 ;::===============================::
-S875D:	ld	a,0B8h		;'∏'
+S875D:	ld	a,0B8h		;'ÔøΩ'
 	ld	(B8B18),a	;[8B18h]
 	ld	c,a
 	ld	a,7
@@ -700,7 +700,7 @@ S8837:	push	de
 	ld	iy,T8B16	;[8B16h]
 	ld	a,(iy+1)
 	and	7
-	ld	a,0B8h		;'∏'
+	ld	a,0B8h		;'ÔøΩ'
 	ld	(iy+2),a
 	jr	z,.38		;[8883h]
 	ld	ix,T8B0A	;[8B0Ah]
@@ -727,7 +727,7 @@ S8837:	push	de
 	rlca
 	rlca
 	rlca
-.38:	and	0B8h		;'∏'
+.38:	and	0B8h		;'ÔøΩ'
 	ld	c,a
 	ld	a,7
 	call	S88F2		;[88F2h]
@@ -752,7 +752,7 @@ S8891:	ld	lx,(ix)
 	ret
 .42:	inc	hl
 	ld	e,a
-	and	0F0h		;''
+	and	0F0h		;'ÔøΩ'
 	rrca
 	rrca
 	rrca
@@ -799,8 +799,8 @@ S8891:	ld	lx,(ix)
 S88F2:	push	hl
 	push	de
 	ld	e,c
-        ld      hl,WRTPSG        ;[0B3EFh]
-        call    WRTPSG           ;[0B3EFh]
+        ld      hl,wrtpsg        ;[0B3EFh]
+        call    wrtpsg           ;[0B3EFh]
 	pop	de
 	pop	hl
 	ret
@@ -1057,7 +1057,7 @@ B8B0D:	db	0
 T8B0E:	db	0,0,0,0,0,0,0,0
 T8B16:	db	0
 B8B17:	db	0
-B8B18:	db	0BFh		;'ø'
+B8B18:	db	0BFh		;'ÔøΩ'
 T8B19:	db	0,0
 B8B1B:	db	0
 T8B1C:	db	0,0,0,0,0,0
@@ -1119,10 +1119,10 @@ S8B44:	ld	a,(B84C6)	;[84C6h]
 	ld	hl,T8DB2	;[8DB2h]
 	ld	b,3
 .68:	ld	a,(hl)
-	and	0C0h		;'¿'
+	and	0C0h		;'ÔøΩ'
 	ld	c,a
 	ld	a,(ix)
-	and	0C0h		;'¿'
+	and	0C0h		;'ÔøΩ'
 	cp	c
 	jr	c,.66		;[8BDAh]
 	jr	nz,.67		;[8BBBh]
@@ -1194,7 +1194,7 @@ S8C09:	ld	(hl),a
 	ld	hl,50h
 	ld	b,0
 	call	SB5DC		;[0B5DCh]
-	ld	a,0F8h		;'¯'
+	ld	a,0F8h		;'ÔøΩ'
 	ld	b,(iy+4Ch)
 	inc	b
 	ld	(iy+4Ch),b
@@ -1230,7 +1230,7 @@ S8C4F:	push	de
 	daa
 	ld	e,0
 	call	S8C98		;[8C98h]
-	ld	a,80h		;'Ä'
+	ld	a,80h		;'ÔøΩ'
 	call	SB6EB		;[0B6EBh]
 	ld	a,40h		;'@'
 	call	SB6EB		;[0B6EBh]
@@ -1450,10 +1450,10 @@ T8DB2:	db	0,0,0,0,0,0
 ;::===============================::
 ;||          SUBROUTINE           ||
 ;::===============================::
-S8DB8:	db	'˝À',0FFh,'v(',13h,'˝À˛~(',0Dh,':4',84h,'˝',0A6h,'’',17h
-	db	'8',4,'˝À:ˆ:',0B9h,84h,0B7h,'»',8,'Õ',90h,0B5h,'›*',0B4h
-	db	84h,8,'À',7Fh,' DÊ? ',19h,'Õ]',87h,'›! ',84h,11h,0,7
-	db	'Õ@',8Eh,'›!@',84h,11h,0,0Ah,'Õ@',8Eh,18h,'2Ÿ',1,0B1h
+S8DB8:	db	'ÔøΩÔøΩ',0FFh,'v(',13h,'ÔøΩÔøΩÔøΩ~(',0Dh,':4',84h,'ÔøΩ',0A6h,'ÔøΩ',17h
+	db	'8',4,'ÔøΩÔøΩ:ÔøΩ:',0B9h,84h,0B7h,'ÔøΩ',8,'ÔøΩ',90h,0B5h,'ÔøΩ*',0B4h
+	db	84h,8,'ÔøΩ',7Fh,' DÔøΩ? ',19h,'ÔøΩ]',87h,'ÔøΩ! ',84h,11h,0,7
+	db	'ÔøΩ@',8Eh,'ÔøΩ!@',84h,11h,0,0Ah,'ÔøΩ@',8Eh,18h,'2ÔøΩ',1,0B1h
 	db	'D',11h,'mD',1Fh,'8'
 ;::===============================::
 ;||      Indexed entry point      ||
@@ -1691,7 +1691,7 @@ S8F1E:	ld	a,(B8B40)	;[8B40h]
 	inc	l
 	ld	(hl),1
 	inc	l
-	ld	(hl),80h	;'Ä'
+	ld	(hl),80h	;'ÔøΩ'
 	inc	l
 	ld	a,c
 	and	0Fh
@@ -1866,7 +1866,7 @@ S90AD:	ld	a,(ix+2)
 	ld	(ix+1),a
 	ld	a,(ix+3)
 	add	a,(ix-3)
-	or	80h		;'Ä'
+	or	80h		;'ÔøΩ'
 	ld	(ix+2),a
 	ld	a,4
 	call	S8787		;[8787h]
@@ -1966,15 +1966,15 @@ S90AD:	ld	a,(ix+2)
 	ld	b,(hl)
 	inc	l
 	ld	a,(hl)
-	cp	0A0h		;'†'
+	cp	0A0h		;'ÔøΩ'
 	call	c,S944A		;[944Ah]
 	bit	7,(ix+3)
 	jr	nz,.130		;[91F0h]
-	and	0E0h		;'‡'
+	and	0E0h		;'ÔøΩ'
 	ld	e,10h
 	jr	z,.129		;[91E4h]
 	ld	e,5
-	cp	0A0h		;'†'
+	cp	0A0h		;'ÔøΩ'
 	jr	nz,.129		;[91E4h]
 	ld	e,1
 	call	SB4E1		;[0B4E1h]
@@ -2178,7 +2178,7 @@ S9327:	ld	de,(W84A9)	;[84A9h]
 	add	a,a
 	add	a,a
 	add	a,a
-	add	a,90h		;'ê'
+	add	a,90h		;'ÔøΩ'
 	ld	l,a
 	ld	h,5Bh		;'['
 	ld	b,2
@@ -2206,10 +2206,10 @@ S9327:	ld	de,(W84A9)	;[84A9h]
 	inc	l
 	ld	a,(hl)
 	and	7
-	or	90h		;'ê'
+	or	90h		;'ÔøΩ'
 	ld	(de),a
 	inc	e
-	ld	a,80h		;'Ä'
+	ld	a,80h		;'ÔøΩ'
 	ld	(de),a
 	inc	e
 .149:	inc	l
@@ -2319,12 +2319,12 @@ S9411:	ld	a,(ix+3)
 	cp	5
 	ld	a,e
 	jr	c,.160		;[9439h]
-	cp	0E0h		;'‡'
+	cp	0E0h		;'ÔøΩ'
 	jr	nc,.162		;[9440h]
 	dec	b
 	add	a,10h
 	jr	.162		;[9440h]
-.160:	cp	0CFh		;'œ'
+.160:	cp	0CFh		;'ÔøΩ'
 	jr	c,.162		;[9440h]
 	inc	b
 	sub	10h
@@ -2367,7 +2367,7 @@ S944A:	push	af
 ;||          SUBROUTINE           ||
 ;::===============================::
 S9479:	ld	a,(ix+2)
-	and	0F8h		;'¯'
+	and	0F8h		;'ÔøΩ'
 	cp	(iy-4Ch)
 	jr	nz,.166		;[948Eh]
 	ld	a,(B8435)	;[8435h]
@@ -2410,7 +2410,7 @@ S94C2:	ld	b,48h		;'H'
 ;||          SUBROUTINE           ||
 ;::===============================::
 S94C4:	ld	hl,0D330h
-.169:	ld	(hl),0F0h	;''
+.169:	ld	(hl),0F0h	;'ÔøΩ'
 	inc	l
 	djnz	.169		;[94C7h]
 	ld	(W84DB),hl	;[84DBh]
@@ -2441,10 +2441,10 @@ S94E7:	res	6,(iy-1)
 	call	S958E		;[958Eh]
 	bit	7,(iy+4Dh)
 	jr	nz,.172		;[950Bh]
-	ld	(iy+4Eh),80h	;'Ä'
+	ld	(iy+4Eh),80h	;'ÔøΩ'
 	call	S956C		;[956Ch]
 	ld	a,1
-.172:	ld	e,80h		;'Ä'
+.172:	ld	e,80h		;'ÔøΩ'
 	ld	b,a
 .173:	rlc	e
 	djnz	.173		;[950Eh]
@@ -2493,7 +2493,7 @@ S956C:	call	S95AF		;[95AFh]
 	call	S95DD		;[95DDh]
 	ld	hl,T95FD	;[95FDh]
 	call	6EC6h
-	ld	b,80h		;'Ä'
+	ld	b,80h		;'ÔøΩ'
 .180:	push	bc
 	call	h.TIMI		;[0FD9Fh]
 	pop	bc
@@ -2529,12 +2529,12 @@ S95AF:	pop	hl
 	ld	sp,(0E000h)
 	in	a,(0A8h)	;PSLOT register
 	ld	d,a
-	and	0F0h		;''
+	and	0F0h		;'ÔøΩ'
 	out	(0A8h),a	;PSLOT register
 	ld	a,(0FFFFh)
 	cpl
 	ld	e,a
-	and	0F0h		;''
+	and	0F0h		;'ÔøΩ'
 	ld	(0FFFFh),a
 	ei
 	push	de
@@ -2555,7 +2555,7 @@ S95CD:	pop	hl
 ;::===============================::
 ;||          SUBROUTINE           ||
 ;::===============================::
-S95DD:	cp	80h		;'Ä'
+S95DD:	cp	80h		;'ÔøΩ'
 	ld	hl,3030h
 	jr	z,.182		;[95F9h]
 	ld	hl,(W9602)	;[9602h]
@@ -2749,9 +2749,9 @@ S9737:	bit	7,(ix+14h)
 	dec	(ix+2)
 	call	S9AB4		;[9AB4h]
 	inc	(ix+2)
-	ld	(ix+0Eh),80h	;'Ä'
+	ld	(ix+0Eh),80h	;'ÔøΩ'
 	ld	a,(ix+0Bh)
-	or	0C3h		;'√'
+	or	0C3h		;'ÔøΩ'
 	ld	(ix+0Bh),a
 	set	7,(ix+14h)
 	ld	a,(ix)
@@ -2843,7 +2843,7 @@ S97C0:	bit	7,(ix+14h)
 ;||          SUBROUTINE           ||
 ;::===============================::
 S980C:	ld	a,(ix+14h)
-	and	80h		;'Ä'
+	and	80h		;'ÔøΩ'
 	ld	(ix+14h),a
 	ld	a,lx
 	and	20h		;' '
@@ -2981,7 +2981,7 @@ S98E6:	bit	3,(iy+1Fh)
 .220:	ld	(W849A),hl	;[849Ah]
 	ld	(hl),0
 	ld	a,(B849E)	;[849Eh]
-	and	0F0h		;''
+	and	0F0h		;'ÔøΩ'
 	or	c
 	or	8
 	ld	(B849E),a	;[849Eh]
@@ -3011,7 +3011,7 @@ S98E6:	bit	3,(iy+1Fh)
 	ld	a,(B849E)	;[849Eh]
 	and	0Fh
 	or	c
-	or	80h		;'Ä'
+	or	80h		;'ÔøΩ'
 	ld	(B849E),a	;[849Eh]
 	ret
 ;::===============================::
@@ -3107,7 +3107,7 @@ S99C1:	bit	7,(ix+14h)
 	jr	nz,.230		;[9A04h]
 	ld	bc,(W8492)	;[8492h]
 .230:	call	SAD6C		;[0AD6Ch]
-	ld	a,80h		;'Ä'
+	ld	a,80h		;'ÔøΩ'
 	ld	(BB1E5),a	;[0B1E5h]
 	call	SB1E3		;[0B1E3h]
 	ex	af,af'
@@ -3150,7 +3150,7 @@ S9A47:	bit	6,(iy-1)
 	jr	z,.234		;[9A87h]
 	bit	1,(iy-2)
 	ret	nz
-	cp	8Ch		;'å'
+	cp	8Ch		;'ÔøΩ'
 	ret	c
 	ld	hl,8000h
 .237:	ld	a,(hl)
@@ -3165,7 +3165,7 @@ S9A47:	bit	6,(iy-1)
 .236:	ld	(hl),36h	;'6'
 .235:	inc	hl
 	ld	a,h
-	cp	84h		;'Ñ'
+	cp	84h		;'ÔøΩ'
 	jr	nz,.237		;[9A60h]
 	set	1,(iy-2)
 	ld	(iy+39h),0
@@ -3188,7 +3188,7 @@ S9A47:	bit	6,(iy-1)
 .239:	ld	(hl),0
 .238:	inc	hl
 	ld	a,h
-	cp	84h		;'Ñ'
+	cp	84h		;'ÔøΩ'
 	jr	nz,.240		;[9A91h]
 	ld	(iy+39h),0
 	ld	a,0Eh
@@ -3241,7 +3241,7 @@ S9AF6:	bit	0,(ix+1)
 .245:	call	S9DE4		;[9DE4h]
 	bit	7,(ix+1)
 	jr	nz,.246		;[9B20h]
-	ld	a,97h		;'ó'
+	ld	a,97h		;'ÔøΩ'
 	ld	(BB502),a	;[0B502h]
 	ld	hl,423Eh
 	ld	(WB50D),hl	;[0B50Dh]
@@ -3253,7 +3253,7 @@ S9AF6:	bit	0,(ix+1)
 	ld	(WB50D),hl	;[0B50Dh]
 .247:	bit	6,(ix+1)
 	jr	nz,.248		;[9B3Ch]
-	ld	a,97h		;'ó'
+	ld	a,97h		;'ÔøΩ'
 	ld	(BB528),a	;[0B528h]
 	ld	hl,5C3Eh
 	ld	(WB533),hl	;[0B533h]
@@ -3303,7 +3303,7 @@ S9AF6:	bit	0,(ix+1)
 	jr	nc,.251		;[9B9Ch]
 	res	7,(ix+2)
 .251:	ld	a,(de)
-	cp	80h		;'Ä'
+	cp	80h		;'ÔøΩ'
 	jr	c,.252		;[9BD3h]
 	and	7Fh		;''
 	inc	a
@@ -3394,7 +3394,7 @@ S9BF1:	ld	a,c
 	ld	l,a
 	ld	a,b
 	exx
-	and	0E0h		;'‡'
+	and	0E0h		;'ÔøΩ'
 	ld	b,a
 	exx
 	call	S9C70		;[9C70h]
@@ -3415,12 +3415,12 @@ S9BF1:	ld	a,c
 	ld	d,0
 	add	hl,de
 	ld	a,b
-	cp	0C0h		;'¿'
+	cp	0C0h		;'ÔøΩ'
 	jr	nc,.263		;[9C5Ah]
 	cp	20h		;' '
 	jr	z,.263		;[9C5Ah]
 	bit	2,e
-	ld	b,80h		;'Ä'
+	ld	b,80h		;'ÔøΩ'
 	jr	nz,.263		;[9C5Ah]
 	ld	b,40h		;'@'
 .263:	ld	e,(hl)
@@ -3446,12 +3446,12 @@ S9BF1:	ld	a,c
 S9C70:	exx
 	ld	a,b
 	exx
-	cp	0C0h		;'¿'
+	cp	0C0h		;'ÔøΩ'
 	jp	nc,.266		;[9CE5h]
 	exx
 	ld	c,11h
 	exx
-	cp	80h		;'Ä'
+	cp	80h		;'ÔøΩ'
 	jr	z,S9C8B		;[9C8Bh]
 	exx
 	inc	c
@@ -3556,7 +3556,7 @@ S9CDE:	ld	a,(hl)
 .276:	ld	(hl),a
 	exx
 	ld	a,b
-	cp	0C0h		;'¿'
+	cp	0C0h		;'ÔøΩ'
 	exx
 	ret	nz
 	set	7,(hl)
@@ -3571,7 +3571,7 @@ S9D2F:	ld	a,(hl)
 	ret	c
 	ret	nz
 	ld	a,(hl)
-	and	80h		;'Ä'
+	and	80h		;'ÔøΩ'
 	ld	(hl),a
 	scf
 	ret
@@ -3632,7 +3632,7 @@ S9D68:	ld	a,l
 	inc	h
 	ld	a,h
 	sub	4
-	cp	80h		;'Ä'
+	cp	80h		;'ÔøΩ'
 	ret	nz
 	ld	h,a
 	ret
@@ -3664,7 +3664,7 @@ S9D87:	ex	de,hl
 	xor	(hl)
 	dec	hl
 	ex	de,hl
-	and	0E0h		;'‡'
+	and	0E0h		;'ÔøΩ'
 	ret
 ;::===============================::
 ;||          SUBROUTINE           ||
@@ -3727,7 +3727,7 @@ S9DA5:	exx
 	ld	(hl),a
 	inc	hl
 	call	SB4E1		;[0B4E1h]
-	and	0C0h		;'¿'
+	and	0C0h		;'ÔøΩ'
 	ld	(hl),a
 	inc	hl
 	ld	(W8494),hl	;[8494h]
@@ -3750,7 +3750,7 @@ S9DE4:	ld	a,(ix+2)
 	ld	e,60h		;'`'
 	dec	a
 	jr	z,.279		;[9DFFh]
-	ld	e,0C0h		;'¿'
+	ld	e,0C0h		;'ÔøΩ'
 .279:	ld	hl,0EE0h
 	add	hl,de
 	push	de
@@ -3767,7 +3767,7 @@ S9DE4:	ld	a,(ix+2)
 	ld	hl,T9E76	;[9E76h]
 	add	hl,de
 	ld	a,(hl)
-	and	0F0h		;''
+	and	0F0h		;'ÔøΩ'
 	ld	(B9E6D),a	;[9E6Dh]
 	rrca
 	rrca
@@ -3809,7 +3809,7 @@ B9E58	equ	$-1
 B9E5C	equ	$-1
 .282:	ld	c,a
 .280:	ld	a,(hl)
-	and	0F0h		;''
+	and	0F0h		;'ÔøΩ'
 	jr	z,.283		;[9E6Fh]
 	cp	70h		;'p'
 	ld	a,c
@@ -3834,7 +3834,7 @@ T9E76:	and	(hl)
 	ld	(hl),h
 	push	de
 	xor	c
-	cp	0A6h		;'¶'
+	cp	0A6h		;'ÔøΩ'
 	xor	c
 ;::===============================::
 ;||          SUBROUTINE           ||
@@ -3852,8 +3852,8 @@ S9E7E:	ld	hl,5B60h
 	ret	z
 	ld	b,a
 .287:	ld	a,(ix+2)
-	and	0E0h		;'‡'
-	cp	0A0h		;'†'
+	and	0E0h		;'ÔøΩ'
+	cp	0A0h		;'ÔøΩ'
 	jr	nz,.286		;[9EC4h]
 	ld	a,(ix)
 	ld	c,(hl)
@@ -3892,7 +3892,7 @@ S9ECF:	ld	hl,8000h
 	inc	b
 .288:	inc	hl
 	ld	a,h
-	cp	84h		;'Ñ'
+	cp	84h		;'ÔøΩ'
 	jr	nz,.289		;[9ED4h]
 .290:	call	SB4E1		;[0B4E1h]
 	and	3Fh		;'?'
@@ -3928,7 +3928,7 @@ S9F09:	call	SB4E1		;[0B4E1h]
 	ld	l,a
 	call	SB4E1		;[0B4E1h]
 	and	3
-	or	80h		;'Ä'
+	or	80h		;'ÔøΩ'
 	ld	h,a
 	ld	a,(hl)
 	or	a
@@ -3993,7 +3993,7 @@ S9F79:	ld	a,c
 	rlca
 	rlca
 	rlca
-	add	a,80h		;'Ä'
+	add	a,80h		;'ÔøΩ'
 	ld	l,a
 	ld	h,0Eh
 	ld	de,2970h
@@ -4115,7 +4115,7 @@ TA000:	ret	z
 	ld	e,a
 	push	hl
 	ld	a,l
-	xor	0E0h		;'‡'
+	xor	0E0h		;'ÔøΩ'
 	ld	l,a
 	ld	a,h
 	xor	3
@@ -4146,7 +4146,7 @@ TA000:	ret	z
 SA054:	call	SA079		;[0A079h]
 	ret	nc
 	ld	c,a
-	and	8Ah		;'ä'
+	and	8Ah		;'ÔøΩ'
 	bit	2,c
 	jr	z,.310		;[0A060h]
 	inc	a
@@ -4160,7 +4160,7 @@ SA054:	call	SA079		;[0A079h]
 SA066:	call	SA079		;[0A079h]
 	ret	nc
 	ld	c,a
-	and	85h		;'Ö'
+	and	85h		;'ÔøΩ'
 	bit	3,c
 	jr	z,.311		;[0A073h]
 	or	2
@@ -4175,7 +4175,7 @@ SA079:	cp	7Fh		;''
 	jr	nc,.312		;[0A080h]
 	cp	10h
 	ret
-.312:	cp	90h		;'ê'
+.312:	cp	90h		;'ÔøΩ'
 	ret
 ;::===============================::
 ;||          SUBROUTINE           ||
@@ -4251,10 +4251,10 @@ SA083:	inc	(iy+12h)
 .317:	ex	af,af'
 .316:	ld	a,(de)
 	and	7
-	or	0C0h		;'¿'
+	or	0C0h		;'ÔøΩ'
 	ld	h,a
 	ld	a,(de)
-	and	0F8h		;'¯'
+	and	0F8h		;'ÔøΩ'
 	ld	l,a
 	inc	de
 	outi
@@ -4385,7 +4385,7 @@ SA083:	inc	(iy+12h)
 	or	20h		;' '
 	ld	h,a
 	ld	a,(de)
-	and	0F8h		;'¯'
+	and	0F8h		;'ÔøΩ'
 	ld	l,a
 	inc	de
 	outi
@@ -4419,7 +4419,7 @@ SA083:	inc	(iy+12h)
 SA257:	bit	2,(iy-2)
 	jp	z,SB483		;[0B483h]
 	res	2,(iy-2)
-	ld	b,82h		;'Ç'
+	ld	b,82h		;'ÔøΩ'
 	bit	5,(iy-2)
 	jr	nz,.324		;[0A271h]
 	ld	a,10h
@@ -4738,9 +4738,9 @@ SA3F0:	ld	a,(hl)
 	inc	l
 	ld	a,(hl)
 	ld	e,a
-	and	0E0h		;'‡'
+	and	0E0h		;'ÔøΩ'
 	jr	z,.355		;[0A53Ah]
-	cp	0A0h		;'†'
+	cp	0A0h		;'ÔøΩ'
 	ret	z
 	ld	a,(iy+12h)
 	and	3
@@ -4855,7 +4855,7 @@ SA5D3:	ld	e,a
 .370:	ld	(hl),0
 	ret
 .358:	ld	a,(B849E)	;[849Eh]
-	and	88h		;'à'
+	and	88h		;'ÔøΩ'
 	ret	nz
 	bit	3,(ix+0Bh)
 	ret	nz
@@ -4863,7 +4863,7 @@ SA5D3:	ld	e,a
 	set	3,(ix+0Bh)
 	ld	(W849A),hl	;[849Ah]
 	ld	(W849C),hl	;[849Ch]
-	ld	(iy+1Fh),0FDh	;'˝'
+	ld	(iy+1Fh),0FDh	;'ÔøΩ'
 	ld	a,0Eh
 	call	S8787		;[8787h]
 	ret
@@ -4880,7 +4880,7 @@ SA5D3:	ld	e,a
 	dec	(ix+9)
 	set	5,(ix+0Bh)
 .372:	call	SA6D6		;[0A6D6h]
-	ld	d,99h		;'ô'
+	ld	d,99h		;'ÔøΩ'
 	jp	SB86D		;[0B86Dh]
 .371:	call	SB4E1		;[0B4E1h]
 	and	7
@@ -4923,7 +4923,7 @@ SA5D3:	ld	e,a
 	set	4,(ix+0Bh)
 	jr	SA6D6		;[0A6D6h]
 .377:	jr	nz,.378		;[0A69Bh]
-	ld	(ix+0Ah),8Ch	;'å'
+	ld	(ix+0Ah),8Ch	;'ÔøΩ'
 	ld	a,4
 	call	S8787		;[8787h]
 	jr	.379		;[0A6E1h]
@@ -4938,7 +4938,7 @@ SA5D3:	ld	e,a
 	ld	a,7
 	call	S8787		;[8787h]
 	jr	.381		;[0A6DBh]
-.380:	ld	e,80h		;'Ä'
+.380:	ld	e,80h		;'ÔøΩ'
 	sub	18h
 .382:	rlc	e
 	dec	a
@@ -4996,11 +4996,11 @@ SA6D6:	ld	a,11h
 	cp	2Fh		;'/'
 	jr	nz,.388		;[0A723h]
 	ld	(hl),0
-.388:	cp	80h		;'Ä'
+.388:	cp	80h		;'ÔøΩ'
 	call	nc,S9C92	;[9C92h]
 	inc	hl
 	ld	a,h
-	cp	84h		;'Ñ'
+	cp	84h		;'ÔøΩ'
 	jr	nz,.389		;[0A71Ch]
 	pop	bc
 	ret
@@ -5288,7 +5288,7 @@ BA8E1	equ	$-1
 	sub	(iy+24h)
 	ld	(hl),a
 .411:	ld	a,(B8496)	;[8496h]
-	cp	0C0h		;'¿'
+	cp	0C0h		;'ÔøΩ'
 	jr	nc,.414		;[0A950h]
 	rra
 	rra
@@ -5342,7 +5342,7 @@ SA95D:	ld	a,e
 	add	a,18h
 	exx
 	ld	l,a
-	ld	h,84h		;'Ñ'
+	ld	h,84h		;'ÔøΩ'
 	ld	a,(hl)
 	exx
 	ld	d,a
@@ -5525,7 +5525,7 @@ SAA93:	ld	hl,5B90h
 	ld	ix,5C00h
 	ld	hl,TAAFE	;[0AAFEh]
 	ld	(W873A),hl	;[873Ah]
-	ld	a,0CDh		;'Õ'
+	ld	a,0CDh		;'ÔøΩ'
 	ld	(B8739),a	;[8739h]
 	res	2,(iy-1)
 	bit	1,(iy-1)
@@ -5575,7 +5575,7 @@ SAB02:	ld	e,a
 	rra
 	jr	c,.427		;[0AB24h]
 	ld	a,e
-	cp	0A0h		;'†'
+	cp	0A0h		;'ÔøΩ'
 	jp	c,.428		;[0ABC1h]
 	bit	1,(iy+12h)
 	jp	z,.428		;[0ABC1h]
@@ -5584,7 +5584,7 @@ SAB02:	ld	e,a
 	jr	c,.429		;[0AB62h]
 	call	SAC50		;[0AC50h]
 	ld	a,e
-	and	0E0h		;'‡'
+	and	0E0h		;'ÔøΩ'
 	cp	60h		;'`'
 	jp	nz,.430		;[0AB3Fh]
 	ld	a,(BAC92)	;[0AC92h]
@@ -5594,7 +5594,7 @@ SAB02:	ld	e,a
 	xor	4
 	ld	d,a
 .430:	ld	a,e
-	and	0F8h		;'¯'
+	and	0F8h		;'ÔøΩ'
 	ld	e,a
 	ld	a,d
 	ex	af,af'
@@ -5606,7 +5606,7 @@ SAB02:	ld	e,a
 	ld	a,d
 	add	a,60h		;'`'
 	ld	l,a
-	ld	h,84h		;'Ñ'
+	ld	h,84h		;'ÔøΩ'
 	bit	4,(ix+3)
 	jr	z,.432		;[0AB5Eh]
 	inc	l
@@ -5638,33 +5638,33 @@ BAB8B	equ	$-1
 .436:	or	20h		;' '
 	ld	(ix+3),a
 	ld	a,e
-	and	0F8h		;'¯'
+	and	0F8h		;'ÔøΩ'
 	ld	e,a
 	ex	af,af'
 	or	e
 	ld	e,a
 .435:	ld	a,e
-	and	0E0h		;'‡'
-	cp	80h		;'Ä'
+	and	0E0h		;'ÔøΩ'
+	cp	80h		;'ÔøΩ'
 	jp	nz,.428		;[0ABC1h]
 	ld	a,(ix+3)
-	cp	0C0h		;'¿'
+	cp	0C0h		;'ÔøΩ'
 	jr	c,.437		;[0ABB8h]
 	xor	8
 .437:	bit	5,a
 	jr	z,.438		;[0ABBEh]
-	and	0F7h		;'˜'
+	and	0F7h		;'ÔøΩ'
 .438:	ld	(ix+3),a
 .428:	ld	a,e
-	and	0E0h		;'‡'
+	and	0E0h		;'ÔøΩ'
 	cp	40h		;'@'
 	jr	c,.439		;[0ABCDh]
-	cp	80h		;'Ä'
+	cp	80h		;'ÔøΩ'
 	call	c,SAE8E		;[0AE8Eh]
 .439:	bit	2,(iy-1)
 	jp	z,.440		;[0ABF1h]
 	ld	a,e
-	and	0E0h		;'‡'
+	and	0E0h		;'ÔøΩ'
 	jr	z,.441		;[0ABE3h]
 	cp	60h		;'`'
 	jr	z,.441		;[0ABE3h]
@@ -5679,7 +5679,7 @@ BAB8B	equ	$-1
 .442:	ld	(ix+3),d
 .440:	ld	(ix+2),e
 	ld	a,e
-	and	0E0h		;'‡'
+	and	0E0h		;'ÔøΩ'
 	rra
 	ld	c,a
 	rra
@@ -5708,7 +5708,7 @@ SAC1B:	ld	a,c
 	sub	l
 	call	SAC36		;[0AC36h]
 	ld	l,a
-	cp	80h		;'Ä'
+	cp	80h		;'ÔøΩ'
 	jr	c,.444		;[0AC27h]
 	neg
 .444:	ld	d,a
@@ -5716,7 +5716,7 @@ SAC1B:	ld	a,c
 	sub	h
 	call	SAC36		;[0AC36h]
 	ld	h,a
-	cp	80h		;'Ä'
+	cp	80h		;'ÔøΩ'
 	jr	c,.445		;[0AC34h]
 	neg
 .445:	add	a,d
@@ -5724,21 +5724,21 @@ SAC1B:	ld	a,c
 ;::===============================::
 ;||          SUBROUTINE           ||
 ;::===============================::
-SAC36:	cp	80h		;'Ä'
+SAC36:	cp	80h		;'ÔøΩ'
 	jr	nc,.446		;[0AC40h]
 	cp	40h		;'@'
 	ret	c
-	xor	80h		;'Ä'
+	xor	80h		;'ÔøΩ'
 	ret
-.446:	cp	0C0h		;'¿'
+.446:	cp	0C0h		;'ÔøΩ'
 	ret	nc
-	xor	80h		;'Ä'
+	xor	80h		;'ÔøΩ'
 	ret
 ;::===============================::
 ;||          SUBROUTINE           ||
 ;::===============================::
 SAC46:	call	SAC36		;[0AC36h]
-	cp	80h		;'Ä'
+	cp	80h		;'ÔøΩ'
 	ret	c
 	neg
 	ccf
@@ -5754,7 +5754,7 @@ BAC51	equ	$-1
 	cp	55h		;'U'
 	jr	c,.448		;[0AC61h]
 	inc	d
-	cp	0AAh		;'™'
+	cp	0AAh		;'ÔøΩ'
 	jr	c,.448		;[0AC61h]
 	inc	d
 .448:	ld	a,d
@@ -5860,7 +5860,7 @@ SACF7:	ld	a,e
 	and	7
 	add	a,18h
 	ld	l,a
-	ld	h,84h		;'Ñ'
+	ld	h,84h		;'ÔøΩ'
 	ld	a,(hl)
 	rra
 	jr	nc,.457		;[0AD07h]
@@ -5886,7 +5886,7 @@ SACF7:	ld	a,e
 	and	7Ch		;'|'
 	add	a,a
 	ld	l,a
-	ld	h,0E0h		;'‡'
+	ld	h,0E0h		;'ÔøΩ'
 	add	hl,hl
 	add	hl,hl
 	ld	a,c
@@ -5921,7 +5921,7 @@ SACF7:	ld	a,e
 	inc	h
 	ld	a,h
 	sub	4
-	cp	80h		;'Ä'
+	cp	80h		;'ÔøΩ'
 	jr	nz,.463		;[0AD56h]
 	ld	h,a
 .463:	ld	a,(hl)
@@ -5948,7 +5948,7 @@ SAD6C:	ld	a,b
 	and	7Ch		;'|'
 	add	a,a
 	ld	l,a
-	ld	h,0E0h		;'‡'
+	ld	h,0E0h		;'ÔøΩ'
 	add	hl,hl
 	add	hl,hl
 	ld	a,c
@@ -6019,7 +6019,7 @@ SAD9F:	bit	7,(iy-54h)
 	ld	b,(ix+1)
 	res	3,(ix+3)
 	ld	a,e
-	and	0E0h		;'‡'
+	and	0E0h		;'ÔøΩ'
 	jr	nz,.467		;[0AE05h]
 	call	SAE48		;[0AE48h]
 	sub	a
@@ -6031,7 +6031,7 @@ TAE00	equ	$-1
 	pop	af
 	ret
 .467:	res	5,(ix+3)
-	cp	0A0h		;'†'
+	cp	0A0h		;'ÔøΩ'
 	jr	z,.468		;[0AE25h]
 	ld	a,(ix+3)
 	and	3
@@ -6056,7 +6056,7 @@ TAE00	equ	$-1
 .470:	ld	a,(hl)
 	add	a,4
 	ld	(hl),a
-	cp	0C8h		;'»'
+	cp	0C8h		;'ÔøΩ'
 	jr	nc,.471		;[0ADFEh]
 	bit	0,d
 	ld	d,4
@@ -6081,7 +6081,7 @@ SAE48:	bit	3,(ix+2)
 ;||          SUBROUTINE           ||
 ;::===============================::
 SAE5C:	ld	a,e
-	cp	0A0h		;'†'
+	cp	0A0h		;'ÔøΩ'
 	jr	c,.474		;[0AE71h]
 	ld	a,(B84B2)	;[84B2h]
 	add	a,1
@@ -6203,7 +6203,7 @@ SAE8E:	bit	4,(iy+29h)
 	and	7
 	add	a,a
 	add	a,a
-	add	a,90h		;'ê'
+	add	a,90h		;'ÔøΩ'
 	add	a,l
 	ld	l,a
 	ld	h,5Bh		;'['
@@ -6270,7 +6270,7 @@ SAE8E:	bit	4,(iy+29h)
 	or	(iy+2Ch)
 	ld	d,a
 	ld	a,l
-	or	0C0h		;'¿'
+	or	0C0h		;'ÔøΩ'
 	ld	hl,(W84A9)	;[84A9h]
 	ld	(hl),c
 	inc	l
@@ -6512,7 +6512,7 @@ SB146:	ld	(iy+31h),0
 	ld	hx,(ix+1Fh)
 	call	S9D90		;[9D90h]
 	ld	(iy+30h),0FFh	;
-	ld	h,84h		;'Ñ'
+	ld	h,84h		;'ÔøΩ'
 	ld	de,5BD0h
 .516:	ld	a,(de)
 	sub	c
@@ -6693,7 +6693,7 @@ SB246:	ld	a,e
 .524:	call	S979C		;[979Ch]
 	ld	a,(iy-51h)
 	or	(iy-31h)
-	and	0FEh		;'˛'
+	and	0FEh		;'ÔøΩ'
 	jr	nz,.524		;[0B2B3h]
 	ld	a,(B84BB)	;[84BBh]
 	ld	(B84C5),a	;[84C5h]
@@ -6722,7 +6722,7 @@ SB2CA:	sub	a
 	call	SB342		;[0B342h]
 	ld	(iy+40h),b
 	ld	c,1
-	ld	b,0B4h		;'¥'
+	ld	b,0B4h		;'ÔøΩ'
 	call	SB342		;[0B342h]
 	ld	(iy+3Eh),b
 	ld	bc,(W8492)	;[8492h]
@@ -6779,12 +6779,12 @@ SB34C:	ei
 	ld	b,0
 	call	SB5D9		;[0B5D9h]
 	ld	de,2000h
-	ld	b,0F0h		;''
+	ld	b,0F0h		;'ÔøΩ'
 	call	SB5D9		;[0B5D9h]
 	bit	7,(iy+4Dh)
 	ret	nz
 	ld	a,(0FFA7h)
-	cp	0C9h		;'…'
+	cp	0C9h		;'ÔøΩ'
 	ret	nz
 	ld	a,8
 	out	(0ABh),a	;Unknown port
@@ -6853,12 +6853,12 @@ TB3AF:	inc	d
 	jr	nz,.544		;[0B436h]
 	ld	b,l
 	ld	e,c
-        jr      nz,WRTPSG        ;[0B3EFh]
+        jr      nz,wrtpsg        ;[0B3EFh]
 .541	equ	$-1
 ;::===============================::
 ;||          SUBROUTINE           ||
 ;::===============================::
-WRTPSG:  di
+wrtpsg:  di
 	out	(0A0h),a	;PSG address
 	push	af
 	ld	a,e
@@ -6869,16 +6869,16 @@ WRTPSG:  di
 ;::===============================::
 ;||          SUBROUTINE           ||
 ;::===============================::
-RDPSG:  out     (0A0h),a        ;PSG address
+rdpsg:  out     (0A0h),a        ;PSG address
 	in	a,(0A2h)	;read PSG register
 	ret
 ;::===============================::
 ;||          SUBROUTINE           ||
 ;::===============================::
-SNSMAT: ld      c,a             ;0B3FE
+snsmat: ld      c,a             ;0B3FE
 	di
 	in	a,(0AAh)	;PPI port C (misc ctrl)
-	and	0F0h		;''
+	and	0F0h		;'ÔøΩ'
 	add	a,c
 	out	(0AAh),a	;PPI port C (misc ctrl)
 	ei
@@ -6893,26 +6893,26 @@ SCANJOY:  ld      de,ROWTABLE        ;[847Fh]
 	ld	b,9
 .545:	ld	a,9
 .535:	sub	b
-        call    SNSMAT           ;[0B3FEh]
+        call    snsmat           ;[0B3FEh]
 .536	equ	$-1
 	ld	(de),a
 	inc	e
 	djnz	.545		;[0B410h]
 .540:	ld	a,0Fh
 .538	equ	$-1
-.539:	ld	e,8Fh		;'è'
-        call    WRTPSG           ;[0B3EFh]
+.539:	ld	e,8Fh		;'ÔøΩ'
+        call    wrtpsg           ;[0B3EFh]
 	ld	a,0Eh
-        call    RDPSG           ;[0B3F9h]
+        call    rdpsg           ;[0B3F9h]
 	cpl
 	and	1Fh
 	ld	(B8427),a	;[8427h]
 	ld	a,0Fh
-	ld	e,0CFh		;'œ'
+	ld	e,0CFh		;'ÔøΩ'
 .542	equ	$-1
-        call    WRTPSG           ;[0B3EFh]
+        call    wrtpsg           ;[0B3EFh]
 	ld	a,0Eh
-        call    RDPSG           ;[0B3F9h]
+        call    rdpsg           ;[0B3F9h]
 .544	equ	$-2
 .543:	cpl
 	and	1Fh
@@ -6988,7 +6988,7 @@ SB483:	ld	(W8489),sp	;[8489h]
 	ld	sp,0D323h
 	ld	de,0
 ;
-.548:	db	'’’’’’’’’’’’’’’’’',10h,'ÓÌ{',89h,84h,97h
+.548:	db	'ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ',10h,'ÔøΩÔøΩ{',89h,84h,97h
 ;::===============================::
 ;||          SUBROUTINE           ||
 ;::===============================::
@@ -6998,7 +6998,7 @@ SB4A6:	ld	b,a
 ;||          SUBROUTINE           ||
 ;::===============================::
 SB4A9:	ld	c,99h
-	or	80h		;'Ä'
+	or	80h		;'ÔøΩ'
 	di
 	out	(c),b
 	out	(c),a
@@ -7161,7 +7161,7 @@ SB590:	call	SB5E9		;[0B5E9h]
 	ld	b,0
 	call	SB5D9		;[0B5D9h]
 	ld	de,2000h
-	ld	b,0F0h		;''
+	ld	b,0F0h		;'ÔøΩ'
 	call	SB5D9		;[0B5D9h]
 	ld	b,50h		;'P'
 	call	S94C4		;[94C4h]
@@ -7253,12 +7253,12 @@ SB63C:	bit	0,e
 	sub	a
 	rr	c
 	jr	nc,.566		;[0B65Ah]
-	ld	a,0A0h		;'†'
+	ld	a,0A0h		;'ÔøΩ'
 .566:	call	SB693		;[0B693h]
 	sub	a
 	rr	c
 	jr	nc,.567		;[0B664h]
-	ld	a,0D0h		;'–'
+	ld	a,0D0h		;'ÔøΩ'
 .567:	call	SB693		;[0B693h]
 	sub	a
 	rr	c
@@ -7272,12 +7272,12 @@ SB63C:	bit	0,e
 	sub	a
 	rr	c
 	jr	nc,.569		;[0B67Fh]
-	ld	a,80h		;'Ä'
+	ld	a,80h		;'ÔøΩ'
 .569:	call	SB693		;[0B693h]
 	sub	a
 	rr	c
 	jr	nc,.570		;[0B689h]
-	ld	a,0E0h		;'‡'
+	ld	a,0E0h		;'ÔøΩ'
 .570:	call	SB693		;[0B693h]
 	sub	a
 	rr	c
@@ -7336,7 +7336,7 @@ SB6CC:	exx
 	bit	7,e
 	ld	e,0
 	jr	z,.575		;[0B6D7h]
-	ld	e,88h		;'à'
+	ld	e,88h		;'ÔøΩ'
 .575:	exx
 	ret
 ;::===============================::
@@ -7376,7 +7376,7 @@ SB6EB:	exx
 ;||          SUBROUTINE           ||
 ;::===============================::
 SB709:	ld	a,(B8497)	;[8497h]
-	and	0C0h		;'¿'
+	and	0C0h		;'ÔøΩ'
 	cp	(iy+20h)
 	jr	nz,.577		;[0B73Dh]
 	add	a,40h		;'@'
@@ -7436,7 +7436,7 @@ SB709:	ld	a,(B8497)	;[8497h]
 	res	4,c
 	res	5,c
 .585:	ld	(ix+0Bh),c
-	ld	b,0A0h		;'†'
+	ld	b,0A0h		;'ÔøΩ'
 	ld	a,(ix+8)
 	bit	2,(ix+0Bh)
 	jr	z,.586		;[0B7B7h]
@@ -7519,8 +7519,8 @@ SB823:	ld	a,(ix+3)
 	ld	(ix+2),a
 	set	0,(ix+0Bh)
 	ret	nc
-	ld	(ix+2),99h	;'ô'
-	ld	(ix+3),99h	;'ô'
+	ld	(ix+2),99h	;'ÔøΩ'
+	ld	(ix+3),99h	;'ÔøΩ'
 	ret
 ;::===============================::
 ;||          SUBROUTINE           ||
@@ -7658,7 +7658,7 @@ SB8C4:	ld	hl,444Fh
 	or	2
 	ld	(0F3E0h),a
 	out	(99h),a		;VDP acess
-	ld	a,81h		;'Å'
+	ld	a,81h		;'ÔøΩ'
 	out	(99h),a		;VDP acess
 	ld	de,680h
 	ld	hl,TC900	;[0C900h]
@@ -7724,11 +7724,11 @@ SB8C4:	ld	hl,444Fh
 	ld	de,4000h
 	ld	bc,600h
 	ldir
-	ld	a,0C3h		;'√'
+	ld	a,0C3h		;'ÔøΩ'
 	ld	(38h),a
 	ld	hl,TB45B	;[0B45Bh]
 	ld	(39h),hl
-	ld	a,0D0h		;'–'
+	ld	a,0D0h		;'ÔøΩ'
 	ld	(0D380h),a
 	call	S94C2		;[94C2h]
 	call	SBA26		;[0BA26h]
@@ -7883,7 +7883,7 @@ SBAA4:	call	SBAF6		;[0BAF6h]
 	and	30h		;'0'
 	ld	b,a
 	in	a,(0A8h)	;PSLOT register
-	and	0FCh		;'¸'
+	and	0FCh		;'ÔøΩ'
 	dec	a
 	ld	hl,0
 .613:	inc	a
@@ -7899,12 +7899,12 @@ SBAA4:	call	SBAF6		;[0BAF6h]
 .612:	ld	a,c
 	rrca
 	rrca
-	and	0C0h		;'¿'
+	and	0C0h		;'ÔøΩ'
 	or	b
 	out	(0A8h),a	;PSLOT register
 	ld	a,(0FFFFh)
 	cpl
-	and	0FCh		;'¸'
+	and	0FCh		;'ÔøΩ'
 	or	e
 	ld	(0FFFFh),a
 	ld	a,c
@@ -7939,7 +7939,7 @@ SBAF6:	in	a,(0A8h)	;PSLOT register
 	and	30h		;'0'
 	ld	b,a
 	in	a,(0A8h)	;PSLOT register
-	and	0F3h		;'Û'
+	and	0F3h		;'ÔøΩ'
 	sub	4
 	ld	hl,4000h
 .616:	add	a,4
@@ -7957,12 +7957,12 @@ SBAF6:	in	a,(0A8h)	;PSLOT register
 	rrca
 	rrca
 	rrca
-	and	0C0h		;'¿'
+	and	0C0h		;'ÔøΩ'
 	or	b
 	out	(0A8h),a	;PSLOT register
 	ld	a,(0FFFFh)
 	cpl
-	and	0F3h		;'Û'
+	and	0F3h		;'ÔøΩ'
 	or	e
 	ld	(0FFFFh),a
 	ld	a,c
@@ -8081,10 +8081,10 @@ TBC00:	nop
 	ret	nz
 	add	a,0Fh
 	rrca
-	xor	0E0h		;'‡'
+	xor	0E0h		;'ÔøΩ'
 	ret	po
 	ret	pe
-	xor	0CFh		;'œ'
+	xor	0CFh		;'ÔøΩ'
 	scf
 	ld	(hl),38h	;'8'
 	inc	a
@@ -8112,7 +8112,7 @@ TBC00:	nop
 	nop
 	add	a,(hl)
 	synchr	8Fh		;Check BASIC program char
-	ld	b,0C0h		;'¿'
+	ld	b,0C0h		;'ÔøΩ'
 	ret	c
 	nop
 	jr	nz,.624		;[0BCE7h]
@@ -8189,7 +8189,7 @@ TBC00:	nop
 	out	(73h),a		;Unknown port
 	synchr	0CBh		;Check BASIC program char
 	call	SC0C0		;[0C0C0h]
-	db	0FDh		;Invalid op-code '˝'
+	db	0FDh		;Invalid op-code 'ÔøΩ'
 	rst	30h
 	db	0FDh
 	dw	0F3E3h		;Far call to slot 1 (external)
@@ -8198,61 +8198,61 @@ TBC00:	nop
 	rst	38h
 	rst	18h		;Print character [A] (BASIC,NIKE)
 ;
-.624:	db	0BFh,7Fh,'Ejjjm',7Fh,0,'˛ˆÊ÷¬ˆ˛',0,'˛Ê⁄Ê⁄Ê˛',0,0FFh,0FFh
+.624:	db	0BFh,7Fh,'Ejjjm',7Fh,0,'ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ',0,'ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ',0,0FFh,0FFh
 	db	0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
 	db	0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
 	db	0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0A0h,9Ah,0B1h
-	db	8Ah,80h,80h,'¿',5,'Y',8Dh,'Q',5,0Dh,0BBh,0Fh,0FFh,'œ'
-	db	0Fh,7,80h,'¿‡‡',0FFh,0FFh,0FFh,0FFh,7Fh,0Fh,':B––',0A8h
-	db	'T',92h,'ÈÙ˚¬',92h,92h,86h,89h,'Ú',0Eh,'˛¸¸',0FFh,'¸'
-	db	'¸¸¯‡?',0BFh,0FFh,0BFh,0BFh,0BFh,'O''¿',80h,80h,80h,80h
-	db	'¿Á¯',13h,9,9,19h,19h,'3Á',1Fh,'Õ',8Ah,89h,8Bh,85h,'¬'
-	db	'·¯',0B3h,'U',95h,'’',0ADh,'[',0A7h,1Fh,'¿',0BFh,7Fh
-	db	7Fh,9Ch,'„',0FFh,0FFh,7Fh,8Fh,'Û˝˛~',0BEh,0BEh,'√',81h
-	db	0Ch,'l`,',89h,'√',0BEh,'}˝',0BBh,'«',0FFh,'?œ<a·',91h
-	db	89h,81h,1,7Fh,'<',86h,87h,89h,91h,81h,80h,'˛',7Fh,1,81h
-	db	89h,91h,'·a<˛',80h,81h,91h,89h,87h,86h,'<',0FFh,0FFh
-	db	0FFh,'ıÔ˛Ô˚',0FFh,0FFh,0FFh,'_Ô',0FFh,'Ô',0BFh,'Ô˛Ôı'
-	db	0FFh,0FFh,0FFh,0FFh,'Ô',0FFh,'Ô_',0FFh,0FFh,0FFh,0FFh
+	db	8Ah,80h,80h,'ÔøΩÔøΩ',5,'Y',8Dh,'Q',5,0Dh,0BBh,0Fh,0FFh,'ÔøΩ'
+	db	0Fh,7,80h,'ÔøΩÔøΩÔøΩ',0FFh,0FFh,0FFh,0FFh,7Fh,0Fh,':BÔøΩÔøΩ',0A8h
+	db	'T',92h,'ÔøΩÔøΩÔøΩÔøΩ',92h,92h,86h,89h,'ÔøΩ',0Eh,'ÔøΩÔøΩÔøΩ',0FFh,'ÔøΩ'
+	db	'ÔøΩÔøΩÔøΩÔøΩ?',0BFh,0FFh,0BFh,0BFh,0BFh,'O''ÔøΩ',80h,80h,80h,80h
+	db	'ÔøΩÔøΩÔøΩ',13h,9,9,19h,19h,'3ÔøΩ',1Fh,'ÔøΩ',8Ah,89h,8Bh,85h,'ÔøΩ'
+	db	'ÔøΩÔøΩ',0B3h,'U',95h,'ÔøΩ',0ADh,'[',0A7h,1Fh,'ÔøΩ',0BFh,7Fh
+	db	7Fh,9Ch,'ÔøΩ',0FFh,0FFh,7Fh,8Fh,'ÔøΩÔøΩÔøΩ~',0BEh,0BEh,'ÔøΩ',81h
+	db	0Ch,'l`,',89h,'ÔøΩ',0BEh,'}ÔøΩ',0BBh,'ÔøΩ',0FFh,'?ÔøΩ<aÔøΩ',91h
+	db	89h,81h,1,7Fh,'<',86h,87h,89h,91h,81h,80h,'ÔøΩ',7Fh,1,81h
+	db	89h,91h,'ÔøΩa<ÔøΩ',80h,81h,91h,89h,87h,86h,'<',0FFh,0FFh
+	db	0FFh,'ÔøΩÔøΩÔøΩÔøΩÔøΩ',0FFh,0FFh,0FFh,'_ÔøΩ',0FFh,'ÔøΩ',0BFh,'ÔøΩÔøΩÔøΩÔøΩ'
+	db	0FFh,0FFh,0FFh,0FFh,'ÔøΩ',0FFh,'ÔøΩ_',0FFh,0FFh,0FFh,0FFh
 	db	0FFh,0FFh,0FFh,0FFh,80h,80h,80h,0FFh,0FFh,0FFh,0FFh,0FFh
 	db	0,0,0,0FFh,0,0,0,0,0,0,0FFh,0FFh,1,1,2,2,4,4,0FFh,0FFh
-	db	7Fh,0FFh,'¸¯¯¯¯¯',0FFh,0FFh,0FFh,'¯Ë',0FFh,0FFh,0FFh
-	db	7Fh,'?',1Fh,1Fh,9Fh,3,7,0Fh,0FFh,0FFh,0FFh,0FFh,'˛o',0FFh
-	db	7Fh,'˝¸¯¯˙',0FFh,'¸‡¿«¯ƒ',0FFh,7Fh,'OG◊/''''Ô',1Fh,0BFh
-	db	0FFh,0FFh,'˛',0FFh,'˚',6,1Fh,0BFh,7Fh,0FFh,'Ô',0FFh,0FFh
-	db	'3wÛÙm',1Dh,0Ch,0,8Eh,0BFh,'?ÿ¿∆',0Fh,0Fh,'ˆ˛ˆ¸ÙZ',0B4h
-	db	'˘·Ê¯‡‡‡‡‡8<',18h,0,'$d`',0,'`f',7,7,13h,18h,18h,'G'
-	db	'GGGGGG',7Fh,90h,0AAh,0A9h,92h,80h,80h,'¿',0,' dH',0
-	db	0,'@',0,'¿¡',83h,'60',0,0,2,0FFh,0FFh,'Ô‰¿√˚¯',0FFh,0FFh
+	db	7Fh,0FFh,'ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ',0FFh,0FFh,0FFh,'ÔøΩÔøΩÔøΩÔøΩÔøΩ',0FFh,0FFh,0FFh
+	db	7Fh,'?',1Fh,1Fh,9Fh,3,7,0Fh,0FFh,0FFh,0FFh,0FFh,'ÔøΩo',0FFh
+	db	7Fh,'ÔøΩÔøΩÔøΩÔøΩÔøΩ',0FFh,'ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ',0FFh,7Fh,'OGÔøΩ/''''ÔøΩ',1Fh,0BFh
+	db	0FFh,0FFh,'ÔøΩ',0FFh,'ÔøΩ',6,1Fh,0BFh,7Fh,0FFh,'ÔøΩ',0FFh,0FFh
+	db	'3wÔøΩÔøΩm',1Dh,0Ch,0,8Eh,0BFh,'?ÔøΩÔøΩÔøΩ',0Fh,0Fh,'ÔøΩÔøΩÔøΩÔøΩÔøΩZ',0B4h
+	db	'ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ8<',18h,0,'$d`',0,'`ÔøΩf',7,7,13h,18h,18h,'G'
+	db	'GGGGGG',7Fh,90h,0AAh,0A9h,92h,80h,80h,'ÔøΩÔøΩ',0,' dH',0
+	db	0,'@',0,'ÔøΩÔøΩ',83h,'60',0,0,2,0FFh,0FFh,'ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ',0FFh,0FFh
 	db	0FFh,13h,8,'lk',8Fh,0,'@',0,0,2,0,0,0,0,10h,0,2,0,0,1
-	db	0,15h,'*’Í˜¸¿¯P',0A8h,'V',0AAh,'‘~',4,':',15h,'*’Í˜¸'
-	db	'¯P',0A8h,'V',0AAh,'‘z',14h,':',7Fh,7Fh,7Fh,7Fh,7Fh
-	db	7Fh,7Fh,0,0FFh,0FFh,0FFh,'¸¯¯¯¯',0FFh,0FFh,0FFh,8Fh,'C'
-	db	'√CÛÁ»',90h,'ÚÚ',0FFh,0FFh,0FFh,'«',7Fh,7Fh,7Fh,7Fh,0FFh
-	db	0FFh,0FFh,0FFh,'œ«ŒÃÃƒ¿‡‡„‡¯',0FFh,0FFh,'o',0Fh,0Fh
-	db	9Fh,7Fh,0FFh,0FFh,0FFh,'G',8Fh,1Fh,1Fh,'???',7Fh,'˛¸'
-	db	'¯ÛÙËË‡≈¿ Ù·Ò',0FFh,0FFh,'G',0AFh,1Fh,87h,7,8Fh,0FFh
-	db	0FFh,'s„',7,0Fh,1Fh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
-	db	0FFh,'˛¯¸aÛÛc=}x0Ó‡‡ËÓœ76',0Fh,1Fh,7Fh,'??',1Bh,1,'¡'
-	db	0FFh,0FFh,0FFh,'?',7,81h,'¬¿ `qssp!',1,0,0,86h,'œ',8Fh
-	db	6,'¿ÿ#S',0BFh,7Fh,0FFh,0FFh,0FFh,0FFh,0FFh,'˛˛˛¸¯‡',10h
-	db	0,0,'`p8',0,0,2,0,0,80h,0,6,'``''„#sÛ„Û',0FFh,0FFh,0FFh
-	db	0FFh,0FFh,'‡',84h,18h,'4',0,0,'@',0,0,' ',10h,0,0,0,0
+	db	0,15h,'*ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩP',0A8h,'V',0AAh,'ÔøΩ~',4,':',15h,'*ÔøΩÔøΩÔøΩÔøΩ'
+	db	'ÔøΩÔøΩP',0A8h,'V',0AAh,'ÔøΩz',14h,':',7Fh,7Fh,7Fh,7Fh,7Fh
+	db	7Fh,7Fh,0,0FFh,0FFh,0FFh,'ÔøΩÔøΩÔøΩÔøΩÔøΩ',0FFh,0FFh,0FFh,8Fh,'C'
+	db	'ÔøΩCÔøΩÔøΩÔøΩ',90h,'ÔøΩÔøΩ',0FFh,0FFh,0FFh,'ÔøΩ',7Fh,7Fh,7Fh,7Fh,0FFh
+	db	0FFh,0FFh,0FFh,'ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ',0FFh,0FFh,'o',0Fh,0Fh
+	db	9Fh,7Fh,0FFh,0FFh,0FFh,'G',8Fh,1Fh,1Fh,'???',7Fh,'ÔøΩÔøΩ'
+	db	'ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ',0FFh,0FFh,'G',0AFh,1Fh,87h,7,8Fh,0FFh
+	db	0FFh,'sÔøΩ',7,0Fh,1Fh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
+	db	0FFh,'ÔøΩÔøΩÔøΩaÔøΩÔøΩc=}x0ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ76',0Fh,1Fh,7Fh,'??',1Bh,1,'ÔøΩ'
+	db	0FFh,0FFh,0FFh,'?',7,81h,'ÔøΩÔøΩ `qssp!',1,0,0,86h,'ÔøΩ',8Fh
+	db	6,'ÔøΩÔøΩ#S',0BFh,7Fh,0FFh,0FFh,0FFh,0FFh,0FFh,'ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ',10h
+	db	0,0,'`p8',0,0,2,0,0,80h,0,6,'``''ÔøΩ#sÔøΩÔøΩÔøΩ',0FFh,0FFh,0FFh
+	db	0FFh,0FFh,'ÔøΩ',84h,18h,'4',0,0,'@',0,0,' ',10h,0,0,0,0
 	db	0,0,2,0,80h,'OO',9Fh,9Fh,9Fh,1Fh,'?',7Fh,0FFh,0FFh,83h
-	db	80h,'ﬂ¯',0FFh,0FFh,0FFh,0FFh,0FFh,7Fh,1Fh,1Fh,'¯˛'
-	db	'¸¸‹',80h,80h,'?o',0,0,0,1,'G',0FFh,'˛',0FFh,'˛',0FFh
-	db	0FFh,'¸',0B8h,18h,7Fh,'?',1Fh,8Fh,'œO//',18h,84h,'¿‡'
-	db	'¸˛',0FFh,0FFh,'/''«',7,3,3,'¡¯'
+	db	80h,'ÔøΩÔøΩÔøΩÔøΩ',0FFh,0FFh,0FFh,0FFh,0FFh,7Fh,1Fh,1Fh,'ÔøΩÔøΩÔøΩ'
+	db	'ÔøΩÔøΩÔøΩ',80h,80h,'?o',0,0,0,1,'G',0FFh,'ÔøΩ',0FFh,'ÔøΩ',0FFh
+	db	0FFh,'ÔøΩ',0B8h,18h,7Fh,'?',1Fh,8Fh,'ÔøΩO//',18h,84h,'ÔøΩÔøΩ'
+	db	'ÔøΩÔøΩ',0FFh,0FFh,'/''ÔøΩ',7,3,3,'ÔøΩÔøΩ'
 TC000:	db	'6',3,'M',3,'M',3,'M',3,'M',3,'M',3,'M',3,1,0Ch,0Ch,0Ch
 	db	8,4,5,4,5,5,5,5,5,5,4,4,3,3,2,1,1,1,0,1,0Fh,0Fh,0Eh,0Dh
 	db	0Dh,0Ch,0Ch,0Bh,0Ah,9,9,8,8,7,7,6,6,5,5,4,3,3,3,2,2,2
-	db	1,1,1,1,1,1,1,1,1,1,1,1,1,0,'a',19h,'ı',17h,9Ch,16h,'W'
-	db	15h,'%',14h,3,13h,'Û',11h,'Ò',10h,'˛',0Fh,18h,0Fh,'?'
-	db	0Eh,'s',0Dh,'9',0Dh,'˚',0Bh,'O',0Bh,0ACh,0Ah,13h,0Ah
-	db	82h,9,'˘',8,'y',8,0FFh,7,8Bh,7,' ',7,0B8h,6,'Y',6,'˝'
-	db	5,0A7h,5,'W',5,9,5,'¡',4,'}',4,'=',4,0FFh,3,'∆',3,8Fh
-	db	3,'\',3,',',3,0FFh,2,'‘',2,0ABh,2,84h,2,'a',2,'?',2,1Eh
-	db	2,0,2,'„',1,'»',1,0AEh,1,96h,1,'~',1,'j',1,'V',1,'C',1
+	db	1,1,1,1,1,1,1,1,1,1,1,1,1,0,'a',19h,'ÔøΩ',17h,9Ch,16h,'W'
+	db	15h,'%',14h,3,13h,'ÔøΩ',11h,'ÔøΩ',10h,'ÔøΩ',0Fh,18h,0Fh,'?'
+	db	0Eh,'s',0Dh,'9',0Dh,'ÔøΩ',0Bh,'O',0Bh,0ACh,0Ah,13h,0Ah
+	db	82h,9,'ÔøΩ',8,'y',8,0FFh,7,8Bh,7,' ',7,0B8h,6,'Y',6,'ÔøΩ'
+	db	5,0A7h,5,'W',5,9,5,'ÔøΩ',4,'}',4,'=',4,0FFh,3,'ÔøΩ',3,8Fh
+	db	3,'\',3,',',3,0FFh,2,'ÔøΩ',2,0ABh,2,84h,2,'a',2,'?',2,1Eh
+	db	2,0,2,'ÔøΩ',1,'ÔøΩ',1,0AEh,1,96h,1,'~',1,'j',1,'V',1,'C',1
 	db	'0',1,1Fh,1,0Eh,1,0FFh,0
 ;::===============================::
 ;||          SUBROUTINE           ||
@@ -8567,7 +8567,7 @@ TC101:	nop
 	djnz	.668		;[0C2BBh]
 .668	equ	$-1
 	db	0,1,11h,0,93h,1,96h,1,98h,1,98h,1,96h,1,98h,2,98h,1,10h
-	db	3,11h,1,1Eh,0,0,'˛',10h,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
+	db	3,11h,1,1Eh,0,0,'ÔøΩ',10h,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
 	db	0FFh,0FFh,0FFh,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0FFh,0FFh
 	db	0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh,0FFh
 ;::===============================::
@@ -8938,7 +8938,7 @@ SC501:	and	l
 	pop	bc
 	jp	nz,.686		;[0C4C3h]
 	push	bc
-	add	a,0C7h		;'«'
+	add	a,0C7h		;'ÔøΩ'
 	ret	z
 	ret
 ;::===============================::
@@ -8950,17 +8950,17 @@ SC501:	and	l
 	pop	de
 	jp	nc,0D4D3h
 	push	de
-	sub	0D7h		;'◊'
+	sub	0D7h		;'ÔøΩ'
 	ret	c
 	exx
 	jp	c,0DCDBh
-	db	0DDh		;Invalid op-code '›'
-	sbc	a,0DFh		;'ﬂ'
+	db	0DDh		;Invalid op-code 'ÔøΩ'
+	sbc	a,0DFh		;'ÔøΩ'
 	ret	nz
 	pop	bc
 	jp	nz,.686		;[0C4C3h]
 	push	bc
-	add	a,0C7h		;'«'
+	add	a,0C7h		;'ÔøΩ'
 	ret	z
 	ret
 ;::===============================::
@@ -8972,17 +8972,17 @@ SC501:	and	l
 	pop	de
 	jp	nc,0D4D3h
 	push	de
-	sub	0D7h		;'◊'
+	sub	0D7h		;'ÔøΩ'
 	ret	c
 	exx
 	jp	c,0DCDBh
-	db	0DDh		;Invalid op-code '›'
-	sbc	a,0DFh		;'ﬂ'
+	db	0DDh		;Invalid op-code 'ÔøΩ'
+	sbc	a,0DFh		;'ÔøΩ'
 	ret	nz
 	pop	bc
 	jp	nz,.686		;[0C4C3h]
 	push	bc
-	add	a,0C7h		;'«'
+	add	a,0C7h		;'ÔøΩ'
 	ret	z
 	ret
 ;::===============================::
@@ -8994,80 +8994,80 @@ SC501:	and	l
 	pop	de
 	jp	nc,0D4D3h
 	push	de
-	sub	0D7h		;'◊'
+	sub	0D7h		;'ÔøΩ'
 	ret	c
 	exx
 	jp	c,0DCDBh
-	db	0DDh		;Invalid op-code '›'
-	sbc	a,0DFh		;'ﬂ'
+	db	0DDh		;Invalid op-code 'ÔøΩ'
+	sbc	a,0DFh		;'ÔøΩ'
 	ret	po
 	pop	hl
 	jp	po,0E4E3h
 	push	hl
-	and	0E7h		;'Á'
+	and	0E7h		;'ÔøΩ'
 	ret	pe
 	jp	(hl)
 ;::===============================::
 ;||   No execution path to here   ||
 ;::===============================::
 	jp	pe,0ECEBh
-	db	0EDh		;Invalid op-code 'Ì'
-	xor	0EFh		;'Ô'
+	db	0EDh		;Invalid op-code 'ÔøΩ'
+	xor	0EFh		;'ÔøΩ'
 	ret	p
 	pop	af
 	jp	p,0F4F3h
 	push	af
-	or	0F7h		;'˜'
+	or	0F7h		;'ÔøΩ'
 	ret	m
 	ld	sp,hl
 	jp	m,0FCFBh
-	db	0FDh		;Invalid op-code '˝'
+	db	0FDh		;Invalid op-code 'ÔøΩ'
 	cp	0FFh		;
 	ret	po
 	pop	hl
 	jp	po,0E4E3h
 .662:	push	hl
-	and	0E7h		;'Á'
+	and	0E7h		;'ÔøΩ'
 	ret	pe
 	jp	(hl)
 ;::===============================::
 ;||   No execution path to here   ||
 ;::===============================::
 	jp	pe,0ECEBh
-	db	0EDh		;Invalid op-code 'Ì'
-	xor	0EFh		;'Ô'
+	db	0EDh		;Invalid op-code 'ÔøΩ'
+	xor	0EFh		;'ÔøΩ'
 	ret	p
 	pop	af
 	jp	p,0F4F3h
 	push	af
-	or	0F7h		;'˜'
+	or	0F7h		;'ÔøΩ'
 	ret	m
 	ld	sp,hl
 	jp	m,0FCFBh
-	db	0FDh		;Invalid op-code '˝'
+	db	0FDh		;Invalid op-code 'ÔøΩ'
 	cp	0FFh		;
 	ret	po
 	pop	hl
 	jp	po,0E4E3h
 	push	hl
-	and	0E7h		;'Á'
+	and	0E7h		;'ÔøΩ'
 	ret	pe
 	jp	(hl)
 ;::===============================::
 ;||   No execution path to here   ||
 ;::===============================::
 	jp	pe,0ECEBh
-	db	0EDh		;Invalid op-code 'Ì'
-	xor	0EFh		;'Ô'
+	db	0EDh		;Invalid op-code 'ÔøΩ'
+	xor	0EFh		;'ÔøΩ'
 	ret	p
 	pop	af
 	jp	p,0F4F3h
 	push	af
-	or	0F7h		;'˜'
+	or	0F7h		;'ÔøΩ'
 	ret	m
 	ld	sp,hl
 	jp	m,0FCFBh
-	db	0FDh		;Invalid op-code '˝'
+	db	0FDh		;Invalid op-code 'ÔøΩ'
 	cp	0FFh		;
 	nop
 	ex	af,af'
@@ -9193,7 +9193,7 @@ SC501:	and	l
 	ld	(bc),a
 	cp	2
 	cp	0
-	cp	0FEh		;'˛'
+	cp	0FEh		;'ÔøΩ'
 	ld	d,27h		;'''
 	dec	c
 	dec	bc
@@ -9215,7 +9215,7 @@ SC501:	and	l
 	rst	38h
 	rst	38h
 	ret	po
-	sbc	a,9Eh		;'û'
+	sbc	a,9Eh		;'ÔøΩ'
 	jr	nz,.708		;[0C749h]
 	ld	h,d
 	ld	h,e
@@ -9658,7 +9658,7 @@ TC800:	ld	b,c
 	xor	h
 	inc	bc
 	sbc	a,c
-.769:	sbc	a,85h		;'Ö'
+.769:	sbc	a,85h		;'ÔøΩ'
 	ret	nc
 	nop
 	call	nz,0D205h
